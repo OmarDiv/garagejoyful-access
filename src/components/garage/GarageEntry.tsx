@@ -21,19 +21,31 @@ const GarageEntry = () => {
     carPlate: '',
     carModel: ''
   });
+  const [spotId, setSpotId] = useState<string>('');
   const [accessGranted, setAccessGranted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   
   // Try to get data from sessionStorage
   useEffect(() => {
-    const storedData = sessionStorage.getItem('reservation');
-    if (storedData) {
+    const storedReservation = sessionStorage.getItem('reservation');
+    const storedSpot = sessionStorage.getItem('reservationSpot');
+    
+    if (storedReservation) {
       try {
-        const reservationData = JSON.parse(storedData);
+        const reservationData = JSON.parse(storedReservation);
         setFormValues(reservationData);
       } catch (error) {
         console.error('Failed to parse reservation data', error);
+      }
+    }
+    
+    if (storedSpot) {
+      try {
+        const spotData = JSON.parse(storedSpot);
+        setSpotId(spotData.spotId);
+      } catch (error) {
+        console.error('Failed to parse spot data', error);
       }
     }
   }, []);
@@ -65,7 +77,7 @@ const GarageEntry = () => {
       
       toast({
         title: "Access Granted!",
-        description: "The garage door will open now. Please proceed.",
+        description: `The garage door will open now. Please proceed to spot ${spotId || 'assigned'}.`,
       });
       
       // Reset after some time
@@ -73,6 +85,7 @@ const GarageEntry = () => {
         setAccessGranted(false);
         setFormValues({ fullName: '', email: '', phone: '', carPlate: '', carModel: '' });
         sessionStorage.removeItem('reservation');
+        sessionStorage.removeItem('reservationSpot');
       }, 10000);
     }, 2000);
   };
@@ -122,11 +135,11 @@ const GarageEntry = () => {
         </motion.div>
         
         <motion.h2 variants={itemVariants} className="text-2xl font-semibold text-guardian-darkGray mb-2">
-          Secure Garage Access
+          Garage Access
         </motion.h2>
         
         <motion.p variants={itemVariants} className="text-guardian-gray">
-          Please verify your identity to enter the garage
+          {spotId ? `Access your reserved spot #${spotId}` : 'Please verify your identity to enter the garage'}
         </motion.p>
       </motion.div>
       
@@ -263,7 +276,6 @@ const GarageEntry = () => {
             
             <div className="mt-6 pt-5 border-t border-gray-100 text-xs text-center text-guardian-gray">
               <p>Fields marked with <span className="text-guardian-red">*</span> are required</p>
-              <p className="mt-1">For security purposes, access logs are maintained for all garage entries</p>
             </div>
           </motion.div>
         ) : (
@@ -285,7 +297,7 @@ const GarageEntry = () => {
             </h3>
             
             <p className="text-guardian-gray mb-6">
-              The garage door is now opening. Please drive safely!
+              The garage door is now opening. Please proceed to spot #{spotId || 'assigned'}!
             </p>
             
             <div className="p-4 bg-white rounded-xl border border-guardian-green/20 flex items-center justify-between">

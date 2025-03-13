@@ -27,7 +27,7 @@ const NavBar = () => {
 
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Dashboard', path: '/dashboard' },
+    { name: 'Find Parking', path: '/dashboard' },
     { name: 'Garage Access', path: '/garage' },
     { name: 'About', path: '/about' },
   ];
