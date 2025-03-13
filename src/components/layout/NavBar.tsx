@@ -1,8 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, User, Car } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Menu, X, Car } from 'lucide-react';
 
 const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -69,20 +68,6 @@ const NavBar = () => {
             ))}
           </nav>
 
-          {/* Auth Buttons - Desktop */}
-          <div className="hidden md:flex items-center space-x-4">
-            <Link to="/auth?mode=login">
-              <Button variant="outline" className="rounded-full">
-                Sign In
-              </Button>
-            </Link>
-            <Link to="/auth?mode=register">
-              <Button className="rounded-full btn-hover-effect">
-                Register
-              </Button>
-            </Link>
-          </div>
-
           {/* Mobile Menu Button */}
           <button 
             className="md:hidden text-guardian-darkGray" 
@@ -114,20 +99,6 @@ const NavBar = () => {
               {link.name}
             </Link>
           ))}
-          <div className="pt-2 pb-3 border-t border-gray-200 mt-2 space-y-2">
-            <Link 
-              to="/auth?mode=login" 
-              className="block py-2 px-4 text-guardian-darkGray hover:bg-gray-50 rounded-lg"
-            >
-              Sign In
-            </Link>
-            <Link 
-              to="/auth?mode=register" 
-              className="block py-2 px-4 bg-guardian-blue text-white rounded-lg text-center"
-            >
-              Register
-            </Link>
-          </div>
         </div>
       </div>
     </header>

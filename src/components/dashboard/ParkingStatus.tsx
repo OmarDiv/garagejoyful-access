@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import ParkingSpot from '@/components/ui/ParkingSpot';
-import { CirclePlus, Filter, SortAsc, LayoutGrid, LayoutList } from 'lucide-react';
+import { Filter, SortAsc, LayoutGrid, LayoutList } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 // Types
@@ -11,6 +11,10 @@ type SpotStatus = 'available' | 'occupied' | 'reserved';
 interface ParkingSpotData {
   id: string;
   status: SpotStatus;
+}
+
+interface ParkingStatusProps {
+  onSelectSpot: (id: string) => void;
 }
 
 // Mock data for parking spots
@@ -32,7 +36,7 @@ const generateMockSpots = (): ParkingSpotData[] => {
   return spots;
 };
 
-const ParkingStatus = () => {
+const ParkingStatus = ({ onSelectSpot }: ParkingStatusProps) => {
   const [spots, setSpots] = useState<ParkingSpotData[]>(generateMockSpots());
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [filter, setFilter] = useState<SpotStatus | 'all'>('all');
@@ -45,11 +49,8 @@ const ParkingStatus = () => {
       )
     );
     
-    toast({
-      title: "Spot Reserved!",
-      description: `You have successfully reserved parking spot ${id}`,
-      duration: 3000,
-    });
+    // Call the parent handler to open the reservation modal
+    onSelectSpot(id);
   };
   
   const filteredSpots = spots.filter(spot => 

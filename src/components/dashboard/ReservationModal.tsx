@@ -1,9 +1,10 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Car, CalendarCheck, Clock } from 'lucide-react';
+import { X, Car, User, Calendar, Mail, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 interface ReservationModalProps {
   spotId: string;
@@ -13,17 +14,22 @@ interface ReservationModalProps {
 }
 
 const ReservationModal = ({ spotId, isOpen, onClose, onConfirm }: ReservationModalProps) => {
+  const navigate = useNavigate();
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [carPlate, setCarPlate] = useState('');
+  const [carModel, setCarModel] = useState('');
   const [duration, setDuration] = useState('2');
   const { toast } = useToast();
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!carPlate.trim()) {
+    if (!fullName.trim() || !email.trim() || !carPlate.trim()) {
       toast({
-        title: "License plate required",
-        description: "Please enter your license plate number",
+        title: "Required fields missing",
+        description: "Please fill in all required fields",
         variant: "destructive",
       });
       return;
@@ -36,9 +42,18 @@ const ReservationModal = ({ spotId, isOpen, onClose, onConfirm }: ReservationMod
     });
     
     // Reset form
+    setFullName('');
+    setEmail('');
+    setPhone('');
     setCarPlate('');
+    setCarModel('');
     setDuration('2');
+    
+    // Close modal and redirect to garage page
     onClose();
+    setTimeout(() => {
+      navigate('/garage');
+    }, 1500);
   };
   
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -100,18 +115,98 @@ const ReservationModal = ({ spotId, isOpen, onClose, onConfirm }: ReservationMod
               
               <form onSubmit={handleSubmit}>
                 <div className="space-y-4 mb-6">
+                  {/* Personal Information */}
+                  <div>
+                    <label htmlFor="fullName" className="block text-sm font-medium text-guardian-darkGray mb-1">
+                      Full Name <span className="text-guardian-red">*</span>
+                    </label>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-guardian-gray">
+                        <User size={16} />
+                      </span>
+                      <input
+                        id="fullName"
+                        type="text"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        placeholder="Enter your full name"
+                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-guardian-blue focus:border-transparent"
+                        required
+                      />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-guardian-darkGray mb-1">
+                      Email Address <span className="text-guardian-red">*</span>
+                    </label>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-guardian-gray">
+                        <Mail size={16} />
+                      </span>
+                      <input
+                        id="email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Enter your email"
+                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-guardian-blue focus:border-transparent"
+                        required
+                      />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label htmlFor="phone" className="block text-sm font-medium text-guardian-darkGray mb-1">
+                      Phone Number
+                    </label>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-guardian-gray">
+                        <Phone size={16} />
+                      </span>
+                      <input
+                        id="phone"
+                        type="tel"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        placeholder="Enter your phone number"
+                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-guardian-blue focus:border-transparent"
+                      />
+                    </div>
+                  </div>
+                  
+                  {/* Car Information */}
                   <div>
                     <label htmlFor="carPlate" className="block text-sm font-medium text-guardian-darkGray mb-1">
-                      License Plate Number
+                      License Plate Number <span className="text-guardian-red">*</span>
+                    </label>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-guardian-gray">
+                        <Car size={16} />
+                      </span>
+                      <input
+                        id="carPlate"
+                        type="text"
+                        value={carPlate}
+                        onChange={(e) => setCarPlate(e.target.value)}
+                        placeholder="Enter your license plate"
+                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-guardian-blue focus:border-transparent"
+                        required
+                      />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label htmlFor="carModel" className="block text-sm font-medium text-guardian-darkGray mb-1">
+                      Car Model
                     </label>
                     <input
-                      id="carPlate"
+                      id="carModel"
                       type="text"
-                      value={carPlate}
-                      onChange={(e) => setCarPlate(e.target.value)}
-                      placeholder="Enter your license plate"
+                      value={carModel}
+                      onChange={(e) => setCarModel(e.target.value)}
+                      placeholder="e.g. Toyota Camry, Honda Civic"
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-guardian-blue focus:border-transparent"
-                      required
                     />
                   </div>
                   
@@ -119,18 +214,23 @@ const ReservationModal = ({ spotId, isOpen, onClose, onConfirm }: ReservationMod
                     <label htmlFor="duration" className="block text-sm font-medium text-guardian-darkGray mb-1">
                       Duration (hours)
                     </label>
-                    <select
-                      id="duration"
-                      value={duration}
-                      onChange={(e) => setDuration(e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-guardian-blue focus:border-transparent"
-                    >
-                      <option value="1">1 hour</option>
-                      <option value="2">2 hours</option>
-                      <option value="4">4 hours</option>
-                      <option value="8">8 hours</option>
-                      <option value="24">24 hours</option>
-                    </select>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-guardian-gray">
+                        <Calendar size={16} />
+                      </span>
+                      <select
+                        id="duration"
+                        value={duration}
+                        onChange={(e) => setDuration(e.target.value)}
+                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-guardian-blue focus:border-transparent"
+                      >
+                        <option value="1">1 hour</option>
+                        <option value="2">2 hours</option>
+                        <option value="4">4 hours</option>
+                        <option value="8">8 hours</option>
+                        <option value="24">24 hours</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 
@@ -144,9 +244,9 @@ const ReservationModal = ({ spotId, isOpen, onClose, onConfirm }: ReservationMod
                 </div>
               </form>
               
-              <div className="mt-6 pt-5 border-t border-gray-100 text-xs text-guardian-gray flex items-center justify-center gap-1">
-                <Clock size={14} />
-                <span>Reservations can be canceled up to 30 minutes before the scheduled time.</span>
+              <div className="mt-6 pt-5 border-t border-gray-100 text-xs text-guardian-gray text-center">
+                <p>Fields marked with <span className="text-guardian-red">*</span> are required</p>
+                <p className="mt-1">By making a reservation, you agree to our Terms and Conditions</p>
               </div>
             </div>
           </motion.div>

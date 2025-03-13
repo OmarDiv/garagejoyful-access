@@ -15,6 +15,17 @@ const Dashboard = () => {
     setIsReservationModalOpen(true);
   };
   
+  const handleConfirmReservation = () => {
+    // Store reservation data in sessionStorage
+    // This is a simplified approach - in a real app, you would store more data
+    const reservationData = {
+      spotId: selectedSpotId,
+      timestamp: new Date().toISOString()
+    };
+    
+    sessionStorage.setItem('reservationSpot', JSON.stringify(reservationData));
+  };
+  
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -29,7 +40,7 @@ const Dashboard = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-12">
             <h1 className="text-3xl font-semibold text-guardian-darkGray mb-2">Parking Dashboard</h1>
-            <p className="text-guardian-gray">Monitor and manage parking spots in real-time</p>
+            <p className="text-guardian-gray">Find and reserve available parking spots</p>
           </div>
           
           {/* Dashboard Content */}
@@ -37,7 +48,7 @@ const Dashboard = () => {
             {/* Main Content - Parking Status */}
             <div className="xl:col-span-3">
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <ParkingStatus />
+                <ParkingStatus onSelectSpot={handleOpenReservationModal} />
               </div>
             </div>
             
@@ -56,7 +67,7 @@ const Dashboard = () => {
                   <button 
                     className="flex items-center w-full p-3 rounded-lg bg-guardian-lightGray text-guardian-darkGray hover:bg-gray-200 transition-colors"
                   >
-                    <span>View History</span>
+                    <span>View Map</span>
                   </button>
                   <button 
                     className="flex items-center w-full p-3 rounded-lg bg-guardian-lightGray text-guardian-darkGray hover:bg-gray-200 transition-colors"
@@ -66,55 +77,66 @@ const Dashboard = () => {
                 </div>
               </div>
               
-              {/* User Activity */}
+              {/* Parking Information */}
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <h3 className="text-lg font-medium text-guardian-darkGray mb-4">Recent Activity</h3>
+                <h3 className="text-lg font-medium text-guardian-darkGray mb-4">Parking Information</h3>
                 <div className="space-y-4">
-                  {[
-                    { action: "Accessed garage", time: "Today, 9:30 AM" },
-                    { action: "Reserved spot A3", time: "Yesterday, 5:15 PM" },
-                    { action: "Updated profile", time: "3 days ago" }
-                  ].map((activity, index) => (
-                    <div key={index} className="flex justify-between items-center pb-3 border-b border-gray-100 last:border-0 last:pb-0">
-                      <span className="text-guardian-darkGray">{activity.action}</span>
-                      <span className="text-sm text-guardian-gray">{activity.time}</span>
+                  <div>
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="text-sm text-guardian-gray">Total Spaces</span>
+                      <span className="text-sm font-medium text-guardian-darkGray">24</span>
                     </div>
-                  ))}
+                    <div className="w-full h-2 bg-guardian-lightGray rounded-full overflow-hidden">
+                      <div className="h-full bg-guardian-blue rounded-full" style={{ width: '100%' }}></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="text-sm text-guardian-gray">Available Now</span>
+                      <span className="text-sm font-medium text-guardian-darkGray">9</span>
+                    </div>
+                    <div className="w-full h-2 bg-guardian-lightGray rounded-full overflow-hidden">
+                      <div className="h-full bg-guardian-green rounded-full" style={{ width: '38%' }}></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="text-sm text-guardian-gray">Occupied</span>
+                      <span className="text-sm font-medium text-guardian-darkGray">10</span>
+                    </div>
+                    <div className="w-full h-2 bg-guardian-lightGray rounded-full overflow-hidden">
+                      <div className="h-full bg-guardian-red rounded-full" style={{ width: '42%' }}></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="text-sm text-guardian-gray">Reserved</span>
+                      <span className="text-sm font-medium text-guardian-darkGray">5</span>
+                    </div>
+                    <div className="w-full h-2 bg-guardian-lightGray rounded-full overflow-hidden">
+                      <div className="h-full bg-guardian-yellow rounded-full" style={{ width: '20%' }}></div>
+                    </div>
+                  </div>
                 </div>
               </div>
               
-              {/* Usage Statistics */}
+              {/* Hours of Operation */}
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <h3 className="text-lg font-medium text-guardian-darkGray mb-4">Usage Statistics</h3>
-                <div className="space-y-4">
-                  <div>
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-sm text-guardian-gray">Weekly Usage</span>
-                      <span className="text-sm font-medium text-guardian-darkGray">65%</span>
-                    </div>
-                    <div className="w-full h-2 bg-guardian-lightGray rounded-full overflow-hidden">
-                      <div className="h-full bg-guardian-blue rounded-full" style={{ width: '65%' }}></div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-sm text-guardian-gray">Peak Hours</span>
-                      <span className="text-sm font-medium text-guardian-darkGray">8-10 AM</span>
-                    </div>
-                    <div className="w-full h-2 bg-guardian-lightGray rounded-full overflow-hidden">
-                      <div className="h-full bg-guardian-green rounded-full" style={{ width: '80%' }}></div>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-sm text-guardian-gray">Reservations</span>
-                      <span className="text-sm font-medium text-guardian-darkGray">42%</span>
-                    </div>
-                    <div className="w-full h-2 bg-guardian-lightGray rounded-full overflow-hidden">
-                      <div className="h-full bg-guardian-yellow rounded-full" style={{ width: '42%' }}></div>
-                    </div>
-                  </div>
-                </div>
+                <h3 className="text-lg font-medium text-guardian-darkGray mb-4">Hours of Operation</h3>
+                <ul className="space-y-2 text-guardian-gray">
+                  <li className="flex justify-between">
+                    <span>Monday - Friday:</span>
+                    <span className="font-medium text-guardian-darkGray">6:00 AM - 11:00 PM</span>
+                  </li>
+                  <li className="flex justify-between">
+                    <span>Saturday:</span>
+                    <span className="font-medium text-guardian-darkGray">8:00 AM - 10:00 PM</span>
+                  </li>
+                  <li className="flex justify-between">
+                    <span>Sunday:</span>
+                    <span className="font-medium text-guardian-darkGray">10:00 AM - 8:00 PM</span>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
@@ -128,7 +150,7 @@ const Dashboard = () => {
         spotId={selectedSpotId}
         isOpen={isReservationModalOpen}
         onClose={() => setIsReservationModalOpen(false)}
-        onConfirm={() => {}}
+        onConfirm={handleConfirmReservation}
       />
     </motion.div>
   );
