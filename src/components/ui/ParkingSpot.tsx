@@ -95,7 +95,4 @@ const ParkingSpot = ({ id, status, onClick, className }: ParkingSpotProps) => {
   );
 };
 
-// Add Framer Motion dependency for animations
-<lov-add-dependency>framer-motion@latest</lov-add-dependency>
-
 export default ParkingSpot;
