@@ -6,26 +6,29 @@ import Hero from '@/components/home/Hero';
 import Features from '@/components/home/Features';
 import Testimonials from '@/components/home/Testimonials';
 import CTA from '@/components/home/CTA';
+import PageBackground from '@/components/ui/PageBackground';
 
 const Index = () => {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="min-h-screen flex flex-col"
-    >
-      <NavBar />
-      
-      <main className="flex-grow">
-        <Hero />
-        <Features />
-        <Testimonials />
-        <CTA />
-      </main>
-      
-      <Footer />
-    </motion.div>
+    <PageBackground variant="home">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="min-h-screen flex flex-col"
+      >
+        <NavBar />
+        
+        <main className="flex-grow">
+          <Hero />
+          <Features />
+          <Testimonials />
+          <CTA />
+        </main>
+        
+        <Footer />
+      </motion.div>
+    </PageBackground>
   );
 };
 

@@ -6,6 +6,7 @@ import Footer from '@/components/layout/Footer';
 import ParkingSpot from '@/components/ui/ParkingSpot';
 import ReservationModal from '@/components/dashboard/ReservationModal';
 import { useToast } from '@/hooks/use-toast';
+import PageBackground from '@/components/ui/PageBackground';
 
 // Types
 type SpotStatus = 'available' | 'occupied' | 'reserved';
@@ -64,88 +65,90 @@ const Dashboard = () => {
   };
   
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className="min-h-screen flex flex-col"
-    >
-      <NavBar />
-      
-      <main className="flex-grow pt-24 pb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-12 text-center">
-            <h1 className="text-3xl font-semibold text-guardian-darkGray mb-2">Find Available Parking</h1>
-            <p className="text-guardian-gray">Select an available spot to make a reservation</p>
-          </div>
-          
-          {/* Simplified Dashboard Content */}
-          <div className="max-w-3xl mx-auto">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
-              <h2 className="text-xl font-semibold text-guardian-darkGray mb-6">Parking Spots</h2>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {spots.map((spot) => (
-                  <ParkingSpot
-                    key={spot.id}
-                    id={spot.id}
-                    status={spot.status}
-                    onClick={handleOpenReservationModal}
-                  />
-                ))}
-              </div>
+    <PageBackground variant="dashboard">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5 }}
+        className="min-h-screen flex flex-col"
+      >
+        <NavBar />
+        
+        <main className="flex-grow pt-24 pb-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mb-12 text-center">
+              <h1 className="text-3xl font-semibold text-guardian-darkGray mb-2">Find Available Parking</h1>
+              <p className="text-guardian-gray">Select an available spot to make a reservation</p>
             </div>
             
-            <div className="bg-guardian-lightGray rounded-2xl p-6">
-              <h3 className="text-lg font-medium text-guardian-darkGray mb-4">Parking Information</h3>
-              <ul className="space-y-2 text-guardian-gray">
-                <li className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-guardian-green"></span>
-                  <span>Available - Click to reserve</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-guardian-red"></span>
-                  <span>Occupied - Cannot be reserved</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-guardian-yellow"></span>
-                  <span>Reserved - Already booked</span>
-                </li>
-              </ul>
+            {/* Simplified Dashboard Content */}
+            <div className="max-w-3xl mx-auto">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
+                <h2 className="text-xl font-semibold text-guardian-darkGray mb-6">Parking Spots</h2>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {spots.map((spot) => (
+                    <ParkingSpot
+                      key={spot.id}
+                      id={spot.id}
+                      status={spot.status}
+                      onClick={handleOpenReservationModal}
+                    />
+                  ))}
+                </div>
+              </div>
               
-              <div className="mt-6 pt-5 border-t border-gray-200">
-                <h4 className="text-md font-medium text-guardian-darkGray mb-2">Hours of Operation</h4>
-                <ul className="space-y-1 text-guardian-gray">
-                  <li className="flex justify-between">
-                    <span>Monday - Friday:</span>
-                    <span className="font-medium text-guardian-darkGray">6:00 AM - 11:00 PM</span>
+              <div className="bg-guardian-lightGray/80 backdrop-blur-sm rounded-2xl p-6">
+                <h3 className="text-lg font-medium text-guardian-darkGray mb-4">Parking Information</h3>
+                <ul className="space-y-2 text-guardian-gray">
+                  <li className="flex items-center gap-2">
+                    <span className="w-3 h-3 rounded-full bg-guardian-green"></span>
+                    <span>Available - Click to reserve</span>
                   </li>
-                  <li className="flex justify-between">
-                    <span>Saturday:</span>
-                    <span className="font-medium text-guardian-darkGray">8:00 AM - 10:00 PM</span>
+                  <li className="flex items-center gap-2">
+                    <span className="w-3 h-3 rounded-full bg-guardian-red"></span>
+                    <span>Occupied - Cannot be reserved</span>
                   </li>
-                  <li className="flex justify-between">
-                    <span>Sunday:</span>
-                    <span className="font-medium text-guardian-darkGray">10:00 AM - 8:00 PM</span>
+                  <li className="flex items-center gap-2">
+                    <span className="w-3 h-3 rounded-full bg-guardian-yellow"></span>
+                    <span>Reserved - Already booked</span>
                   </li>
                 </ul>
+                
+                <div className="mt-6 pt-5 border-t border-gray-200">
+                  <h4 className="text-md font-medium text-guardian-darkGray mb-2">Hours of Operation</h4>
+                  <ul className="space-y-1 text-guardian-gray">
+                    <li className="flex justify-between">
+                      <span>Monday - Friday:</span>
+                      <span className="font-medium text-guardian-darkGray">6:00 AM - 11:00 PM</span>
+                    </li>
+                    <li className="flex justify-between">
+                      <span>Saturday:</span>
+                      <span className="font-medium text-guardian-darkGray">8:00 AM - 10:00 PM</span>
+                    </li>
+                    <li className="flex justify-between">
+                      <span>Sunday:</span>
+                      <span className="font-medium text-guardian-darkGray">10:00 AM - 8:00 PM</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </main>
-      
-      <Footer />
-      
-      {/* Reservation Modal */}
-      <ReservationModal 
-        spotId={selectedSpotId}
-        isOpen={isReservationModalOpen}
-        onClose={() => setIsReservationModalOpen(false)}
-        onConfirm={handleConfirmReservation}
-      />
-    </motion.div>
+        </main>
+        
+        <Footer />
+        
+        {/* Reservation Modal */}
+        <ReservationModal 
+          spotId={selectedSpotId}
+          isOpen={isReservationModalOpen}
+          onClose={() => setIsReservationModalOpen(false)}
+          onConfirm={handleConfirmReservation}
+        />
+      </motion.div>
+    </PageBackground>
   );
 };
 

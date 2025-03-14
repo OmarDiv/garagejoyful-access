@@ -1,5 +1,4 @@
 
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Key, User, Mail, Phone, Car } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -31,7 +30,7 @@ const AccessForm = ({ formValues, onInputChange, onSubmit, isLoading, spotId }: 
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.4 }}
-      className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100"
+      className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-sm border border-gray-100"
     >
       <form onSubmit={onSubmit} className="space-y-4">
         <div>
@@ -49,7 +48,7 @@ const AccessForm = ({ formValues, onInputChange, onSubmit, isLoading, spotId }: 
               value={formValues.fullName}
               onChange={onInputChange}
               placeholder="Enter your full name"
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-guardian-blue focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               required
             />
           </div>
@@ -70,7 +69,7 @@ const AccessForm = ({ formValues, onInputChange, onSubmit, isLoading, spotId }: 
               value={formValues.email}
               onChange={onInputChange}
               placeholder="Enter your email"
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-guardian-blue focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               required
             />
           </div>
@@ -91,7 +90,7 @@ const AccessForm = ({ formValues, onInputChange, onSubmit, isLoading, spotId }: 
               value={formValues.phone}
               onChange={onInputChange}
               placeholder="Enter your phone number"
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-guardian-blue focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             />
           </div>
         </div>
@@ -111,7 +110,7 @@ const AccessForm = ({ formValues, onInputChange, onSubmit, isLoading, spotId }: 
               value={formValues.carPlate}
               onChange={onInputChange}
               placeholder="Enter your license plate"
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-guardian-blue focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               required
             />
           </div>
@@ -128,13 +127,13 @@ const AccessForm = ({ formValues, onInputChange, onSubmit, isLoading, spotId }: 
             value={formValues.carModel}
             onChange={onInputChange}
             placeholder="e.g. Toyota Camry, Honda Civic"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-guardian-blue focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           />
         </div>
         
         <Button 
           type="submit" 
-          className="w-full btn-hover-effect mt-4"
+          className="w-full btn-hover-effect mt-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
           disabled={isLoading}
         >
           {isLoading ? (
