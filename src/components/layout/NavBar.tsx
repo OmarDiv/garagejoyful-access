@@ -47,8 +47,8 @@ const NavBar = () => {
             to="/" 
             className="flex items-center space-x-2 text-guardian-darkGray"
           >
-            <CheckSquare className="h-8 w-8 text-purple-600" />
-            <span className="font-semibold text-xl tracking-tight">Ranka</span>
+            <CheckSquare className="h-8 w-8 text-indigo-600" />
+            <span className="font-semibold text-xl tracking-tight">Rakna</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -57,9 +57,9 @@ const NavBar = () => {
               <Link
                 key={link.name}
                 to={link.path}
-                className={`transition-all-300 hover:text-purple-600 ${
+                className={`transition-all-300 hover:text-indigo-600 ${
                   isActive(link.path)
-                    ? 'text-purple-600 font-medium'
+                    ? 'text-indigo-600 font-medium'
                     : 'text-guardian-darkGray'
                 }`}
               >
@@ -92,7 +92,7 @@ const NavBar = () => {
               to={link.path}
               className={`block py-2 px-4 rounded-lg transition-all-300 ${
                 isActive(link.path)
-                  ? 'bg-purple-100 text-purple-600 font-medium'
+                  ? 'bg-indigo-100 text-indigo-600 font-medium'
                   : 'text-guardian-darkGray hover:bg-gray-50'
               }`}
             >

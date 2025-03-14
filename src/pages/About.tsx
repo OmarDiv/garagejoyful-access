@@ -19,7 +19,7 @@ const About = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-12 text-center">
             <h1 className="text-3xl font-semibold text-guardian-darkGray mb-2">About Us</h1>
-            <p className="text-guardian-gray">Learn more about GarageGuardian</p>
+            <p className="text-guardian-gray">Learn more about Rakna</p>
           </div>
           
           <AboutContent />

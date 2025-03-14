@@ -12,8 +12,8 @@ const Footer = () => {
           {/* Brand */}
           <div className="col-span-1 md:col-span-1">
             <Link to="/" className="flex items-center space-x-2 text-guardian-darkGray mb-4">
-              <CheckSquare className="h-6 w-6 text-purple-600" />
-              <span className="font-semibold text-lg">Ranka</span>
+              <CheckSquare className="h-6 w-6 text-indigo-600" />
+              <span className="font-semibold text-lg">Rakna</span>
             </Link>
             <p className="text-guardian-gray text-sm mt-4 max-w-xs">
               A smart and friendly garage access system that makes parking hassle-free and secure.
@@ -33,7 +33,7 @@ const Footer = () => {
                 <li key={link.name}>
                   <Link 
                     to={link.path}
-                    className="text-guardian-gray hover:text-purple-600 transition-colors duration-200 text-sm"
+                    className="text-guardian-gray hover:text-indigo-600 transition-colors duration-200 text-sm"
                   >
                     {link.name}
                   </Link>
@@ -54,7 +54,7 @@ const Footer = () => {
                 <li key={link.name}>
                   <Link 
                     to={link.path}
-                    className="text-guardian-gray hover:text-purple-600 transition-colors duration-200 text-sm"
+                    className="text-guardian-gray hover:text-indigo-600 transition-colors duration-200 text-sm"
                   >
                     {link.name}
                   </Link>
@@ -77,7 +77,7 @@ const Footer = () => {
                   key={social.label}
                   href="#"
                   aria-label={social.label}
-                  className="text-guardian-gray hover:text-purple-600 transition-colors duration-200"
+                  className="text-guardian-gray hover:text-indigo-600 transition-colors duration-200"
                 >
                   <social.icon size={20} />
                 </a>
@@ -85,8 +85,8 @@ const Footer = () => {
             </div>
             <p className="text-guardian-gray text-sm">
               Have questions? <br />
-              <a href="mailto:support@ranka.com" className="text-purple-600 hover:underline">
-                support@ranka.com
+              <a href="mailto:support@rakna.com" className="text-indigo-600 hover:underline">
+                support@rakna.com
               </a>
             </p>
           </div>
@@ -94,7 +94,7 @@ const Footer = () => {
         
         <div className="border-t border-gray-200 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-guardian-gray text-sm">
-            &copy; {currentYear} Ranka. All rights reserved.
+            &copy; {currentYear} Rakna. All rights reserved.
           </p>
           <p className="text-guardian-gray text-sm mt-4 md:mt-0">
             Designed with care for an optimal user experience.

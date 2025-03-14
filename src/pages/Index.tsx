@@ -17,7 +17,7 @@ const Index = () => {
     {
       name: "Alex Johnson",
       role: "Regular User",
-      quote: "Ranka has made parking so much easier. I can reserve my spot in advance and never worry about finding a place to park.",
+      quote: "Rakna has made parking so much easier. I can reserve my spot in advance and never worry about finding a place to park.",
       rating: 5
     },
     {
@@ -67,15 +67,15 @@ const Index = () => {
         <Hero />
         <Features />
         
-        {/* Testimonials Section - Simplified */}
-        <section className="py-20 bg-white">
+        {/* Testimonials Section */}
+        <section className="py-20 bg-gradient-to-b from-indigo-50 to-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-3xl mx-auto mb-12">
               <h2 className="text-3xl font-semibold text-guardian-darkGray mb-4">
                 Trusted by Drivers Everywhere
               </h2>
               <p className="text-lg text-guardian-gray">
-                See what our users say about Ranka
+                See what our users say about Rakna
               </p>
             </div>
             
@@ -87,7 +87,7 @@ const Index = () => {
               >
                 <button 
                   onClick={prevTestimonial}
-                  className="h-10 w-10 rounded-full bg-white shadow-md flex items-center justify-center text-guardian-darkGray hover:text-purple-600 transition-colors"
+                  className="h-10 w-10 rounded-full bg-white shadow-md flex items-center justify-center text-guardian-darkGray hover:text-indigo-600 transition-colors"
                 >
                   <ChevronLeft size={20} />
                 </button>
@@ -100,7 +100,7 @@ const Index = () => {
               >
                 <button 
                   onClick={nextTestimonial}
-                  className="h-10 w-10 rounded-full bg-white shadow-md flex items-center justify-center text-guardian-darkGray hover:text-purple-600 transition-colors"
+                  className="h-10 w-10 rounded-full bg-white shadow-md flex items-center justify-center text-guardian-darkGray hover:text-indigo-600 transition-colors"
                 >
                   <ChevronRight size={20} />
                 </button>
@@ -116,13 +116,13 @@ const Index = () => {
                     transition={{ duration: 0.4 }}
                     className="bg-white rounded-xl p-8 shadow-sm border border-gray-100 relative"
                   >
-                    <div className="mb-6 text-6xl text-purple-300 font-serif">"</div>
+                    <div className="mb-6 text-6xl text-indigo-300 font-serif">"</div>
                     <p className="text-guardian-darkGray mb-6 text-lg italic">
                       {testimonials[currentTestimonial].quote}
                     </p>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
-                        <div className="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 text-xl font-medium">
+                        <div className="h-12 w-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 text-xl font-medium">
                           {testimonials[currentTestimonial].name.charAt(0)}
                         </div>
                         <div className="ml-3">
@@ -155,7 +155,7 @@ const Index = () => {
                     onMouseEnter={() => setAutoplay(false)}
                     onMouseLeave={() => setAutoplay(true)}
                     className={`h-2 rounded-full transition-all duration-300 ${
-                      currentTestimonial === index ? 'w-8 bg-purple-600' : 'w-2 bg-purple-200'
+                      currentTestimonial === index ? 'w-8 bg-indigo-600' : 'w-2 bg-indigo-200'
                     }`}
                     aria-label={`Go to testimonial ${index + 1}`}
                   />
@@ -165,8 +165,8 @@ const Index = () => {
           </div>
         </section>
         
-        {/* CTA Section - Simplified */}
-        <section className="py-16 bg-gradient-to-r from-purple-600 to-indigo-500 text-white">
+        {/* CTA Section */}
+        <section className="py-16 bg-gradient-to-r from-indigo-600 to-blue-500 text-white">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -181,7 +181,7 @@ const Index = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link to="/auth?mode=register">
                   <Button
-                    className="px-8 py-3 bg-white text-purple-600 rounded-full font-medium hover:bg-purple-50 transition-colors"
+                    className="px-8 py-3 bg-white text-indigo-600 rounded-full font-medium hover:bg-indigo-50 transition-colors"
                   >
                     Create Your Account
                   </Button>
