@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Car } from 'lucide-react';
+import { Menu, X, CheckSquare } from 'lucide-react';
 
 const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -47,8 +47,8 @@ const NavBar = () => {
             to="/" 
             className="flex items-center space-x-2 text-guardian-darkGray"
           >
-            <Car className="h-8 w-8" />
-            <span className="font-semibold text-xl tracking-tight">GarageGuardian</span>
+            <CheckSquare className="h-8 w-8 text-purple-600" />
+            <span className="font-semibold text-xl tracking-tight">Ranka</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -57,9 +57,9 @@ const NavBar = () => {
               <Link
                 key={link.name}
                 to={link.path}
-                className={`transition-all-300 hover:text-guardian-blue ${
+                className={`transition-all-300 hover:text-purple-600 ${
                   isActive(link.path)
-                    ? 'text-guardian-blue font-medium'
+                    ? 'text-purple-600 font-medium'
                     : 'text-guardian-darkGray'
                 }`}
               >
@@ -92,7 +92,7 @@ const NavBar = () => {
               to={link.path}
               className={`block py-2 px-4 rounded-lg transition-all-300 ${
                 isActive(link.path)
-                  ? 'bg-guardian-blue/10 text-guardian-blue font-medium'
+                  ? 'bg-purple-100 text-purple-600 font-medium'
                   : 'text-guardian-darkGray hover:bg-gray-50'
               }`}
             >

@@ -2,7 +2,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { motion, useAnimation, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Car, Lock, Clock } from 'lucide-react';
+import { ArrowRight, CheckSquare, Lock, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Hero = () => {
@@ -38,7 +38,7 @@ const Hero = () => {
   };
   
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-white to-blue-50 pt-32 pb-16 md:pt-40 md:pb-24">
+    <section className="relative overflow-hidden bg-gradient-to-b from-purple-50 to-white pt-32 pb-16 md:pt-40 md:pb-24">
       <div className="absolute inset-0 z-0 opacity-10">
         <svg 
           className="h-full w-full"
@@ -53,7 +53,7 @@ const Hero = () => {
             patternUnits="userSpaceOnUse"
             patternTransform="rotate(10)"
           >
-            <circle cx="1" cy="1" r="1" fill="currentColor" className="text-guardian-blue" />
+            <circle cx="1" cy="1" r="1" fill="currentColor" className="text-purple-600" />
           </pattern>
           <rect width="100%" height="100%" fill="url(#hero-pattern)" />
         </svg>
@@ -72,7 +72,7 @@ const Hero = () => {
             className="text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl md:text-6xl max-w-3xl mb-6"
           >
             Smart Garage Management 
-            <span className="block text-guardian-blue mt-2">Simplified</span>
+            <span className="block text-purple-600 mt-2">Simplified</span>
           </motion.h1>
           
           <motion.p 
@@ -90,7 +90,7 @@ const Hero = () => {
             <Link to="/dashboard">
               <Button 
                 size="lg" 
-                className="rounded-full px-6 py-6 text-base transition-all duration-300"
+                className="rounded-full px-6 py-6 text-base transition-all duration-300 bg-purple-600 hover:bg-purple-700"
                 onMouseEnter={() => setHoverButton(true)}
                 onMouseLeave={() => setHoverButton(false)}
               >
@@ -107,7 +107,7 @@ const Hero = () => {
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="rounded-full px-6 py-6 text-base"
+                className="rounded-full px-6 py-6 text-base border-purple-600 text-purple-600 hover:bg-purple-50"
               >
                 Create Account
               </Button>
@@ -121,7 +121,7 @@ const Hero = () => {
           >
             {[
               {
-                icon: Car,
+                icon: CheckSquare,
                 title: "Real-time Parking",
                 description: "Monitor available spots in real-time"
               },
@@ -141,7 +141,7 @@ const Hero = () => {
                 whileHover={{ y: -5 }}
                 className="flex flex-col items-center rounded-xl bg-white p-6 shadow-sm border border-gray-100"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-guardian-blue mb-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100 text-purple-600 mb-4">
                   <feature.icon className="h-6 w-6" />
                 </div>
                 <h3 className="text-lg font-medium text-gray-900">{feature.title}</h3>
