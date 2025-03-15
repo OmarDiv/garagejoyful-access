@@ -78,6 +78,13 @@ const ParkingSpot = ({ id, status, onClick, className }: ParkingSpotProps) => {
         </div>
       )}
       
+      {/* Reserved indicator */}
+      {status === 'reserved' && (
+        <div className="absolute bottom-3 right-3 text-xs px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-600">
+          Reserved
+        </div>
+      )}
+      
       {/* Hover effect for available spots */}
       {status === 'available' && (
         <motion.div 
