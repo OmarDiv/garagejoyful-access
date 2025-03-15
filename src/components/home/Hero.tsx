@@ -80,21 +80,21 @@ const Hero = () => {
             className="mx-auto mt-6 max-w-2xl text-lg text-gray-600"
           >
             Experience the most intuitive garage access system with real-time parking status,
-            secure reservations, and seamless entry.
+            secure reservations, and convenient entry for drivers.
           </motion.p>
           
           <motion.div 
             variants={itemVariants}
             className="mt-10 flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center"
           >
-            <Link to="/dashboard">
+            <Link to="/garage">
               <Button 
                 size="lg" 
                 className="rounded-full px-6 py-6 text-base transition-all duration-300 bg-purple-600 hover:bg-purple-700"
                 onMouseEnter={() => setHoverButton(true)}
                 onMouseLeave={() => setHoverButton(false)}
               >
-                View Dashboard
+                Access Garage
                 <motion.span
                   animate={{ x: hoverButton ? 5 : 0 }}
                   transition={{ duration: 0.2 }}
@@ -103,18 +103,9 @@ const Hero = () => {
                 </motion.span>
               </Button>
             </Link>
-            <Link to="/auth?mode=register">
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="rounded-full px-6 py-6 text-base border-purple-600 text-purple-600 hover:bg-purple-50"
-              >
-                Create Account
-              </Button>
-            </Link>
           </motion.div>
           
-          {/* Feature highlights - simplified */}
+          {/* Parking statistics */}
           <motion.div 
             variants={itemVariants}
             className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-3 md:mt-20"
@@ -122,18 +113,21 @@ const Hero = () => {
             {[
               {
                 icon: CheckSquare,
-                title: "Real-time Parking",
-                description: "Monitor available spots in real-time"
+                title: "Available Spots",
+                count: "12",
+                description: "Ready for immediate parking"
               },
               {
                 icon: Lock,
-                title: "Secure Access",
-                description: "Enter with personalized authentication"
+                title: "Occupied Spots",
+                count: "24",
+                description: "Currently in use"
               },
               {
                 icon: Clock,
-                title: "Easy Reservations",
-                description: "Reserve your spot in advance"
+                title: "Reserved Spots",
+                count: "8",
+                description: "Pre-booked for later use"
               }
             ].map((feature, index) => (
               <motion.div 
@@ -145,7 +139,8 @@ const Hero = () => {
                   <feature.icon className="h-6 w-6" />
                 </div>
                 <h3 className="text-lg font-medium text-gray-900">{feature.title}</h3>
-                <p className="mt-2 text-sm text-gray-600">{feature.description}</p>
+                <p className="text-2xl font-bold text-purple-600 my-2">{feature.count}</p>
+                <p className="mt-1 text-sm text-gray-600">{feature.description}</p>
               </motion.div>
             ))}
           </motion.div>

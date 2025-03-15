@@ -34,7 +34,7 @@ const Features = () => {
   ];
   
   const steps = [
-    "Register and create your account",
+    "Enter your license plate number",
     "View available parking spots in real-time",
     "Reserve your spot with a single click",
     "Enter your details for secure access",
@@ -52,7 +52,7 @@ const Features = () => {
             Designed for Modern Convenience
           </h2>
           <p className="text-lg text-guardian-gray">
-            GarageGuardian combines cutting-edge technology with thoughtful design
+            Rakna combines cutting-edge technology with thoughtful design
           </p>
         </motion.div>
         
@@ -115,8 +115,8 @@ const Features = () => {
                 className="text-center p-6"
               >
                 <div className="mb-4 text-5xl text-guardian-blue">
-                  {activeStep === 0 && "👤"}
-                  {activeStep === 1 && "🚗"}
+                  {activeStep === 0 && "🚗"}
+                  {activeStep === 1 && "🔍"}
                   {activeStep === 2 && "📅"}
                   {activeStep === 3 && "🔐"}
                   {activeStep === 4 && "✅"}
@@ -125,7 +125,7 @@ const Features = () => {
                   Step {activeStep + 1}: {steps[activeStep]}
                 </p>
                 <p className="text-guardian-gray mt-4">
-                  {activeStep === 0 && "Create your account in seconds and start managing your parking."}
+                  {activeStep === 0 && "Enter your license plate number for quick identification."}
                   {activeStep === 1 && "Our real-time system shows you available parking spots instantly."}
                   {activeStep === 2 && "Reserve your preferred spot with our easy-to-use interface."}
                   {activeStep === 3 && "Verify your identity for secure and authorized access."}

@@ -1,6 +1,6 @@
 
 import { motion } from 'framer-motion';
-import { Key, User, Mail, Phone, Car } from 'lucide-react';
+import { Key, Car, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AccessFormValues } from './types';
 
@@ -32,44 +32,23 @@ const AccessForm = ({ formValues, onInputChange, onSubmit, isLoading, spotId }: 
       transition={{ duration: 0.4 }}
       className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-sm border border-gray-100"
     >
-      <form onSubmit={onSubmit} className="space-y-4">
+      <form onSubmit={onSubmit} className="space-y-5">
         <div>
-          <label htmlFor="fullName" className="block text-sm font-medium text-guardian-darkGray mb-1">
-            Your Full Name <span className="text-guardian-red">*</span>
+          <label htmlFor="carPlate" className="block text-sm font-medium text-guardian-darkGray mb-1">
+            License Plate Number <span className="text-guardian-red">*</span>
           </label>
           <div className="relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-guardian-gray">
-              <User size={16} />
+              <Car size={16} />
             </span>
             <input
-              id="fullName"
-              name="fullName"
+              id="carPlate"
+              name="carPlate"
               type="text"
-              value={formValues.fullName}
+              value={formValues.carPlate}
               onChange={onInputChange}
-              placeholder="Enter your full name"
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              required
-            />
-          </div>
-        </div>
-        
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-guardian-darkGray mb-1">
-            Email Address <span className="text-guardian-red">*</span>
-          </label>
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-guardian-gray">
-              <Mail size={16} />
-            </span>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              value={formValues.email}
-              onChange={onInputChange}
-              placeholder="Enter your email"
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              placeholder="Enter your license plate"
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               required
             />
           </div>
@@ -90,50 +69,14 @@ const AccessForm = ({ formValues, onInputChange, onSubmit, isLoading, spotId }: 
               value={formValues.phone}
               onChange={onInputChange}
               placeholder="Enter your phone number"
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             />
           </div>
-        </div>
-        
-        <div>
-          <label htmlFor="carPlate" className="block text-sm font-medium text-guardian-darkGray mb-1">
-            License Plate Number <span className="text-guardian-red">*</span>
-          </label>
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-guardian-gray">
-              <Car size={16} />
-            </span>
-            <input
-              id="carPlate"
-              name="carPlate"
-              type="text"
-              value={formValues.carPlate}
-              onChange={onInputChange}
-              placeholder="Enter your license plate"
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              required
-            />
-          </div>
-        </div>
-        
-        <div>
-          <label htmlFor="carModel" className="block text-sm font-medium text-guardian-darkGray mb-1">
-            Car Model
-          </label>
-          <input
-            id="carModel"
-            name="carModel"
-            type="text"
-            value={formValues.carModel}
-            onChange={onInputChange}
-            placeholder="e.g. Toyota Camry, Honda Civic"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-          />
         </div>
         
         <Button 
           type="submit" 
-          className="w-full btn-hover-effect mt-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
+          className="w-full btn-hover-effect mt-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 py-6"
           disabled={isLoading}
         >
           {isLoading ? (
@@ -145,7 +88,7 @@ const AccessForm = ({ formValues, onInputChange, onSubmit, isLoading, spotId }: 
               Verifying...
             </span>
           ) : (
-            <span className="flex items-center justify-center gap-2">
+            <span className="flex items-center justify-center gap-2 text-lg">
               <Key size={18} />
               Open Garage Door
             </span>

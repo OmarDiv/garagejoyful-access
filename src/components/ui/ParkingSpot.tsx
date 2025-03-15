@@ -32,9 +32,9 @@ const ParkingSpot = ({ id, status, onClick, className }: ParkingSpotProps) => {
       label: 'Occupied'
     },
     reserved: {
-      bgColor: 'bg-guardian-yellow/10',
-      borderColor: 'border-guardian-yellow',
-      textColor: 'text-guardian-yellow',
+      bgColor: 'bg-blue-500/10',
+      borderColor: 'border-blue-500',
+      textColor: 'text-blue-500',
       icon: AlertTriangle,
       label: 'Reserved'
     }

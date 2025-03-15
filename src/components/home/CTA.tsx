@@ -15,14 +15,14 @@ const CTA = () => {
         >
           <h2 className="text-3xl font-semibold mb-6">Ready to Transform Your Parking Experience?</h2>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Join thousands of users who have simplified their garage access.
+            Join thousands of drivers who have simplified their garage access with Rakna.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/auth?mode=register">
+            <Link to="/garage">
               <Button
                 className="px-8 py-3 bg-white text-indigo-600 rounded-full font-medium hover:bg-indigo-50 transition-colors"
               >
-                Create Your Account
+                Access Garage Now
               </Button>
             </Link>
             <Link to="/dashboard">

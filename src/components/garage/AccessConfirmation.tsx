@@ -37,7 +37,8 @@ const AccessConfirmation = ({ formValues, spotId }: AccessConfirmationProps) => 
       </h3>
       
       <p className="text-guardian-gray mb-6">
-        The garage door is now opening. Please proceed to spot #{spotId || 'assigned'}!
+        Welcome to our Garage, <span className="font-semibold">{formValues.fullName}</span>! 
+        The door is now opening. Please proceed to spot #{spotId || 'assigned'}!
       </p>
       
       <div className="p-4 bg-white rounded-xl border border-guardian-green/20 flex items-center justify-between">

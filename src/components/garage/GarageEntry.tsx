@@ -51,12 +51,12 @@ const GarageEntry = () => {
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const { fullName, email, carPlate } = formValues;
+    const { carPlate, phone } = formValues;
     
-    if (!fullName.trim() || !email.trim() || !carPlate.trim()) {
+    if (!carPlate.trim()) {
       toast({
         title: "Missing information",
-        description: "Please fill out all required fields to continue",
+        description: "Please enter your license plate number to continue",
         variant: "destructive"
       });
       return;
@@ -65,13 +65,18 @@ const GarageEntry = () => {
     // Simulate verifying user credentials
     setIsLoading(true);
     
+    // Simulate API call to get user name based on license plate
     setTimeout(() => {
+      // For demo purposes, generate a name based on the license plate
+      const mockName = carPlate.toUpperCase().replace(/[0-9]/g, '') || 'User';
+      setFormValues(prev => ({ ...prev, fullName: `${mockName} Driver` }));
+      
       setIsLoading(false);
       setAccessGranted(true);
       
       toast({
         title: "Access Granted!",
-        description: `The garage door will open now. Please proceed to spot ${spotId || 'assigned'}.`,
+        description: `Welcome, ${mockName} Driver! The garage door will open now. Please proceed to spot ${spotId || 'assigned'}.`,
       });
       
       // Reset after some time
