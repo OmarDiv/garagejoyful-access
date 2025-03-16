@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import NavBar from '@/components/layout/NavBar';
 import Footer from '@/components/layout/Footer';
 import ParkingSpot from '@/components/ui/ParkingSpot';
@@ -96,6 +96,42 @@ const Dashboard = () => {
     // Store user and car details for the garage access page
     sessionStorage.setItem('reservation', JSON.stringify(formData));
   };
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { 
+        when: "beforeChildren",
+        staggerChildren: 0.1
+      } 
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.5 }
+    }
+  };
+
+  const spotVariants = {
+    hidden: { scale: 0.9, opacity: 0 },
+    visible: (i: number) => ({
+      scale: 1,
+      opacity: 1,
+      transition: { 
+        delay: i * 0.1,
+        duration: 0.3,
+        type: "spring",
+        stiffness: 260,
+        damping: 20
+      }
+    })
+  };
   
   return (
     <PageBackground variant="dashboard">
@@ -110,64 +146,100 @@ const Dashboard = () => {
         
         <main className="flex-grow pt-24 pb-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-12 text-center">
+            <motion.div 
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6 }}
+              className="mb-12 text-center"
+            >
               <h1 className="text-3xl font-semibold text-guardian-darkGray mb-2">Find Available Parking</h1>
               <p className="text-guardian-gray">Select an available spot to make a reservation</p>
-            </div>
+            </motion.div>
             
             {/* Simplified Dashboard Content */}
-            <div className="max-w-3xl mx-auto">
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
+            <motion.div
+              className="max-w-3xl mx-auto"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <motion.div 
+                variants={itemVariants}
+                className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100 p-6 mb-8"
+              >
                 <h2 className="text-xl font-semibold text-guardian-darkGray mb-6">Parking Spots</h2>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {spots.map((spot) => (
-                    <ParkingSpot
-                      key={spot.id}
-                      id={spot.id}
-                      status={spot.status}
-                      onClick={handleOpenReservationModal}
-                    />
-                  ))}
+                  <AnimatePresence>
+                    {spots.map((spot, index) => (
+                      <motion.div
+                        key={spot.id}
+                        custom={index}
+                        variants={spotVariants}
+                        initial="hidden"
+                        animate="visible"
+                        whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <ParkingSpot
+                          id={spot.id}
+                          status={spot.status}
+                          onClick={handleOpenReservationModal}
+                        />
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
                 </div>
-              </div>
+              </motion.div>
               
-              <div className="bg-guardian-lightGray/80 backdrop-blur-sm rounded-2xl p-6">
+              <motion.div 
+                variants={itemVariants}
+                className="bg-guardian-lightGray/80 backdrop-blur-sm rounded-2xl p-6"
+              >
                 <h3 className="text-lg font-medium text-guardian-darkGray mb-4">Parking Information</h3>
-                <ul className="space-y-2 text-guardian-gray">
-                  <li className="flex items-center gap-2">
+                <motion.ul 
+                  className="space-y-2 text-guardian-gray"
+                  variants={containerVariants}
+                >
+                  <motion.li variants={itemVariants} className="flex items-center gap-2">
                     <span className="w-3 h-3 rounded-full bg-guardian-green"></span>
                     <span>Available - Click to reserve</span>
-                  </li>
-                  <li className="flex items-center gap-2">
+                  </motion.li>
+                  <motion.li variants={itemVariants} className="flex items-center gap-2">
                     <span className="w-3 h-3 rounded-full bg-guardian-red"></span>
                     <span>Occupied - Cannot be reserved</span>
-                  </li>
-                  <li className="flex items-center gap-2">
+                  </motion.li>
+                  <motion.li variants={itemVariants} className="flex items-center gap-2">
                     <span className="w-3 h-3 rounded-full bg-blue-500"></span>
                     <span>Reserved - Already booked</span>
-                  </li>
-                </ul>
+                  </motion.li>
+                </motion.ul>
                 
-                <div className="mt-6 pt-5 border-t border-gray-200">
+                <motion.div 
+                  variants={itemVariants}
+                  className="mt-6 pt-5 border-t border-gray-200"
+                >
                   <h4 className="text-md font-medium text-guardian-darkGray mb-2">Hours of Operation</h4>
-                  <ul className="space-y-1 text-guardian-gray">
-                    <li className="flex justify-between">
+                  <motion.ul 
+                    className="space-y-1 text-guardian-gray"
+                    variants={containerVariants}
+                  >
+                    <motion.li variants={itemVariants} className="flex justify-between">
                       <span>Monday - Friday:</span>
                       <span className="font-medium text-guardian-darkGray">6:00 AM - 11:00 PM</span>
-                    </li>
-                    <li className="flex justify-between">
+                    </motion.li>
+                    <motion.li variants={itemVariants} className="flex justify-between">
                       <span>Saturday:</span>
                       <span className="font-medium text-guardian-darkGray">8:00 AM - 10:00 PM</span>
-                    </li>
-                    <li className="flex justify-between">
+                    </motion.li>
+                    <motion.li variants={itemVariants} className="flex justify-between">
                       <span>Sunday:</span>
                       <span className="font-medium text-guardian-darkGray">10:00 AM - 8:00 PM</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+                    </motion.li>
+                  </motion.ul>
+                </motion.div>
+              </motion.div>
+            </motion.div>
           </div>
         </main>
         

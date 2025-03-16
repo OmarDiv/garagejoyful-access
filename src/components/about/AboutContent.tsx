@@ -4,8 +4,13 @@ import { motion, useInView } from 'framer-motion';
 import { Shield, Users, Zap, ThumbsUp, HeartHandshake, Trophy } from 'lucide-react';
 
 const AboutContent = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const storyRef = useRef(null);
+  const valuesRef = useRef(null);
+  const teamRef = useRef(null);
+  
+  const storyInView = useInView(storyRef, { once: true, amount: 0.3 });
+  const valuesInView = useInView(valuesRef, { once: true, amount: 0.3 });
+  const teamInView = useInView(teamRef, { once: true, amount: 0.3 });
   
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -24,6 +29,15 @@ const AboutContent = () => {
       y: 0,
       opacity: 1,
       transition: { duration: 0.5 }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { y: 30, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1,
+      transition: { duration: 0.6 }
     }
   };
   
@@ -83,33 +97,52 @@ const AboutContent = () => {
       </div>
       
       <motion.div
+        ref={storyRef}
         initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
+        animate={storyInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
         transition={{ duration: 0.8 }}
-        className="mb-20 bg-guardian-lightGray rounded-2xl p-8 md:p-12"
+        className="mb-20 bg-guardian-lightGray rounded-2xl p-8 md:p-12 overflow-hidden relative"
       >
-        <h2 className="text-2xl font-semibold text-guardian-darkGray mb-6">Our Story</h2>
+        <motion.div 
+          initial={{ x: -100, opacity: 0 }}
+          animate={storyInView ? { x: 0, opacity: 1 } : { x: -100, opacity: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          <h2 className="text-2xl font-semibold text-guardian-darkGray mb-6">Our Story</h2>
+        </motion.div>
         
         <div className="space-y-4 text-guardian-darkGray">
-          <p>
+          <motion.p
+            initial={{ x: 100, opacity: 0 }}
+            animate={storyInView ? { x: 0, opacity: 1 } : { x: 100, opacity: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
             GarageGuardian was born from a simple observation: traditional garage access systems were complex, unintuitive, and often frustrating to use. We believed there had to be a better way.
-          </p>
-          <p>
+          </motion.p>
+          <motion.p
+            initial={{ x: 100, opacity: 0 }}
+            animate={storyInView ? { x: 0, opacity: 1 } : { x: 100, opacity: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+          >
             Founded in 2023, our team of passionate engineers and designers set out to create a garage management system that would combine sophisticated technology with a user-friendly interface. We wanted to build something that would make the parking experience seamless and stress-free.
-          </p>
-          <p>
+          </motion.p>
+          <motion.p
+            initial={{ x: 100, opacity: 0 }}
+            animate={storyInView ? { x: 0, opacity: 1 } : { x: 100, opacity: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+          >
             After months of development and testing, we launched GarageGuardian—a smart garage access system that prioritizes user experience without compromising on security or functionality. Today, we're proud to offer a solution that makes garage management effortless for both property managers and users.
-          </p>
+          </motion.p>
         </div>
       </motion.div>
       
       <div 
-        ref={ref}
+        ref={valuesRef}
         className="mb-20"
       >
         <motion.h2 
           initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+          animate={valuesInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.6 }}
           className="text-2xl font-semibold text-guardian-darkGray mb-8 text-center"
         >
@@ -119,14 +152,15 @@ const AboutContent = () => {
         <motion.div 
           variants={containerVariants}
           initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
+          animate={valuesInView ? "visible" : "hidden"}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {values.map((value, index) => (
             <motion.div
               key={index}
               variants={itemVariants}
-              className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md"
+              whileHover={{ y: -5, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)" }}
+              className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 transition-all duration-300"
             >
               <div className="h-12 w-12 rounded-lg bg-guardian-blue/10 flex items-center justify-center mb-4">
                 <value.icon className="h-6 w-6 text-guardian-blue" />
@@ -139,8 +173,9 @@ const AboutContent = () => {
       </div>
       
       <motion.div
+        ref={teamRef}
         initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        animate={teamInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
         className="text-center"
@@ -151,8 +186,22 @@ const AboutContent = () => {
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[1, 2, 3].map((person) => (
-            <div key={person} className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100">
+          {[1, 2, 3].map((person, index) => (
+            <motion.div 
+              key={person}
+              variants={cardVariants}
+              initial="hidden"
+              animate={teamInView ? {
+                opacity: 1,
+                y: 0,
+                transition: {
+                  delay: index * 0.2,
+                  duration: 0.5
+                }
+              } : "hidden"}
+              whileHover={{ y: -10, scale: 1.02 }}
+              className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 transition-all duration-300"
+            >
               <div className="h-48 bg-guardian-lightGray"></div>
               <div className="p-6">
                 <h3 className="text-lg font-medium text-guardian-darkGray">Team Member {person}</h3>
@@ -161,7 +210,7 @@ const AboutContent = () => {
                   Passionate about creating intuitive user experiences and solving complex problems.
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </motion.div>

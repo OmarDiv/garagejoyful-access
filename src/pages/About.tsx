@@ -15,16 +15,26 @@ const About = () => {
     >
       <NavBar />
       
-      <main className="flex-grow pt-24 pb-16">
+      <motion.main 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.6 }}
+        className="flex-grow pt-24 pb-16"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-12 text-center">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="mb-12 text-center"
+          >
             <h1 className="text-3xl font-semibold text-guardian-darkGray mb-2">About Us</h1>
             <p className="text-guardian-gray">Learn more about Rakna</p>
-          </div>
+          </motion.div>
           
           <AboutContent />
         </div>
-      </main>
+      </motion.main>
       
       <Footer />
     </motion.div>
