@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import NavBar from '@/components/layout/NavBar';
 import Footer from '@/components/layout/Footer';
@@ -30,6 +30,34 @@ const Dashboard = () => {
   const [selectedSpotId, setSelectedSpotId] = useState('');
   const { toast } = useToast();
   
+  // Load spots from sessionStorage if available
+  useEffect(() => {
+    const storedSpots = sessionStorage.getItem('parkingSpots');
+    if (storedSpots) {
+      try {
+        const parsedSpots = JSON.parse(storedSpots);
+        setSpots(parsedSpots);
+      } catch (error) {
+        console.error('Failed to parse stored spots', error);
+      }
+    } else {
+      // Initialize with some occupied and reserved spots for demo
+      const demoSpots = [
+        { id: '1', status: 'available' },
+        { id: '2', status: 'reserved' },
+        { id: '3', status: 'occupied' },
+        { id: '4', status: 'available' },
+      ];
+      setSpots(demoSpots);
+      sessionStorage.setItem('parkingSpots', JSON.stringify(demoSpots));
+    }
+  }, []);
+  
+  // Save spots to sessionStorage whenever they change
+  useEffect(() => {
+    sessionStorage.setItem('parkingSpots', JSON.stringify(spots));
+  }, [spots]);
+  
   const handleOpenReservationModal = (id: string) => {
     // Check if spot is available
     const spot = spots.find(s => s.id === id);
@@ -48,11 +76,11 @@ const Dashboard = () => {
   
   const handleConfirmReservation = (formData: any) => {
     // Update spot status
-    setSpots(prev => 
-      prev.map(spot => 
-        spot.id === selectedSpotId ? { ...spot, status: 'reserved' } : spot
-      )
+    const updatedSpots = spots.map(spot => 
+      spot.id === selectedSpotId ? { ...spot, status: 'reserved' } : spot
     );
+    setSpots(updatedSpots);
+    sessionStorage.setItem('parkingSpots', JSON.stringify(updatedSpots));
     
     // Store reservation data in sessionStorage
     sessionStorage.setItem('reservationSpot', JSON.stringify({
@@ -111,7 +139,7 @@ const Dashboard = () => {
                     <span>Occupied - Cannot be reserved</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-guardian-yellow"></span>
+                    <span className="w-3 h-3 rounded-full bg-blue-500"></span>
                     <span>Reserved - Already booked</span>
                   </li>
                 </ul>

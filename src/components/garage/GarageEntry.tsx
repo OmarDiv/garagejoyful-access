@@ -74,6 +74,15 @@ const GarageEntry = () => {
       setIsLoading(false);
       setAccessGranted(true);
       
+      // Update the spot status from reserved to occupied
+      if (spotId) {
+        const spots = JSON.parse(sessionStorage.getItem('parkingSpots') || '[]');
+        const updatedSpots = spots.map((spot: any) => 
+          spot.id === spotId ? { ...spot, status: 'occupied' } : spot
+        );
+        sessionStorage.setItem('parkingSpots', JSON.stringify(updatedSpots));
+      }
+      
       toast({
         title: "Access Granted!",
         description: `Welcome, ${mockName} Driver! The garage door will open now. Please proceed to spot ${spotId || 'assigned'}.`,
@@ -83,8 +92,7 @@ const GarageEntry = () => {
       setTimeout(() => {
         setAccessGranted(false);
         setFormValues({ fullName: '', email: '', phone: '', carPlate: '', carModel: '' });
-        sessionStorage.removeItem('reservation');
-        sessionStorage.removeItem('reservationSpot');
+        // Don't clear sessionStorage here as we want to maintain the occupied state
       }, 10000);
     }, 2000);
   };
