@@ -19,17 +19,17 @@ const Features = () => {
     {
       icon: ShieldCheck,
       title: "Enhanced Security",
-      description: "Our system uses advanced authentication protocols to ensure only authorized users can access the garage."
+      description: "Advanced authentication ensures only authorized users can access the garage."
     },
     {
       icon: Smartphone,
       title: "Mobile-First Design",
-      description: "Access your garage from anywhere with our intuitive mobile application."
+      description: "Access your garage from anywhere with our intuitive mobile app."
     },
     {
       icon: BarChart3,
       title: "Detailed Analytics",
-      description: "Track usage patterns, popular parking times, and space utilization with our comprehensive analytics."
+      description: "Track usage patterns and space utilization with comprehensive analytics."
     }
   ];
   
@@ -43,90 +43,86 @@ const Features = () => {
   ];
   
   return (
-    <section ref={ref} className="py-20 bg-gradient-to-b from-blue-50 to-white overflow-hidden">
+    <section ref={ref} className="py-16 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           style={{ opacity, y }}
-          className="text-center max-w-3xl mx-auto mb-16"
+          className="text-center max-w-3xl mx-auto mb-12"
         >
-          <h2 className="text-3xl font-semibold text-guardian-darkGray mb-4">
-            Designed for Modern Convenience
+          <h2 className="text-2xl font-semibold text-guardian-darkGray mb-2">
+            Modern Parking Solution
           </h2>
-          <p className="text-lg text-guardian-gray">
-            Rakna combines cutting-edge technology with thoughtful design
+          <p className="text-guardian-gray">
+            Rakna combines technology with thoughtful design
           </p>
         </motion.div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {features.map((feature, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.2 }}
+              transition={{ duration: 0.4, delay: index * 0.1 }}
               viewport={{ once: true }}
-              whileHover={{ scale: 1.03 }}
-              className="bg-white rounded-xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300"
+              className="bg-white rounded-lg p-6 shadow-sm border border-gray-100"
             >
-              <div className="h-14 w-14 rounded-xl bg-guardian-blue/10 flex items-center justify-center mb-6">
-                <feature.icon className="h-7 w-7 text-guardian-blue" />
+              <div className="h-12 w-12 rounded-lg bg-guardian-blue/10 flex items-center justify-center mb-4">
+                <feature.icon className="h-6 w-6 text-guardian-blue" />
               </div>
-              <h3 className="text-xl font-medium text-guardian-darkGray mb-3">{feature.title}</h3>
-              <p className="text-guardian-gray">{feature.description}</p>
+              <h3 className="text-lg font-medium text-guardian-darkGray mb-2">{feature.title}</h3>
+              <p className="text-sm text-guardian-gray">{feature.description}</p>
             </motion.div>
           ))}
         </div>
         
         <motion.div 
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           viewport={{ once: true }}
-          className="mt-20 bg-white rounded-xl p-8 md:p-12 shadow-sm border border-gray-100"
+          className="mt-16 bg-white rounded-lg p-6 shadow-sm border border-gray-100"
         >
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-            <div className="md:col-span-2">
-              <h3 className="text-2xl font-semibold text-guardian-darkGray mb-6">How it Works</h3>
-              <ul className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <h3 className="text-xl font-semibold text-guardian-darkGray mb-4">How it Works</h3>
+              <ul className="space-y-3">
                 {steps.map((step, i) => (
                   <li 
                     key={i} 
-                    className={`flex items-start cursor-pointer transition-all duration-300 ${activeStep === i ? 'scale-105' : 'opacity-70'}`}
+                    className={`flex items-start cursor-pointer transition-all duration-200 ${activeStep === i ? 'opacity-100' : 'opacity-70'}`}
                     onClick={() => setActiveStep(i)}
                   >
-                    <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-sm font-medium mr-4 transition-colors ${
+                    <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-medium mr-3 ${
                       activeStep === i 
-                        ? 'border-guardian-blue text-white bg-guardian-blue' 
-                        : 'border-guardian-blue/30 text-guardian-blue'
+                        ? 'bg-guardian-blue text-white' 
+                        : 'bg-guardian-blue/10 text-guardian-blue'
                     }`}>
                       {i + 1}
                     </span>
-                    <span className="text-guardian-darkGray pt-1">{step}</span>
+                    <span className="text-sm text-guardian-darkGray pt-1">{step}</span>
                   </li>
                 ))}
               </ul>
             </div>
-            <div className="md:col-span-3 rounded-xl bg-blue-50 h-80 flex items-center justify-center mt-6 md:mt-0">
+            <div className="bg-blue-50 rounded-lg flex items-center justify-center p-4">
               <motion.div
                 key={activeStep}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className="text-center p-6"
+                className="text-center"
               >
-                <div className="mb-4 text-5xl text-guardian-blue">
+                <div className="mb-3 text-4xl">
                   {activeStep === 0 && "🔍"}
                   {activeStep === 1 && "📅"}
                   {activeStep === 2 && "🔐"}
                   {activeStep === 3 && "🚗"}
                   {activeStep === 4 && "✅"}
                 </div>
-                <p className="text-guardian-darkGray text-lg font-medium">
-                  Step {activeStep + 1}: {steps[activeStep]}
-                </p>
-                <p className="text-guardian-gray mt-4">
-                  {activeStep === 0 && "Our real-time system shows you available parking spots instantly."}
+                <p className="text-sm text-guardian-gray">
+                  {activeStep === 0 && "Our real-time system shows available parking spots instantly."}
                   {activeStep === 1 && "Reserve your preferred spot with our easy-to-use interface."}
                   {activeStep === 2 && "Verify your identity for secure and authorized access."}
                   {activeStep === 3 && "Enter your license plate number for quick identification."}
