@@ -43,49 +43,26 @@ const Features = () => {
   ];
   
   return (
-    <section ref={ref} className="py-16 bg-white overflow-hidden">
+    <section ref={ref} className="py-12 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           style={{ opacity, y }}
-          className="text-center max-w-3xl mx-auto mb-12"
+          className="text-center max-w-3xl mx-auto mb-8"
         >
-          <h2 className="text-2xl font-semibold text-guardian-darkGray mb-2">
-            Modern Parking Solution
+          <h2 className="text-2xl font-semibold text-guardian-darkGray">
+            How it Works
           </h2>
-          <p className="text-guardian-gray">
-            Rakna combines technology with thoughtful design
-          </p>
         </motion.div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {features.map((feature, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-lg p-6 shadow-sm border border-gray-100"
-            >
-              <div className="h-12 w-12 rounded-lg bg-guardian-blue/10 flex items-center justify-center mb-4">
-                <feature.icon className="h-6 w-6 text-guardian-blue" />
-              </div>
-              <h3 className="text-lg font-medium text-guardian-darkGray mb-2">{feature.title}</h3>
-              <p className="text-sm text-guardian-gray">{feature.description}</p>
-            </motion.div>
-          ))}
-        </div>
         
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
-          className="mt-16 bg-white rounded-lg p-6 shadow-sm border border-gray-100"
+          className="bg-white rounded-lg p-6 shadow-sm border border-gray-100 mb-12"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
-              <h3 className="text-xl font-semibold text-guardian-darkGray mb-4">How it Works</h3>
               <ul className="space-y-3">
                 {steps.map((step, i) => (
                   <li 
