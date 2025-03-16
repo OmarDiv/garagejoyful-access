@@ -33,12 +33,13 @@ const Features = () => {
     }
   ];
   
+  // Updated steps according to user request
   const steps = [
-    "Enter your license plate number",
     "View available parking spots in real-time",
     "Reserve your spot with a single click",
     "Enter your details for secure access",
-    "Park with peace of mind"
+    "Enter your license plate number",
+    "Welcome to our Peaceful Garage"
   ];
   
   return (
@@ -115,20 +116,20 @@ const Features = () => {
                 className="text-center p-6"
               >
                 <div className="mb-4 text-5xl text-guardian-blue">
-                  {activeStep === 0 && "🚗"}
-                  {activeStep === 1 && "🔍"}
-                  {activeStep === 2 && "📅"}
-                  {activeStep === 3 && "🔐"}
+                  {activeStep === 0 && "🔍"}
+                  {activeStep === 1 && "📅"}
+                  {activeStep === 2 && "🔐"}
+                  {activeStep === 3 && "🚗"}
                   {activeStep === 4 && "✅"}
                 </div>
                 <p className="text-guardian-darkGray text-lg font-medium">
                   Step {activeStep + 1}: {steps[activeStep]}
                 </p>
                 <p className="text-guardian-gray mt-4">
-                  {activeStep === 0 && "Enter your license plate number for quick identification."}
-                  {activeStep === 1 && "Our real-time system shows you available parking spots instantly."}
-                  {activeStep === 2 && "Reserve your preferred spot with our easy-to-use interface."}
-                  {activeStep === 3 && "Verify your identity for secure and authorized access."}
+                  {activeStep === 0 && "Our real-time system shows you available parking spots instantly."}
+                  {activeStep === 1 && "Reserve your preferred spot with our easy-to-use interface."}
+                  {activeStep === 2 && "Verify your identity for secure and authorized access."}
+                  {activeStep === 3 && "Enter your license plate number for quick identification."}
                   {activeStep === 4 && "Enjoy the convenience of guaranteed parking without hassle."}
                 </p>
               </motion.div>
