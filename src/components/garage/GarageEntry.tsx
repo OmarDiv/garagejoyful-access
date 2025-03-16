@@ -7,6 +7,9 @@ import GarageEntryHeader from './GarageEntryHeader';
 import AccessForm from './AccessForm';
 import AccessConfirmation from './AccessConfirmation';
 
+// Define the SpotStatus type to match with Dashboard.tsx
+type SpotStatus = 'available' | 'occupied' | 'reserved';
+
 const GarageEntry = () => {
   const [formValues, setFormValues] = useState<AccessFormValues>({
     fullName: '',
@@ -78,7 +81,7 @@ const GarageEntry = () => {
       if (spotId) {
         const spots = JSON.parse(sessionStorage.getItem('parkingSpots') || '[]');
         const updatedSpots = spots.map((spot: any) => 
-          spot.id === spotId ? { ...spot, status: 'occupied' } : spot
+          spot.id === spotId ? { ...spot, status: 'occupied' as SpotStatus } : spot
         );
         sessionStorage.setItem('parkingSpots', JSON.stringify(updatedSpots));
       }

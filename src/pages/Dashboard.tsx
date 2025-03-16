@@ -36,13 +36,18 @@ const Dashboard = () => {
     if (storedSpots) {
       try {
         const parsedSpots = JSON.parse(storedSpots);
-        setSpots(parsedSpots);
+        // Validate that all status values are of type SpotStatus
+        const validatedSpots: ParkingSpotData[] = parsedSpots.map((spot: any) => ({
+          id: spot.id,
+          status: spot.status as SpotStatus
+        }));
+        setSpots(validatedSpots);
       } catch (error) {
         console.error('Failed to parse stored spots', error);
       }
     } else {
       // Initialize with some occupied and reserved spots for demo
-      const demoSpots = [
+      const demoSpots: ParkingSpotData[] = [
         { id: '1', status: 'available' },
         { id: '2', status: 'reserved' },
         { id: '3', status: 'occupied' },
@@ -76,8 +81,8 @@ const Dashboard = () => {
   
   const handleConfirmReservation = (formData: any) => {
     // Update spot status
-    const updatedSpots = spots.map(spot => 
-      spot.id === selectedSpotId ? { ...spot, status: 'reserved' } : spot
+    const updatedSpots: ParkingSpotData[] = spots.map(spot => 
+      spot.id === selectedSpotId ? { ...spot, status: 'reserved' as SpotStatus } : spot
     );
     setSpots(updatedSpots);
     sessionStorage.setItem('parkingSpots', JSON.stringify(updatedSpots));
