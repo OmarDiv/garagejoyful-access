@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import ParkingSpot from '@/components/ui/ParkingSpot';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, Car, Calendar } from 'lucide-react';
 
 // Types
 type SpotStatus = 'available' | 'occupied' | 'reserved';
@@ -29,6 +29,12 @@ const generateMockSpots = (): ParkingSpotData[] => {
 const ParkingStatus = ({ onSelectSpot }: ParkingStatusProps) => {
   const [spots, setSpots] = useState<ParkingSpotData[]>(generateMockSpots());
   
+  // Calculate totals
+  const totalSpots = spots.length;
+  const availableSpots = spots.filter(s => s.status === 'available').length;
+  const reservedSpots = spots.filter(s => s.status === 'reserved').length;
+  const occupiedSpots = spots.filter(s => s.status === 'occupied').length;
+  
   // Handle spot selection
   const handleReserveSpot = (id: string) => {
     // Update local state
@@ -41,30 +47,6 @@ const ParkingStatus = ({ onSelectSpot }: ParkingStatusProps) => {
     // Call the parent handler to open the reservation modal
     onSelectSpot(id);
   };
-
-  // How it works steps
-  const howItWorksSteps = [
-    {
-      title: "Check Available Spaces",
-      description: "View real-time availability of parking spots"
-    },
-    {
-      title: "Reserve Your Spot",
-      description: "Select an available spot with a single click"
-    },
-    {
-      title: "Enter Your Details",
-      description: "Provide necessary information to secure your spot"
-    },
-    {
-      title: "Access Your Reservation",
-      description: "Use the Garage Access page with your details"
-    },
-    {
-      title: "Welcome to Our Garage",
-      description: "Park with ease in your reserved spot"
-    }
-  ];
   
   return (
     <motion.div
@@ -73,62 +55,95 @@ const ParkingStatus = ({ onSelectSpot }: ParkingStatusProps) => {
       transition={{ duration: 0.4 }}
       className="w-full"
     >
-      <div className="mb-6">
+      <div className="mb-5">
         <h2 className="text-xl font-semibold text-guardian-darkGray mb-2">Parking Spots</h2>
         <p className="text-guardian-gray">Select an available spot to make a reservation</p>
       </div>
       
-      {/* Parking Statistics */}
-      <div className="grid grid-cols-3 gap-4 mb-8">
-        <div className="bg-guardian-green/10 rounded-xl p-4 border border-guardian-green/30">
-          <h3 className="text-lg font-semibold text-guardian-darkGray">
-            {spots.filter(s => s.status === 'available').length}
-          </h3>
-          <p className="text-sm text-guardian-gray">Available Spots</p>
+      {/* Parking Statistics Summary */}
+      <motion.div 
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="bg-white/90 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-gray-100 mb-6"
+      >
+        <h3 className="text-lg font-medium text-guardian-darkGray mb-3">Parking Summary</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="flex flex-col bg-blue-50 rounded-lg p-3 border border-blue-100">
+            <span className="text-sm text-guardian-gray">Total Spots</span>
+            <span className="text-2xl font-semibold text-guardian-darkGray">{totalSpots}</span>
+          </div>
+          <div className="flex flex-col bg-green-50 rounded-lg p-3 border border-green-100">
+            <span className="text-sm text-guardian-gray">Available</span>
+            <span className="text-2xl font-semibold text-guardian-green">{availableSpots}</span>
+          </div>
+          <div className="flex flex-col bg-blue-50 rounded-lg p-3 border border-blue-100">
+            <span className="text-sm text-guardian-gray">Reserved</span>
+            <span className="text-2xl font-semibold text-blue-500">{reservedSpots}</span>
+          </div>
+          <div className="flex flex-col bg-red-50 rounded-lg p-3 border border-red-100">
+            <span className="text-sm text-guardian-gray">Occupied</span>
+            <span className="text-2xl font-semibold text-guardian-red">{occupiedSpots}</span>
+          </div>
         </div>
-        <div className="bg-blue-500/10 rounded-xl p-4 border border-blue-500/30">
-          <h3 className="text-lg font-semibold text-guardian-darkGray">
-            {spots.filter(s => s.status === 'reserved').length}
-          </h3>
-          <p className="text-sm text-guardian-gray">Reserved Spots</p>
-        </div>
-        <div className="bg-guardian-red/10 rounded-xl p-4 border border-guardian-red/30">
-          <h3 className="text-lg font-semibold text-guardian-darkGray">
-            {spots.filter(s => s.status === 'occupied').length}
-          </h3>
-          <p className="text-sm text-guardian-gray">Occupied Spots</p>
-        </div>
-      </div>
+      </motion.div>
       
       {/* Parking Spots Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
-        {spots.map((spot) => (
-          <ParkingSpot
+        {spots.map((spot, index) => (
+          <motion.div
             key={spot.id}
-            id={spot.id}
-            status={spot.status}
-            onClick={handleReserveSpot}
-          />
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: index * 0.1, duration: 0.3 }}
+          >
+            <ParkingSpot
+              id={spot.id}
+              status={spot.status}
+              onClick={handleReserveSpot}
+            />
+          </motion.div>
         ))}
       </div>
       
-      {/* How It Works Section */}
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100 p-6 mt-10">
-        <h2 className="text-xl font-semibold text-guardian-darkGray mb-4">How It Works</h2>
-        <div className="space-y-6">
-          {howItWorksSteps.map((step, index) => (
-            <div key={index} className="flex items-start gap-4">
-              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-guardian-blue/10 flex items-center justify-center">
-                <span className="text-guardian-blue font-medium">{index + 1}</span>
-              </div>
-              <div>
-                <h3 className="font-medium text-guardian-darkGray">{step.title}</h3>
-                <p className="text-sm text-guardian-gray">{step.description}</p>
-              </div>
+      {/* Simplified How It Works Section */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.5 }}
+        className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100 p-5"
+      >
+        <h3 className="text-lg font-medium text-guardian-darkGray mb-3">Quick Guide</h3>
+        <div className="space-y-4">
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-guardian-blue/10 flex items-center justify-center">
+              <CheckCircle className="w-4 h-4 text-guardian-blue" />
             </div>
-          ))}
+            <div>
+              <h4 className="font-medium text-guardian-darkGray">Check Available Spaces</h4>
+              <p className="text-sm text-guardian-gray">View real-time availability above</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-guardian-blue/10 flex items-center justify-center">
+              <Calendar className="w-4 h-4 text-guardian-blue" />
+            </div>
+            <div>
+              <h4 className="font-medium text-guardian-darkGray">Reserve Your Spot</h4>
+              <p className="text-sm text-guardian-gray">Click on an available spot to reserve it</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-guardian-blue/10 flex items-center justify-center">
+              <Car className="w-4 h-4 text-guardian-blue" />
+            </div>
+            <div>
+              <h4 className="font-medium text-guardian-darkGray">Access Garage</h4>
+              <p className="text-sm text-guardian-gray">Use the Garage Access page when you arrive</p>
+            </div>
+          </div>
         </div>
-      </div>
+      </motion.div>
     </motion.div>
   );
 };
