@@ -1,0 +1,60 @@
+
+/* Custom colors */
+:root {
+  --guardian-blue: #3B82F6;
+  --guardian-green: #10B981;
+  --guardian-red: #EF4444;
+  --guardian-yellow: #F59E0B;
+  --guardian-gray: #6B7280;
+  --guardian-darkGray: #374151;
+  --guardian-lightGray: #F3F4F6;
+}
+
+/* Utility classes */
+.text-guardian-blue { color: var(--guardian-blue); }
+.text-guardian-green { color: var(--guardian-green); }
+.text-guardian-red { color: var(--guardian-red); }
+.text-guardian-yellow { color: var(--guardian-yellow); }
+.text-guardian-gray { color: var(--guardian-gray); }
+.text-guardian-darkGray { color: var(--guardian-darkGray); }
+.text-guardian-lightGray { color: var(--guardian-lightGray); }
+
+.bg-guardian-blue { background-color: var(--guardian-blue); }
+.bg-guardian-green { background-color: var(--guardian-green); }
+.bg-guardian-red { background-color: var(--guardian-red); }
+.bg-guardian-yellow { background-color: var(--guardian-yellow); }
+.bg-guardian-gray { background-color: var(--guardian-gray); }
+.bg-guardian-darkGray { background-color: var(--guardian-darkGray); }
+.bg-guardian-lightGray { background-color: var(--guardian-lightGray); }
+
+.border-guardian-blue { border-color: var(--guardian-blue); }
+.border-guardian-green { border-color: var(--guardian-green); }
+.border-guardian-red { border-color: var(--guardian-red); }
+.border-guardian-yellow { border-color: var(--guardian-yellow); }
+.border-guardian-gray { border-color: var(--guardian-gray); }
+.border-guardian-darkGray { border-color: var(--guardian-darkGray); }
+.border-guardian-lightGray { border-color: var(--guardian-lightGray); }
+
+.bg-guardian-blue\/10 { background-color: rgba(59, 130, 246, 0.1); }
+.bg-guardian-green\/10 { background-color: rgba(16, 185, 129, 0.1); }
+.bg-guardian-red\/10 { background-color: rgba(239, 68, 68, 0.1); }
+.bg-guardian-yellow\/10 { background-color: rgba(245, 158, 11, 0.1); }
+.bg-guardian-gray\/10 { background-color: rgba(107, 114, 128, 0.1); }
+.bg-guardian-darkGray\/10 { background-color: rgba(55, 65, 81, 0.1); }
+.bg-guardian-lightGray\/10 { background-color: rgba(243, 244, 246, 0.1); }
+
+.bg-guardian-blue\/20 { background-color: rgba(59, 130, 246, 0.2); }
+.bg-guardian-green\/20 { background-color: rgba(16, 185, 129, 0.2); }
+.bg-guardian-red\/20 { background-color: rgba(239, 68, 68, 0.2); }
+.bg-guardian-yellow\/20 { background-color: rgba(245, 158, 11, 0.2); }
+.bg-guardian-gray\/20 { background-color: rgba(107, 114, 128, 0.2); }
+.bg-guardian-darkGray\/20 { background-color: rgba(55, 65, 81, 0.2); }
+.bg-guardian-lightGray\/20 { background-color: rgba(243, 244, 246, 0.2); }
+
+.bg-guardian-blue\/90 { background-color: rgba(59, 130, 246, 0.9); }
+.bg-guardian-green\/90 { background-color: rgba(16, 185, 129, 0.9); }
+.bg-guardian-red\/90 { background-color: rgba(239, 68, 68, 0.9); }
+.bg-guardian-yellow\/90 { background-color: rgba(245, 158, 11, 0.9); }
+.bg-guardian-gray\/90 { background-color: rgba(107, 114, 128, 0.9); }
+.bg-guardian-darkGray\/90 { background-color: rgba(55, 65, 81, 0.9); }
+.bg-guardian-lightGray\/90 { background-color: rgba(243, 244, 246, 0.9); }
