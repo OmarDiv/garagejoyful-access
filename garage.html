@@ -1,0 +1,296 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Garage Access - Rakna</title>
+    <meta name="description" content="Access your garage with Rakna's smart system" />
+    <meta name="author" content="Rakna" />
+    <meta property="og:image" content="/og-image.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="./src/index.css" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+
+  <body>
+    <div id="root" class="min-h-screen flex flex-col bg-gradient-to-tr from-purple-50 via-indigo-50/20 to-white relative">
+      <!-- Background pattern -->
+      <div class="absolute inset-0 z-0 overflow-hidden">
+        <svg class="h-full w-full opacity-20" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <pattern id="garage-pattern" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(10)">
+            <rect width="1" height="1" fill="currentColor" class="text-purple-400" />
+          </pattern>
+          <rect width="100%" height="100%" fill="url(#garage-pattern)" />
+        </svg>
+      </div>
+
+      <!-- Main content -->
+      <div class="relative z-10">
+        <!-- Header -->
+        <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+              <!-- Logo -->
+              <a href="index.html" class="flex items-center space-x-2 text-guardian-darkGray">
+                <span class="h-8 w-8 text-indigo-600">
+                  <i data-lucide="check-square"></i>
+                </span>
+                <span class="font-semibold text-xl tracking-tight">Rakna</span>
+              </a>
+
+              <!-- Desktop Navigation -->
+              <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-guardian-darkGray transition-all-300 hover:text-indigo-600">Home</a>
+                <a href="dashboard.html" class="text-guardian-darkGray transition-all-300 hover:text-indigo-600">Find Parking</a>
+                <a href="garage.html" class="text-indigo-600 font-medium transition-all-300 hover:text-indigo-600">Garage Access</a>
+                <a href="about.html" class="text-guardian-darkGray transition-all-300 hover:text-indigo-600">About</a>
+              </nav>
+
+              <!-- Mobile Menu Button -->
+              <button id="menuToggle" class="md:hidden text-guardian-darkGray" aria-label="Toggle menu">
+                <i data-lucide="menu"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Mobile Menu -->
+          <div id="mobileMenu" class="md:hidden bg-white w-full shadow-md overflow-hidden transition-all duration-300 ease-in-out max-h-0">
+            <div class="px-4 py-2 space-y-1">
+              <a href="index.html" class="block py-2 px-4 rounded-lg transition-all-300 text-guardian-darkGray hover:bg-gray-50">Home</a>
+              <a href="dashboard.html" class="block py-2 px-4 rounded-lg transition-all-300 text-guardian-darkGray hover:bg-gray-50">Find Parking</a>
+              <a href="garage.html" class="block py-2 px-4 rounded-lg transition-all-300 bg-indigo-100 text-indigo-600 font-medium">Garage Access</a>
+              <a href="about.html" class="block py-2 px-4 rounded-lg transition-all-300 text-guardian-darkGray hover:bg-gray-50">About</a>
+            </div>
+          </div>
+        </header>
+
+        <!-- Main content -->
+        <main class="flex-grow pt-24 pb-16">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 text-center">
+              <h1 class="text-3xl font-semibold text-guardian-darkGray mb-2">Garage Access</h1>
+              <p class="text-guardian-gray">Enter your credentials to access the garage</p>
+            </div>
+            
+            <!-- Garage Entry Content -->
+            <div class="max-w-md mx-auto">
+              <!-- Garage Entry Header -->
+              <div class="text-center mb-8">
+                <div class="flex justify-center mb-4">
+                  <div class="h-16 w-16 rounded-full bg-guardian-blue/10 flex items-center justify-center">
+                    <i data-lucide="key" class="h-8 w-8 text-guardian-blue"></i>
+                  </div>
+                </div>
+                
+                <h2 class="text-2xl font-semibold text-guardian-darkGray mb-2">
+                  Garage Access
+                </h2>
+                
+                <p id="spotIdText" class="text-guardian-gray">
+                  Please verify your identity to enter the garage
+                </p>
+              </div>
+              
+              <!-- Access Form -->
+              <div id="accessForm" class="bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-sm border border-gray-100">
+                <form id="garageAccessForm" class="space-y-5">
+                  <div>
+                    <label for="carPlate" class="block text-sm font-medium text-guardian-darkGray mb-1">
+                      License Plate Number <span class="text-guardian-red">*</span>
+                    </label>
+                    <div class="relative">
+                      <span class="absolute left-3 top-1/2 -translate-y-1/2 text-guardian-gray">
+                        <i data-lucide="car" class="h-4 w-4"></i>
+                      </span>
+                      <input
+                        id="carPlate"
+                        name="carPlate"
+                        type="text"
+                        placeholder="Enter your license plate"
+                        class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                        required
+                      />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label for="phone" class="block text-sm font-medium text-guardian-darkGray mb-1">
+                      Phone Number
+                    </label>
+                    <div class="relative">
+                      <span class="absolute left-3 top-1/2 -translate-y-1/2 text-guardian-gray">
+                        <i data-lucide="phone" class="h-4 w-4"></i>
+                      </span>
+                      <input
+                        id="phone"
+                        name="phone"
+                        type="tel"
+                        placeholder="Enter your phone number"
+                        class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      />
+                    </div>
+                  </div>
+                  
+                  <button 
+                    type="submit" 
+                    class="w-full btn-hover-effect mt-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 py-6 text-white rounded-lg flex items-center justify-center gap-2 text-lg"
+                  >
+                    <i data-lucide="key" class="h-4 w-4"></i>
+                    Open Garage Door
+                  </button>
+                </form>
+                
+                <div class="mt-6 pt-5 border-t border-gray-100 text-xs text-center text-guardian-gray">
+                  <p>Fields marked with <span class="text-guardian-red">*</span> are required</p>
+                </div>
+              </div>
+              
+              <!-- Access Confirmation (hidden initially) -->
+              <div id="accessConfirmation" class="bg-guardian-green/10 p-8 rounded-2xl border-2 border-guardian-green text-center hidden">
+                <div class="flex justify-center mb-4">
+                  <div class="h-16 w-16 rounded-full bg-guardian-green/20 flex items-center justify-center">
+                    <i data-lucide="check-circle" class="h-8 w-8 text-guardian-green"></i>
+                  </div>
+                </div>
+                
+                <h3 class="text-xl font-semibold text-guardian-darkGray mb-2">
+                  Access Granted
+                </h3>
+                
+                <p id="welcomeMessage" class="text-guardian-gray mb-6">
+                  Welcome to our Garage! The door is now opening. Please proceed to your assigned spot!
+                </p>
+                
+                <div class="p-4 bg-white rounded-xl border border-guardian-green/20 flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="car" class="h-6 w-6 text-guardian-darkGray"></i>
+                    <div class="text-left">
+                      <p id="driverName" class="font-medium text-guardian-darkGray">Driver</p>
+                      <p id="driverPlate" class="text-sm text-guardian-gray">License Plate</p>
+                    </div>
+                  </div>
+                  <span class="text-guardian-green text-sm px-3 py-1 bg-guardian-green/10 rounded-full">
+                    Verified
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Instructions -->
+            <div class="mt-16 max-w-3xl mx-auto">
+              <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+                <h3 class="text-xl font-medium text-guardian-darkGray mb-4">Access Instructions</h3>
+                <ol class="space-y-4 list-decimal list-inside text-guardian-darkGray">
+                  <li>Ensure you have reserved a parking spot through the dashboard</li>
+                  <li>Enter your full name exactly as it appears in your profile</li>
+                  <li>Enter your license plate number for verification</li>
+                  <li>Click "Open Garage Door" and wait for confirmation</li>
+                  <li>Once access is granted, the garage door will open automatically</li>
+                  <li>Park in your designated spot only</li>
+                </ol>
+                <div class="mt-6 pt-6 border-t border-gray-200">
+                  <p class="text-guardian-gray">
+                    For security purposes, all garage entries are logged and monitored. If you experience any issues, please contact our support team at <a href="mailto:support@rakna.com" class="text-guardian-blue">support@rakna.com</a>.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-50 py-12 mt-auto">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+              <!-- Brand -->
+              <div class="col-span-1 md:col-span-1">
+                <a href="index.html" class="flex items-center space-x-2 text-guardian-darkGray mb-4">
+                  <i data-lucide="check-square" class="h-6 w-6 text-indigo-600"></i>
+                  <span class="font-semibold text-lg">Rakna</span>
+                </a>
+                <p class="text-guardian-gray text-sm mt-4 max-w-xs">
+                  A smart and friendly garage access system that makes parking hassle-free and secure.
+                </p>
+              </div>
+              
+              <!-- Quick Links -->
+              <div class="col-span-1">
+                <h3 class="font-medium text-lg mb-4">Quick Links</h3>
+                <ul class="space-y-2">
+                  <li>
+                    <a href="index.html" class="text-guardian-gray hover:text-indigo-600 transition-colors duration-200 text-sm">Home</a>
+                  </li>
+                  <li>
+                    <a href="dashboard.html" class="text-guardian-gray hover:text-indigo-600 transition-colors duration-200 text-sm">Dashboard</a>
+                  </li>
+                  <li>
+                    <a href="garage.html" class="text-guardian-gray hover:text-indigo-600 transition-colors duration-200 text-sm">Garage Access</a>
+                  </li>
+                  <li>
+                    <a href="about.html" class="text-guardian-gray hover:text-indigo-600 transition-colors duration-200 text-sm">About</a>
+                  </li>
+                </ul>
+              </div>
+              
+              <!-- Legal -->
+              <div class="col-span-1">
+                <h3 class="font-medium text-lg mb-4">Legal</h3>
+                <ul class="space-y-2">
+                  <li>
+                    <a href="#" class="text-guardian-gray hover:text-indigo-600 transition-colors duration-200 text-sm">Privacy Policy</a>
+                  </li>
+                  <li>
+                    <a href="#" class="text-guardian-gray hover:text-indigo-600 transition-colors duration-200 text-sm">Terms of Service</a>
+                  </li>
+                  <li>
+                    <a href="#" class="text-guardian-gray hover:text-indigo-600 transition-colors duration-200 text-sm">Cookie Policy</a>
+                  </li>
+                </ul>
+              </div>
+              
+              <!-- Connect -->
+              <div class="col-span-1">
+                <h3 class="font-medium text-lg mb-4">Connect With Us</h3>
+                <div class="flex space-x-4 mb-4">
+                  <a href="#" aria-label="Twitter" class="text-guardian-gray hover:text-indigo-600 transition-colors duration-200">
+                    <i data-lucide="twitter" class="h-5 w-5"></i>
+                  </a>
+                  <a href="#" aria-label="Instagram" class="text-guardian-gray hover:text-indigo-600 transition-colors duration-200">
+                    <i data-lucide="instagram" class="h-5 w-5"></i>
+                  </a>
+                  <a href="#" aria-label="GitHub" class="text-guardian-gray hover:text-indigo-600 transition-colors duration-200">
+                    <i data-lucide="github" class="h-5 w-5"></i>
+                  </a>
+                  <a href="#" aria-label="Email" class="text-guardian-gray hover:text-indigo-600 transition-colors duration-200">
+                    <i data-lucide="mail" class="h-5 w-5"></i>
+                  </a>
+                </div>
+                <p class="text-guardian-gray text-sm">
+                  Have questions? <br />
+                  <a href="mailto:support@rakna.com" class="text-indigo-600 hover:underline">
+                    support@rakna.com
+                  </a>
+                </p>
+              </div>
+            </div>
+            
+            <div class="border-t border-gray-200 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+              <p class="text-guardian-gray text-sm">
+                &copy; <span id="currentYear"></span> Rakna. All rights reserved.
+              </p>
+              <p class="text-guardian-gray text-sm mt-4 md:mt-0">
+                Designed with care for an optimal user experience.
+              </p>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="./src/index.js"></script>
+    <script src="./src/garage.js"></script>
+  </body>
+</html>
