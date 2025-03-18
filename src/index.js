@@ -4,7 +4,7 @@ import { initializeFeatures } from './utils/features.js';
 import { initializeTestimonials } from './utils/testimonials.js';
 import { initializeAnimations } from './utils/animations.js';
 import { initializeToasts } from './utils/toast.js';
-import { setCurrentYear, initializeIcons } from './utils/utilities.js';
+import { setCurrentYear, initializeIcons } from './utils/utilities.ts';
 
 document.addEventListener('DOMContentLoaded', function() {
   // Initialize core utilities
