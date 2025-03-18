@@ -1,73 +1,45 @@
 
-import { ReactNode } from 'react';
+import React from 'react';
+
+type PageBackgroundVariant = 'home' | 'dashboard' | 'garage' | 'about';
 
 interface PageBackgroundProps {
-  children: ReactNode;
-  variant: 'home' | 'dashboard' | 'garage';
+  variant?: PageBackgroundVariant;
+  children: React.ReactNode;
 }
 
-const PageBackground = ({ children, variant }: PageBackgroundProps) => {
-  let backgroundClasses = '';
-  
-  // Different background styling based on page variant
-  switch (variant) {
-    case 'home':
-      backgroundClasses = 'bg-gradient-to-b from-indigo-50 via-purple-50 to-white';
-      break;
-    case 'dashboard':
-      backgroundClasses = 'bg-gradient-to-br from-blue-50 via-indigo-50/30 to-white';
-      break;
-    case 'garage':
-      backgroundClasses = 'bg-gradient-to-tr from-purple-50 via-indigo-50/20 to-white';
-      break;
-    default:
-      backgroundClasses = 'bg-white';
-  }
+const PageBackground: React.FC<PageBackgroundProps> = ({ 
+  variant = 'home',
+  children 
+}) => {
+  // Different background styles for different pages
+  const getBackgroundStyle = (variant: PageBackgroundVariant) => {
+    switch(variant) {
+      case 'dashboard':
+        return 'bg-gradient-to-b from-blue-50 via-indigo-50 to-white';
+      case 'garage':
+        return 'bg-gradient-to-b from-emerald-50 via-teal-50 to-white';
+      case 'about':
+        return 'bg-gradient-to-b from-indigo-50 via-purple-50 to-white';
+      case 'home':
+      default:
+        return 'bg-gradient-to-b from-indigo-50 via-purple-50 to-white';
+    }
+  };
 
   return (
-    <div className={`min-h-screen relative ${backgroundClasses}`}>
+    <div className={`min-h-screen flex flex-col ${getBackgroundStyle(variant)} relative`}>
+      {/* Background pattern */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <svg 
-          className="h-full w-full opacity-20"
-          viewBox="0 0 100 100"
-          preserveAspectRatio="none"
-        >
-          {variant === 'home' && (
-            <pattern 
-              id="home-pattern" 
-              width="10" 
-              height="10" 
-              patternUnits="userSpaceOnUse"
-              patternTransform="rotate(5)"
-            >
-              <circle cx="1" cy="1" r="1" fill="currentColor" className="text-indigo-400" />
-            </pattern>
-          )}
-          {variant === 'dashboard' && (
-            <pattern 
-              id="dashboard-pattern" 
-              width="12" 
-              height="12" 
-              patternUnits="userSpaceOnUse"
-              patternTransform="rotate(15)"
-            >
-              <path d="M2 2 L4 4" strokeWidth="0.5" stroke="currentColor" className="text-blue-400" />
-            </pattern>
-          )}
-          {variant === 'garage' && (
-            <pattern 
-              id="garage-pattern" 
-              width="14" 
-              height="14" 
-              patternUnits="userSpaceOnUse"
-              patternTransform="rotate(10)"
-            >
-              <rect width="1" height="1" fill="currentColor" className="text-purple-400" />
-            </pattern>
-          )}
+        <svg className="h-full w-full opacity-20" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <pattern id={`${variant}-pattern`} width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(5)">
+            <circle cx="1" cy="1" r="1" fill="currentColor" className="text-indigo-400" />
+          </pattern>
           <rect width="100%" height="100%" fill={`url(#${variant}-pattern)`} />
         </svg>
       </div>
+      
+      {/* Main content */}
       <div className="relative z-10">
         {children}
       </div>
