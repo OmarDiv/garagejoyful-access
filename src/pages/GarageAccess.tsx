@@ -2,8 +2,8 @@
 import { motion } from 'framer-motion';
 import NavBar from '@/components/layout/NavBar';
 import Footer from '@/components/layout/Footer';
-import PageBackground from '@/components/ui/PageBackground';
 import GarageEntry from '@/components/garage/GarageEntry';
+import PageBackground from '@/components/ui/PageBackground';
 
 const GarageAccess = () => {
   return (
@@ -19,16 +19,31 @@ const GarageAccess = () => {
         
         <main className="flex-grow pt-24 pb-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-8 text-center">
-              <h1 className="text-3xl font-semibold text-guardian-darkGray mb-2">
-                Garage Access
-              </h1>
-              <p className="text-guardian-gray">
-                Enter your information to access the garage
-              </p>
+            <div className="mb-12 text-center">
+              <h1 className="text-3xl font-semibold text-guardian-darkGray mb-2">Garage Access</h1>
+              <p className="text-guardian-gray">Enter your credentials to access the garage</p>
             </div>
             
             <GarageEntry />
+            
+            <div className="mt-16 max-w-3xl mx-auto">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+                <h3 className="text-xl font-medium text-guardian-darkGray mb-4">Access Instructions</h3>
+                <ol className="space-y-4 list-decimal list-inside text-guardian-darkGray">
+                  <li>Ensure you have reserved a parking spot through the dashboard</li>
+                  <li>Enter your full name exactly as it appears in your profile</li>
+                  <li>Enter your license plate number for verification</li>
+                  <li>Click "Open Garage Door" and wait for confirmation</li>
+                  <li>Once access is granted, the garage door will open automatically</li>
+                  <li>Park in your designated spot only</li>
+                </ol>
+                <div className="mt-6 pt-6 border-t border-gray-200">
+                  <p className="text-guardian-gray">
+                    For security purposes, all garage entries are logged and monitored. If you experience any issues, please contact our support team at <a href="mailto:support@rakna.com" className="text-guardian-blue">support@rakna.com</a>.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </main>
         
