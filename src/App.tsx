@@ -10,26 +10,29 @@ import NotFound from "./pages/NotFound";
 import About from "./pages/About";
 import AuthPage from "./pages/AuthPage";
 import ReservationsHistory from "./pages/ReservationsHistory";
+import { useState } from "react";
 
-const queryClient = new QueryClient();
+const App = () => {
+  const [queryClient] = useState(() => new QueryClient());
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <BrowserRouter>
-      <Toaster />
-      <Sonner />
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/garage" element={<GarageAccess />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/auth" element={<AuthPage />} />
-        <Route path="/reservations" element={<ReservationsHistory />} />
-        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
-  </QueryClientProvider>
-);
+  return (
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Toaster />
+        <Sonner />
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/garage" element={<GarageAccess />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/reservations" element={<ReservationsHistory />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
