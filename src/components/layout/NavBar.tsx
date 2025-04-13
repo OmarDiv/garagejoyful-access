@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, CheckSquare } from 'lucide-react';
+import { Menu, X, CheckSquare, History, LogIn } from 'lucide-react';
 
 const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -29,6 +29,7 @@ const NavBar = () => {
     { name: 'Home', path: '/' },
     { name: 'Find Parking', path: '/dashboard' },
     { name: 'Garage Access', path: '/garage' },
+    { name: 'Reservations', path: '/reservations', icon: History },
     { name: 'About', path: '/about' },
   ];
 
@@ -66,6 +67,14 @@ const NavBar = () => {
                 {link.name}
               </Link>
             ))}
+            {/* Sign In/Sign Up Button */}
+            <Link
+              to="/auth"
+              className="flex items-center gap-1.5 text-white bg-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all-300"
+            >
+              <LogIn size={18} />
+              <span>Sign In</span>
+            </Link>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -99,6 +108,14 @@ const NavBar = () => {
               {link.name}
             </Link>
           ))}
+          {/* Mobile Sign In Button */}
+          <Link
+            to="/auth"
+            className="flex items-center gap-1.5 text-white bg-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all-300 mt-2"
+          >
+            <LogIn size={18} />
+            <span>Sign In</span>
+          </Link>
         </div>
       </div>
     </header>

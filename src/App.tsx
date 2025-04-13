@@ -9,6 +9,8 @@ import Dashboard from "./pages/Dashboard";
 import GarageAccess from "./pages/GarageAccess";
 import NotFound from "./pages/NotFound";
 import About from "./pages/About";
+import AuthPage from "./pages/AuthPage";
+import ReservationsHistory from "./pages/ReservationsHistory";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +25,8 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/garage" element={<GarageAccess />} />
           <Route path="/about" element={<About />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/reservations" element={<ReservationsHistory />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
