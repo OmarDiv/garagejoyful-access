@@ -1,17 +1,22 @@
-
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, UserPlus, LogIn, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 
 type AuthMode = 'login' | 'register';
 
 const AuthForm = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const { toast: uiToast } = useToast();
+  const auth = useAuth();
+  
+  // Get redirect path from location state
+  const from = location.state?.from?.pathname || '/dashboard';
   
   // Get mode from URL query parameter, default to login
   const searchParams = new URLSearchParams(location.search);
@@ -41,7 +46,7 @@ const AuthForm = () => {
     // Basic validation
     if (mode === 'register') {
       if (password !== confirmPassword) {
-        toast({
+        uiToast({
           title: "Passwords don't match",
           description: "Please make sure your passwords match.",
           variant: "destructive",
@@ -53,16 +58,25 @@ const AuthForm = () => {
     
     // Simulate API call
     setTimeout(() => {
-      toast({
-        title: mode === 'login' ? "Logged in successfully" : "Account created successfully",
-        description: mode === 'login' 
-          ? "Welcome back to GarageGuardian!" 
-          : "Your account has been created. Welcome to GarageGuardian!",
-      });
+      if (mode === 'login') {
+        auth.login({
+          id: '1',
+          email,
+          name: email.split('@')[0]
+        });
+        toast.success("Logged in successfully");
+      } else {
+        auth.login({
+          id: '1',
+          email,
+          name
+        });
+        toast.success("Account created successfully");
+      }
       
       setIsSubmitting(false);
-      navigate('/dashboard');
-    }, 1500);
+      navigate(from);
+    }, 1000);
   };
   
   const formVariants = {

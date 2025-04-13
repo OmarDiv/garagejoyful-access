@@ -11,6 +11,7 @@ import About from "./pages/About";
 import AuthPage from "./pages/AuthPage";
 import ReservationsHistory from "./pages/ReservationsHistory";
 import { useState } from "react";
+import RequireAuth from "./components/auth/RequireAuth";
 
 const App = () => {
   const [queryClient] = useState(() => new QueryClient());
@@ -23,10 +24,24 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/garage" element={<GarageAccess />} />
+          <Route 
+            path="/garage" 
+            element={
+              <RequireAuth>
+                <GarageAccess />
+              </RequireAuth>
+            } 
+          />
           <Route path="/about" element={<About />} />
           <Route path="/auth" element={<AuthPage />} />
-          <Route path="/reservations" element={<ReservationsHistory />} />
+          <Route 
+            path="/reservations" 
+            element={
+              <RequireAuth>
+                <ReservationsHistory />
+              </RequireAuth>
+            } 
+          />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

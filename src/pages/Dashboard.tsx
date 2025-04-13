@@ -1,12 +1,14 @@
-
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import NavBar from '@/components/layout/NavBar';
 import Footer from '@/components/layout/Footer';
 import ParkingSpot from '@/components/ui/ParkingSpot';
 import ReservationModal from '@/components/dashboard/ReservationModal';
 import { useToast } from '@/hooks/use-toast';
 import PageBackground from '@/components/ui/PageBackground';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 
 // Types
 type SpotStatus = 'available' | 'occupied' | 'reserved';
@@ -28,7 +30,9 @@ const Dashboard = () => {
   const [spots, setSpots] = useState<ParkingSpotData[]>(initialSpots);
   const [isReservationModalOpen, setIsReservationModalOpen] = useState(false);
   const [selectedSpotId, setSelectedSpotId] = useState('');
-  const { toast } = useToast();
+  const { toast: uiToast } = useToast();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   
   // Load spots from sessionStorage if available
   useEffect(() => {
@@ -67,11 +71,18 @@ const Dashboard = () => {
     // Check if spot is available
     const spot = spots.find(s => s.id === id);
     if (spot && spot.status !== 'available') {
-      toast({
+      uiToast({
         title: "Spot unavailable",
         description: `Parking spot ${id} is already ${spot.status}.`,
         variant: "destructive",
       });
+      return;
+    }
+    
+    // Check if user is authenticated
+    if (!isAuthenticated) {
+      toast.error("Please sign in to reserve a parking spot");
+      navigate('/auth', { state: { from: { pathname: '/dashboard' } } });
       return;
     }
     
@@ -156,7 +167,6 @@ const Dashboard = () => {
               <p className="text-guardian-gray">Select an available spot to make a reservation</p>
             </motion.div>
             
-            {/* Simplified Dashboard Content */}
             <motion.div
               className="max-w-3xl mx-auto"
               variants={containerVariants}
@@ -245,7 +255,6 @@ const Dashboard = () => {
         
         <Footer />
         
-        {/* Reservation Modal */}
         <ReservationModal 
           spotId={selectedSpotId}
           isOpen={isReservationModalOpen}

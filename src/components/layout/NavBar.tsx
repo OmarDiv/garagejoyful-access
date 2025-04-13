@@ -1,12 +1,14 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, CheckSquare, History, LogIn } from 'lucide-react';
+import { Menu, X, CheckSquare, History, LogIn, LogOut, User } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { isAuthenticated, user, logout } = useAuth();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   
@@ -25,11 +27,17 @@ const NavBar = () => {
     setIsMenuOpen(false);
   }, [location]);
 
+  const handleLogout = () => {
+    logout();
+  };
+
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Find Parking', path: '/dashboard' },
-    { name: 'Garage Access', path: '/garage' },
-    { name: 'Reservations', path: '/reservations', icon: History },
+    ...(isAuthenticated ? [
+      { name: 'Garage Access', path: '/garage' },
+      { name: 'Reservations', path: '/reservations', icon: History },
+    ] : []),
     { name: 'About', path: '/about' },
   ];
 
@@ -67,14 +75,31 @@ const NavBar = () => {
                 {link.name}
               </Link>
             ))}
-            {/* Sign In/Sign Up Button */}
-            <Link
-              to="/auth"
-              className="flex items-center gap-1.5 text-white bg-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all-300"
-            >
-              <LogIn size={18} />
-              <span>Sign In</span>
-            </Link>
+            
+            {/* Auth Button */}
+            {isAuthenticated ? (
+              <div className="flex items-center gap-3">
+                <span className="text-guardian-darkGray">
+                  <User size={18} className="inline-block mr-1" />
+                  <span className="hidden lg:inline">{user?.name}</span>
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-1.5 text-white bg-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all-300"
+                >
+                  <LogOut size={18} />
+                  <span>Sign Out</span>
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/auth"
+                className="flex items-center gap-1.5 text-white bg-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all-300"
+              >
+                <LogIn size={18} />
+                <span>Sign In</span>
+              </Link>
+            )}
           </nav>
 
           {/* Mobile Menu Button */}
@@ -91,7 +116,7 @@ const NavBar = () => {
       {/* Mobile Menu */}
       <div 
         className={`md:hidden bg-white w-full shadow-md overflow-hidden transition-all duration-300 ease-in-out ${
-          isMenuOpen ? 'max-h-96' : 'max-h-0'
+          isMenuOpen ? 'max-h-screen' : 'max-h-0'
         }`}
       >
         <div className="px-4 py-2 space-y-1">
@@ -108,14 +133,31 @@ const NavBar = () => {
               {link.name}
             </Link>
           ))}
-          {/* Mobile Sign In Button */}
-          <Link
-            to="/auth"
-            className="flex items-center gap-1.5 text-white bg-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all-300 mt-2"
-          >
-            <LogIn size={18} />
-            <span>Sign In</span>
-          </Link>
+          
+          {/* Mobile Auth Button */}
+          {isAuthenticated ? (
+            <>
+              <div className="px-4 py-2 text-guardian-darkGray">
+                <User size={18} className="inline-block mr-2" />
+                <span>{user?.name}</span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center gap-1.5 text-white bg-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all-300 mt-2"
+              >
+                <LogOut size={18} />
+                <span>Sign Out</span>
+              </button>
+            </>
+          ) : (
+            <Link
+              to="/auth"
+              className="flex items-center gap-1.5 text-white bg-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all-300 mt-2"
+            >
+              <LogIn size={18} />
+              <span>Sign In</span>
+            </Link>
+          )}
         </div>
       </div>
     </header>
