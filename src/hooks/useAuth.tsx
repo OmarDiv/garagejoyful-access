@@ -20,7 +20,7 @@ export const useAuth = create<AuthState>()(
     (set) => ({
       isAuthenticated: false,
       user: null,
-      login: (user: User) => set({ isAuthenticated: true, user }),
+      login: (user) => set({ isAuthenticated: true, user }),
       logout: () => set({ isAuthenticated: false, user: null }),
     }),
     {
