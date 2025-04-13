@@ -1,8 +1,7 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, CheckSquare, History, LogIn, LogOut, User } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/auth';
 
 const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -12,7 +11,6 @@ const NavBar = () => {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   
-  // Update scroll state on scroll
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -22,7 +20,6 @@ const NavBar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   
-  // Close menu on location change
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location]);
@@ -51,7 +48,6 @@ const NavBar = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
-          {/* Logo */}
           <Link 
             to="/" 
             className="flex items-center space-x-2 text-guardian-darkGray"
@@ -60,7 +56,6 @@ const NavBar = () => {
             <span className="font-semibold text-xl tracking-tight">Rakna</span>
           </Link>
 
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
               <Link
@@ -76,7 +71,6 @@ const NavBar = () => {
               </Link>
             ))}
             
-            {/* Auth Button */}
             {isAuthenticated ? (
               <div className="flex items-center gap-3">
                 <span className="text-guardian-darkGray">
@@ -102,7 +96,6 @@ const NavBar = () => {
             )}
           </nav>
 
-          {/* Mobile Menu Button */}
           <button 
             className="md:hidden text-guardian-darkGray" 
             onClick={toggleMenu}
@@ -113,7 +106,6 @@ const NavBar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       <div 
         className={`md:hidden bg-white w-full shadow-md overflow-hidden transition-all duration-300 ease-in-out ${
           isMenuOpen ? 'max-h-screen' : 'max-h-0'
@@ -134,7 +126,6 @@ const NavBar = () => {
             </Link>
           ))}
           
-          {/* Mobile Auth Button */}
           {isAuthenticated ? (
             <>
               <div className="px-4 py-2 text-guardian-darkGray">

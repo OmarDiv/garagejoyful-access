@@ -1,30 +1,5 @@
 
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-}
-
-interface AuthState {
-  isAuthenticated: boolean;
-  user: User | null;
-  login: (user: User) => void;
-  logout: () => void;
-}
-
-export const useAuth = create<AuthState>()(
-  persist(
-    (set) => ({
-      isAuthenticated: false,
-      user: null,
-      login: (user) => set({ isAuthenticated: true, user }),
-      logout: () => set({ isAuthenticated: false, user: null }),
-    }),
-    {
-      name: 'auth-storage',
-    }
-  )
-);
+// This file is kept for backward compatibility
+// It re-exports the refactored hook from the new location
+export { useAuth } from './auth';
+export type { User, AuthState } from './auth/types';

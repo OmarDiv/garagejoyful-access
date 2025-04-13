@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +8,7 @@ import ParkingSpot from '@/components/ui/ParkingSpot';
 import ReservationModal from '@/components/dashboard/ReservationModal';
 import { useToast } from '@/hooks/use-toast';
 import PageBackground from '@/components/ui/PageBackground';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/auth';
 import { toast } from 'sonner';
 
 // Types
