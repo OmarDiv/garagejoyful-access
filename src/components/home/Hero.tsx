@@ -8,7 +8,7 @@ import { useAuth } from '@/hooks/useAuth';
 
 const Hero = () => {
   const isMobile = useIsMobile();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const [imagesLoaded, setImagesLoaded] = useState(false);
 
   useEffect(() => {
@@ -82,7 +82,26 @@ const Hero = () => {
                   </Button>
                 </Link>
               )}
+              
+              {isAuthenticated && (
+                <Link to="/reservations">
+                  <Button variant="outline" className="border-indigo-600 text-indigo-600 hover:bg-indigo-50 px-6 py-3 rounded-lg btn-hover-effect min-w-[160px]">
+                    My Reservations
+                  </Button>
+                </Link>
+              )}
             </motion.div>
+            
+            {isAuthenticated && (
+              <motion.div
+                variants={itemVariants}
+                className="mt-4 bg-blue-50 rounded-lg p-3 max-w-lg"
+              >
+                <p className="text-sm text-guardian-blue">
+                  Welcome back, {user?.name || 'User'}! You have access to all premium features.
+                </p>
+              </motion.div>
+            )}
             
             <motion.div 
               variants={itemVariants}
