@@ -11,6 +11,7 @@ import { useAuth } from '@/hooks/auth';
 import { toast } from 'sonner';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import ParkingContainer from '@/components/dashboard/ParkingContainer';
+import GarageMap from '@/components/dashboard/GarageMap';
 
 const Dashboard = () => {
   const [isReservationModalOpen, setIsReservationModalOpen] = useState(false);
@@ -70,6 +71,10 @@ const Dashboard = () => {
         <main className="flex-grow pt-24 pb-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <DashboardHeader />
+            
+            {/* Add the new GarageMap component */}
+            <GarageMap onSelectSpot={handleOpenReservationModal} />
+            
             <ParkingContainer onSelectSpot={handleOpenReservationModal} />
           </div>
         </main>
