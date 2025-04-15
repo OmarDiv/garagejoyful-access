@@ -1,15 +1,15 @@
 
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useState, useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useAuth } from '@/hooks/useAuth';
 
 const Hero = () => {
   const isMobile = useIsMobile();
-  const { isAuthenticated, user } = useAuth();
   const [imagesLoaded, setImagesLoaded] = useState(false);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
 
   useEffect(() => {
     const img = new Image();
@@ -38,8 +38,20 @@ const Hero = () => {
     }
   };
 
+  const numbersVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: i => ({
+      opacity: 1,
+      scale: 1,
+      transition: { 
+        delay: 0.3 + (i * 0.1),
+        duration: 0.4
+      }
+    })
+  };
+
   return (
-    <section className="relative overflow-hidden bg-guardian-lightGray pt-16 md:pt-0">
+    <section ref={ref} className="relative overflow-hidden bg-guardian-lightGray pt-16 md:pt-0">
       <div className="absolute inset-0 bg-gradient-to-b from-blue-50 to-white opacity-70 z-0"></div>
       
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 md:py-32 lg:py-40">
@@ -47,7 +59,7 @@ const Hero = () => {
           <motion.div
             variants={containerVariants}
             initial="hidden"
-            animate={imagesLoaded ? "visible" : "hidden"}
+            animate={isInView && imagesLoaded ? "visible" : "hidden"}
             className="order-2 md:order-1"
           >
             <motion.h1 
@@ -75,67 +87,75 @@ const Hero = () => {
                 </Button>
               </Link>
               
-              {!isAuthenticated && (
-                <Link to="/auth">
-                  <Button variant="outline" className="border-indigo-600 text-indigo-600 hover:bg-indigo-50 px-6 py-3 rounded-lg btn-hover-effect min-w-[160px]">
-                    Sign In
-                  </Button>
-                </Link>
-              )}
-              
-              {isAuthenticated && (
-                <Link to="/reservations">
-                  <Button variant="outline" className="border-indigo-600 text-indigo-600 hover:bg-indigo-50 px-6 py-3 rounded-lg btn-hover-effect min-w-[160px]">
-                    My Reservations
-                  </Button>
-                </Link>
-              )}
+              <Link to="/auth">
+                <Button variant="outline" className="border-indigo-600 text-indigo-600 hover:bg-indigo-50 px-6 py-3 rounded-lg btn-hover-effect min-w-[160px]">
+                  Sign In
+                </Button>
+              </Link>
             </motion.div>
-            
-            {isAuthenticated && (
-              <motion.div
-                variants={itemVariants}
-                className="mt-4 bg-blue-50 rounded-lg p-3 max-w-lg"
-              >
-                <p className="text-sm text-guardian-blue">
-                  Welcome back, {user?.name || 'User'}! You have access to all premium features.
-                </p>
-              </motion.div>
-            )}
             
             <motion.div 
               variants={itemVariants}
               className="mt-10 grid grid-cols-2 sm:grid-cols-3 gap-4"
             >
-              <div className="flex flex-col items-center sm:items-start">
-                <div className="text-3xl font-bold text-indigo-600">100+</div>
+              <motion.div 
+                custom={0}
+                variants={numbersVariants}
+                className="flex flex-col items-center sm:items-start"
+              >
+                <motion.div 
+                  whileHover={{ scale: 1.1, color: "#4f46e5" }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  className="text-3xl font-bold text-indigo-600"
+                >
+                  100+
+                </motion.div>
                 <div className="text-sm text-guardian-gray">Parking Spots</div>
-              </div>
-              <div className="flex flex-col items-center sm:items-start">
-                <div className="text-3xl font-bold text-indigo-600">24/7</div>
+              </motion.div>
+              <motion.div 
+                custom={1}
+                variants={numbersVariants}
+                className="flex flex-col items-center sm:items-start"
+              >
+                <motion.div 
+                  whileHover={{ scale: 1.1, color: "#4f46e5" }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  className="text-3xl font-bold text-indigo-600"
+                >
+                  24/7
+                </motion.div>
                 <div className="text-sm text-guardian-gray">Availability</div>
-              </div>
-              <div className="flex flex-col items-center sm:items-start">
-                <div className="text-3xl font-bold text-indigo-600">1-Click</div>
+              </motion.div>
+              <motion.div 
+                custom={2}
+                variants={numbersVariants}
+                className="flex flex-col items-center sm:items-start"
+              >
+                <motion.div 
+                  whileHover={{ scale: 1.1, color: "#4f46e5" }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  className="text-3xl font-bold text-indigo-600"
+                >
+                  1-Click
+                </motion.div>
                 <div className="text-sm text-guardian-gray">Reservations</div>
-              </div>
+              </motion.div>
             </motion.div>
           </motion.div>
           
           <motion.div 
             initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: imagesLoaded ? 1 : 0, x: 0 }}
+            animate={{ opacity: imagesLoaded && isInView ? 1 : 0, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
             className="order-1 md:order-2 flex justify-center md:justify-end"
           >
             <div className="relative">
               <motion.div
-                initial={{ y: 10 }}
-                animate={{ y: -10 }}
+                initial={{ y: 0 }}
+                animate={{ y: [-10, 10, -10] }}
                 transition={{ 
                   repeat: Infinity, 
-                  repeatType: "reverse", 
-                  duration: 2,
+                  duration: 4,
                   ease: "easeInOut"
                 }}
                 className="rounded-2xl overflow-hidden shadow-2xl max-w-md relative z-10"
@@ -150,14 +170,32 @@ const Hero = () => {
               
               {!isMobile && (
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5, duration: 0.5 }}
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ 
+                    opacity: imagesLoaded && isInView ? 1 : 0, 
+                    x: 0,
+                    rotate: [-6, -4, -6]
+                  }}
+                  transition={{ 
+                    delay: 0.5, 
+                    duration: 0.5,
+                    rotate: {
+                      repeat: Infinity,
+                      duration: 4
+                    }
+                  }}
                   className="absolute top-0 -left-12 -rotate-6 bg-white p-4 rounded-lg shadow-lg z-20"
                 >
                   <div className="text-sm font-medium text-guardian-blue">Available Now</div>
                   <div className="flex items-center gap-1 mt-1">
-                    <span className="w-3 h-3 rounded-full bg-green-500"></span>
+                    <motion.span 
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ 
+                        repeat: Infinity, 
+                        duration: 2
+                      }}
+                      className="w-3 h-3 rounded-full bg-green-500"
+                    ></motion.span>
                     <span className="text-xs text-guardian-gray">12 open spots</span>
                   </div>
                 </motion.div>
@@ -165,9 +203,20 @@ const Hero = () => {
               
               {!isMobile && (
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.7, duration: 0.5 }}
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={{ 
+                    opacity: imagesLoaded && isInView ? 1 : 0, 
+                    x: 0,
+                    rotate: [3, 5, 3]
+                  }}
+                  transition={{ 
+                    delay: 0.7, 
+                    duration: 0.5,
+                    rotate: {
+                      repeat: Infinity,
+                      duration: 4
+                    }
+                  }}
                   className="absolute -bottom-8 -right-8 rotate-3 bg-indigo-100 p-4 rounded-lg shadow-lg z-20"
                 >
                   <div className="text-sm font-medium text-indigo-800">Easy Access</div>

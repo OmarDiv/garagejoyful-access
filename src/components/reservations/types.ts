@@ -11,4 +11,17 @@ export interface Reservation {
     model: string;
     licensePlate: string;
   };
+  paymentDetails?: {
+    amount: number;
+    currency: string;
+    paid: boolean;
+  };
+  duration?: {
+    hours: number;
+    minutes: number;
+  };
+  location?: {
+    level: string;
+    section: string;
+  };
 }

@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, CheckSquare, History, LogIn, LogOut, User } from 'lucide-react';
@@ -32,7 +33,6 @@ const NavBar = () => {
     { name: 'Home', path: '/' },
     { name: 'Find Parking', path: '/dashboard' },
     ...(isAuthenticated ? [
-      { name: 'Garage Access', path: '/garage' },
       { name: 'Reservations', path: '/reservations', icon: History },
     ] : []),
     { name: 'About', path: '/about' },

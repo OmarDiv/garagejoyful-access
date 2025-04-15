@@ -22,22 +22,13 @@ const CTA = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             {isAuthenticated ? (
-              <>
-                <Link to="/garage">
-                  <Button
-                    className="px-6 py-2 bg-white text-purple-600 rounded-full font-medium hover:bg-purple-50 transition-colors"
-                  >
-                    Access Garage Now
-                  </Button>
-                </Link>
-                <Link to="/reservations">
-                  <Button
-                    className="px-6 py-2 bg-purple-700 text-white rounded-full font-medium hover:bg-purple-800 transition-colors border border-white"
-                  >
-                    View My Reservations
-                  </Button>
-                </Link>
-              </>
+              <Link to="/reservations">
+                <Button
+                  className="px-6 py-2 bg-white text-purple-600 rounded-full font-medium hover:bg-purple-50 transition-colors"
+                >
+                  View My Reservations
+                </Button>
+              </Link>
             ) : (
               <>
                 <Link to="/auth">

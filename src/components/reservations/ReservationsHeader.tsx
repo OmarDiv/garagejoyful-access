@@ -1,7 +1,7 @@
 
 import { motion } from 'framer-motion';
 import { useAuth } from '@/hooks/useAuth';
-import { Calendar, Clock } from 'lucide-react';
+import { Calendar, Clock, Car } from 'lucide-react';
 
 const ReservationsHeader = () => {
   const { user } = useAuth();
@@ -29,21 +29,38 @@ const ReservationsHeader = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <div className="bg-blue-50 rounded-lg p-3 flex items-center">
+              <motion.div 
+                whileHover={{ scale: 1.05 }}
+                className="bg-blue-50 rounded-lg p-3 flex items-center"
+              >
                 <Calendar className="text-indigo-600 mr-2" size={18} />
                 <div>
                   <div className="text-xs text-guardian-gray">Next Reservation</div>
                   <div className="text-sm font-medium">Apr 18, 2025</div>
                 </div>
-              </div>
+              </motion.div>
               
-              <div className="bg-green-50 rounded-lg p-3 flex items-center">
+              <motion.div 
+                whileHover={{ scale: 1.05 }}
+                className="bg-green-50 rounded-lg p-3 flex items-center"
+              >
                 <Clock className="text-green-600 mr-2" size={18} />
                 <div>
                   <div className="text-xs text-guardian-gray">Member Since</div>
                   <div className="text-sm font-medium">January 2025</div>
                 </div>
-              </div>
+              </motion.div>
+              
+              <motion.div 
+                whileHover={{ scale: 1.05 }}
+                className="bg-purple-50 rounded-lg p-3 flex items-center"
+              >
+                <Car className="text-purple-600 mr-2" size={18} />
+                <div>
+                  <div className="text-xs text-guardian-gray">Total Bookings</div>
+                  <div className="text-sm font-medium">5 reservations</div>
+                </div>
+              </motion.div>
             </div>
           </div>
         </div>
