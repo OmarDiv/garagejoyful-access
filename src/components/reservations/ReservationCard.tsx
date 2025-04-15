@@ -1,10 +1,10 @@
-
 import { motion } from 'framer-motion';
-import { Calendar, Clock, Car, MapPin, CreditCard, Timer } from 'lucide-react';
+import { Calendar, Clock, Car, MapPin, CreditCard, Timer, DoorOpen } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Reservation } from './types';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 interface ReservationCardProps {
   reservation: Reservation;
@@ -22,6 +22,12 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
     }
   };
 
+  const handleOpenGarage = () => {
+    toast.success('Opening garage door...', {
+      description: `Access code: ${reservation.accessCode || 'XXXX-XXXX'}`,
+    });
+  };
+
   return (
     <motion.div
       initial={{ y: 20, opacity: 0 }}
@@ -29,7 +35,7 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
       transition={{ duration: 0.5 }}
       layout
     >
-      <Card className="mb-4 overflow-hidden hover:shadow-md transition-shadow">
+      <Card className={`mb-4 overflow-hidden hover:shadow-md transition-shadow ${reservation.status === 'active' ? 'border-green-200 bg-green-50/30' : ''}`}>
         <CardHeader className="pb-3">
           <div className="flex justify-between items-center">
             <CardTitle className="text-lg font-medium">Parking Spot #{reservation.spotId}</CardTitle>
@@ -108,8 +114,15 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
             
             {reservation.status === 'active' && (
               <div className="flex gap-2">
-                <Button variant="outline" size="sm">View Details</Button>
-                <Button variant="destructive" size="sm">Cancel</Button>
+                <Button 
+                  variant="default"
+                  size="sm"
+                  className="bg-green-600 hover:bg-green-700"
+                  onClick={handleOpenGarage}
+                >
+                  <DoorOpen className="mr-1 h-4 w-4" />
+                  Open Garage
+                </Button>
               </div>
             )}
           </div>

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -12,7 +11,6 @@ const ReservationsContainer = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useAuth();
 
-  // Fetch reservations data (simulated) - modified to be user-specific
   useEffect(() => {
     if (!user) {
       setReservations([]);
@@ -20,7 +18,6 @@ const ReservationsContainer = () => {
       return;
     }
     
-    // This would be replaced with an actual API call filtering by user ID
     const mockReservations: Reservation[] = [
       {
         id: 'res-1',
@@ -46,7 +43,8 @@ const ReservationsContainer = () => {
         location: {
           level: '1',
           section: 'A'
-        }
+        },
+        accessCode: 'PARK-2025'
       },
       {
         id: 'res-2',
@@ -128,21 +126,23 @@ const ReservationsContainer = () => {
       }
     ];
 
-    // Simulate loading delay and filtering by user ID
     setTimeout(() => {
-      // In a real app, this filtering would happen on the server
-      const userReservations = mockReservations.filter(res => res.userId === user.id);
+      const userReservations = mockReservations
+        .filter(res => res.userId === user.id)
+        .sort((a, b) => {
+          if (a.status === 'active') return -1;
+          if (b.status === 'active') return 1;
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        });
       setReservations(userReservations);
       setIsLoading(false);
     }, 1000);
   }, [user]);
 
-  // Get reservations by status
   const getReservationsByStatus = (status: 'active' | 'completed' | 'cancelled') => {
     return reservations.filter(res => res.status === status);
   };
 
-  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { 

@@ -1,4 +1,3 @@
-
 export interface Reservation {
   id: string;
   date: string;
@@ -25,8 +24,6 @@ export interface Reservation {
     section: string;
   };
   accessCode?: string;
-  entryTime?: string;
-  exitTime?: string;
 }
 
 // Add new types for analytics
