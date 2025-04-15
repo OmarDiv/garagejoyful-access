@@ -24,4 +24,15 @@ export interface Reservation {
     level: string;
     section: string;
   };
+  accessCode?: string;
+  entryTime?: string;
+  exitTime?: string;
+}
+
+// Add new types for analytics
+export interface SiteAnalytics {
+  totalVisitors: number;
+  activeUsers: number;
+  totalReservations: number;
+  satisfactionRate: number;
 }
