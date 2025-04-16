@@ -1,9 +1,10 @@
+
 export interface Reservation {
   id: string;
   date: string;
   time: string;
   spotId: string;
-  status: 'active' | 'completed' | 'cancelled';
+  status: 'pending' | 'active' | 'completed' | 'cancelled';
   userId: string;
   carDetails: {
     make: string;
@@ -28,6 +29,8 @@ export interface Reservation {
     startTime: string;
     endTime?: string;
     duration?: string;
+    reservationTime: string;
+    timeToAccess?: number; // Time in minutes to access the gate
   };
 }
 

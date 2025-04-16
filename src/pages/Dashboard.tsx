@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -30,12 +31,23 @@ const Dashboard = () => {
   };
   
   const handleConfirmReservation = (formData: any) => {
+    // Store reservation data with current time
+    const reservationTime = new Date().toLocaleTimeString();
+    
     sessionStorage.setItem('reservationSpot', JSON.stringify({
       spotId: selectedSpotId,
       timestamp: new Date().toISOString()
     }));
     
-    sessionStorage.setItem('reservation', JSON.stringify(formData));
+    const reservationData = {
+      ...formData,
+      parkingSession: {
+        reservationTime,
+        timeToAccess: 15 // 15 minutes to access the gate
+      }
+    };
+    
+    sessionStorage.setItem('reservation', JSON.stringify(reservationData));
     
     const storedSpots = sessionStorage.getItem('parkingSpots');
     if (storedSpots) {
@@ -65,7 +77,14 @@ const Dashboard = () => {
         <main className="flex-grow pt-24 pb-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <DashboardHeader />
-            <ParkingContainer onSelectSpot={handleOpenReservationModal} />
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+            >
+              <ParkingContainer onSelectSpot={handleOpenReservationModal} />
+            </motion.div>
           </div>
         </main>
         
