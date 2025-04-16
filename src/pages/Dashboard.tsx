@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +10,6 @@ import { useAuth } from '@/hooks/auth';
 import { toast } from 'sonner';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import ParkingContainer from '@/components/dashboard/ParkingContainer';
-import GarageMap from '@/components/dashboard/GarageMap';
 
 const Dashboard = () => {
   const [isReservationModalOpen, setIsReservationModalOpen] = useState(false);
@@ -21,7 +19,6 @@ const Dashboard = () => {
   const navigate = useNavigate();
   
   const handleOpenReservationModal = (id: string) => {
-    // Check if user is authenticated
     if (!isAuthenticated) {
       toast.error("Please sign in to reserve a parking spot");
       navigate('/auth', { state: { from: { pathname: '/dashboard' } } });
@@ -33,16 +30,13 @@ const Dashboard = () => {
   };
   
   const handleConfirmReservation = (formData: any) => {
-    // Store reservation data in sessionStorage
     sessionStorage.setItem('reservationSpot', JSON.stringify({
       spotId: selectedSpotId,
       timestamp: new Date().toISOString()
     }));
     
-    // Store user and car details for the garage access page
     sessionStorage.setItem('reservation', JSON.stringify(formData));
     
-    // Update spot status in the sessionStorage
     const storedSpots = sessionStorage.getItem('parkingSpots');
     if (storedSpots) {
       try {
@@ -71,10 +65,6 @@ const Dashboard = () => {
         <main className="flex-grow pt-24 pb-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <DashboardHeader />
-            
-            {/* Add the new GarageMap component */}
-            <GarageMap onSelectSpot={handleOpenReservationModal} />
-            
             <ParkingContainer onSelectSpot={handleOpenReservationModal} />
           </div>
         </main>

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Calendar, Clock, Car, MapPin, CreditCard, Timer, DoorOpen } from 'lucide-react';
+import { Calendar, Clock, Car, MapPin, CreditCard, Timer, DoorOpen, LogOut } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Reservation } from './types';
@@ -12,6 +12,8 @@ interface ReservationCardProps {
 
 const ReservationCard = ({ reservation }: ReservationCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [hasEntered, setHasEntered] = useState(false);
+  const [parkingStartTime, setParkingStartTime] = useState<string | null>(null);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -26,6 +28,29 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
     toast.success('Opening garage door...', {
       description: `Access code: ${reservation.accessCode || 'XXXX-XXXX'}`,
     });
+    const currentTime = new Date().toLocaleTimeString();
+    setParkingStartTime(currentTime);
+    setHasEntered(true);
+  };
+
+  const handleEndParking = () => {
+    const endTime = new Date().toLocaleTimeString();
+    const duration = parkingStartTime ? calculateDuration(parkingStartTime, endTime) : 'N/A';
+    
+    toast.success('Parking session ended', {
+      description: `Duration: ${duration}`,
+    });
+    setHasEntered(false);
+    setParkingStartTime(null);
+  };
+
+  const calculateDuration = (start: string, end: string) => {
+    const startDate = new Date(`1970/01/01 ${start}`);
+    const endDate = new Date(`1970/01/01 ${end}`);
+    const diff = endDate.getTime() - startDate.getTime();
+    const hours = Math.floor(diff / 3600000);
+    const minutes = Math.floor((diff % 3600000) / 60000);
+    return `${hours}h ${minutes}m`;
   };
 
   return (
@@ -114,15 +139,27 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
             
             {reservation.status === 'active' && (
               <div className="flex gap-2">
-                <Button 
-                  variant="default"
-                  size="sm"
-                  className="bg-green-600 hover:bg-green-700"
-                  onClick={handleOpenGarage}
-                >
-                  <DoorOpen className="mr-1 h-4 w-4" />
-                  Open Garage
-                </Button>
+                {!hasEntered ? (
+                  <Button 
+                    variant="default"
+                    size="sm"
+                    className="bg-green-600 hover:bg-green-700"
+                    onClick={handleOpenGarage}
+                  >
+                    <DoorOpen className="mr-1 h-4 w-4" />
+                    Open Garage
+                  </Button>
+                ) : (
+                  <Button 
+                    variant="default"
+                    size="sm"
+                    className="bg-red-600 hover:bg-red-700"
+                    onClick={handleEndParking}
+                  >
+                    <LogOut className="mr-1 h-4 w-4" />
+                    End Parking
+                  </Button>
+                )}
               </div>
             )}
           </div>

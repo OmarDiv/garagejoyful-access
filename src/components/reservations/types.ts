@@ -24,6 +24,11 @@ export interface Reservation {
     section: string;
   };
   accessCode?: string;
+  parkingSession?: {
+    startTime: string;
+    endTime?: string;
+    duration?: string;
+  };
 }
 
 // Add new types for analytics
