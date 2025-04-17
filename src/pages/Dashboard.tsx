@@ -57,10 +57,21 @@ const Dashboard = () => {
         // For now, use mock data from sessionStorage if available
         const storedSpots = sessionStorage.getItem('parkingSpots');
         if (storedSpots) {
-          setParkingSpots(JSON.parse(storedSpots));
+          const parsed = JSON.parse(storedSpots);
+          // Ensure the data conforms to our ParkingSpot type
+          const typedSpots: ParkingSpot[] = parsed.map((spot: any) => ({
+            id: spot.id,
+            // Ensure status is one of the allowed values, default to 'available' if not
+            status: (spot.status === 'available' || spot.status === 'reserved' || spot.status === 'occupied') 
+              ? spot.status as ParkingSpot['status'] 
+              : 'available',
+            level: spot.level,
+            section: spot.section
+          }));
+          setParkingSpots(typedSpots);
         } else {
           // Mock data if no stored data
-          const mockSpots = [
+          const mockSpots: ParkingSpot[] = [
             { id: '1', status: 'available', level: '1', section: 'A' },
             { id: '2', status: 'reserved', level: '1', section: 'A' },
             { id: '3', status: 'occupied', level: '1', section: 'A' },
@@ -129,7 +140,7 @@ const Dashboard = () => {
       
       // Update local parking spots state
       const updatedSpots = parkingSpots.map(spot => 
-        spot.id === selectedSpotId ? { ...spot, status: 'reserved' } : spot
+        spot.id === selectedSpotId ? { ...spot, status: 'reserved' as const } : spot
       );
       setParkingSpots(updatedSpots);
       sessionStorage.setItem('parkingSpots', JSON.stringify(updatedSpots));
@@ -191,3 +202,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
