@@ -1,11 +1,14 @@
 
 import { motion } from 'framer-motion';
-import { Calendar, Clock, Car, Timer, DoorOpen, LogOut, X as XIcon } from 'lucide-react';
+import { Calendar, Clock, LogOut, X as XIcon, DoorOpen } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Reservation } from './types';
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
+import StatusBadge from './StatusBadge';
+import CarDetailsCard from './CarDetailsCard';
+import ParkingSessionDetails from './ParkingSessionDetails';
 
 interface ReservationCardProps {
   reservation: Reservation;
@@ -19,68 +22,44 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
     reservation.status === 'pending' ? (reservation.parkingSession?.timeToAccess || 15) : 0
   );
   const [status, setStatus] = useState(reservation.status);
-  
+
   // Timer for pending reservations
   useEffect(() => {
     let timer: number | undefined;
-    
     if (status === 'pending' && !hasEntered && remainingTime > 0) {
       timer = window.setInterval(() => {
         setRemainingTime(prev => {
           if (prev <= 1) {
-            // Time's up - automatically cancel reservation
             handleCancelReservation();
             clearInterval(timer);
             return 0;
           }
           return prev - 1;
         });
-      }, 60000); // Update every minute for demo - would be longer in production
+      }, 60000);
     }
-    
+
     return () => {
       if (timer) clearInterval(timer);
     };
   }, [status, hasEntered, remainingTime]);
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'active': return 'bg-green-100 text-green-700';
-      case 'completed': return 'bg-blue-100 text-blue-700';
-      case 'cancelled': return 'bg-red-100 text-red-700';
-      case 'pending': return 'bg-yellow-100 text-yellow-700';
-      default: return 'bg-gray-100 text-gray-700';
-    }
-  };
-
   const handleOpenGarage = () => {
-    // Update reservation status to active
     setStatus('active');
     const currentTime = new Date().toLocaleTimeString();
     setParkingStartTime(currentTime);
     setHasEntered(true);
-    
-    // Update in sessionStorage
     updateReservationStatus('active', currentTime);
-    
-    // Update parking spot status to occupied in sessionStorage
     updateParkingSpotStatus('occupied');
-    
     toast.success('Opening garage door...', {
       description: `Access code: ${reservation.accessCode || 'XXXX-XXXX'}`,
     });
   };
 
   const handleCancelReservation = () => {
-    // Update reservation status
     setStatus('cancelled');
-    
-    // Update in sessionStorage
     updateReservationStatus('cancelled');
-    
-    // Make the spot available again
     updateParkingSpotStatus('available');
-    
     toast.info('Reservation cancelled', {
       description: 'Your reservation has been cancelled successfully',
     });
@@ -89,16 +68,9 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
   const handleEndParking = () => {
     const endTime = new Date().toLocaleTimeString();
     const duration = parkingStartTime ? calculateDuration(parkingStartTime, endTime) : 'N/A';
-    
-    // Update reservation status
     setStatus('completed');
-    
-    // Update in sessionStorage
     updateReservationStatus('completed', parkingStartTime, endTime);
-    
-    // Make the spot available again
     updateParkingSpotStatus('available');
-    
     toast.success('Parking session ended', {
       description: `Duration: ${duration}`,
     });
@@ -114,31 +86,26 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
       const updatedReservations = reservations.map((res: any) => {
         if (res.id === reservation.id) {
           const updatedRes = { ...res, status: newStatus };
-          
-          // Update parking session details if provided
           if (startTime) {
             updatedRes.parkingSession = {
               ...updatedRes.parkingSession,
               startTime
             };
           }
-          
           if (endTime) {
             updatedRes.parkingSession = {
               ...updatedRes.parkingSession,
               endTime
             };
           }
-          
           return updatedRes;
         }
         return res;
       });
-      
       sessionStorage.setItem('userReservations', JSON.stringify(updatedReservations));
     }
   };
-  
+
   // Helper function to update parking spot status in sessionStorage
   const updateParkingSpotStatus = (newStatus: 'available' | 'occupied' | 'reserved') => {
     const storedSpots = sessionStorage.getItem('parkingSpots');
@@ -150,7 +117,6 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
         }
         return spot;
       });
-      
       sessionStorage.setItem('parkingSpots', JSON.stringify(updatedSpots));
     }
   };
@@ -162,23 +128,6 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
     const hours = Math.floor(diff / 3600000);
     const minutes = Math.floor((diff % 3600000) / 60000);
     return `${hours}h ${minutes}m`;
-  };
-
-  const getStatusBadge = () => {
-    if (status === 'pending' && remainingTime > 0) {
-      return (
-        <span className="flex items-center gap-1 text-xs px-2 py-1 rounded-full font-medium bg-yellow-100 text-yellow-700">
-          <Timer size={14} />
-          <span>Pending ({remainingTime}m)</span>
-        </span>
-      );
-    }
-    
-    return (
-      <span className={`text-xs px-2 py-1 rounded-full font-medium ${getStatusColor(status)}`}>
-        {status.charAt(0).toUpperCase() + status.slice(1)}
-      </span>
-    );
   };
 
   return (
@@ -195,7 +144,7 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
         <CardHeader className="pb-3">
           <div className="flex justify-between items-center">
             <CardTitle className="text-lg font-medium">Parking Spot #{reservation.spotId}</CardTitle>
-            {getStatusBadge()}
+            <StatusBadge status={status} remainingTime={remainingTime} />
           </div>
         </CardHeader>
         <CardContent>
@@ -209,44 +158,25 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
                 <Clock size={16} className="text-indigo-600" />
                 <span>{reservation.time}</span>
               </div>
-              
-              {/* Car details */}
-              <div className="p-3 bg-gray-50 rounded-lg mt-3">
-                <h4 className="text-sm font-medium flex items-center gap-2 mb-2">
-                  <Car size={16} className="text-indigo-600" />
-                  Vehicle Details
-                </h4>
-                <div className="text-sm space-y-1 text-guardian-gray">
-                  <p>{reservation.carDetails.make} {reservation.carDetails.model}</p>
-                  <p>License: {reservation.carDetails.licensePlate}</p>
-                </div>
-              </div>
-              
+
+              <CarDetailsCard carDetails={reservation.carDetails} />
+
               {/* Parking session details - Show when active or expanded */}
               {(status === 'active' || hasEntered || isExpanded) && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
-                  className="p-3 bg-blue-50 rounded-lg"
                 >
-                  <h4 className="text-sm font-medium flex items-center gap-2 mb-2">
-                    <Timer size={16} className="text-blue-600" />
-                    Parking Session
-                  </h4>
-                  <div className="text-sm space-y-1 text-guardian-gray">
-                    <p>Reservation Time: {reservation.parkingSession?.reservationTime || reservation.time}</p>
-                    {parkingStartTime && (
-                      <p>Start Time: {parkingStartTime}</p>
-                    )}
-                    {hasEntered && (
-                      <p>Status: <span className="text-green-600 font-medium">In Progress</span></p>
-                    )}
-                  </div>
+                  <ParkingSessionDetails
+                    reservationTime={reservation.parkingSession?.reservationTime || reservation.time}
+                    startTime={parkingStartTime}
+                    hasEntered={hasEntered}
+                  />
                 </motion.div>
               )}
             </div>
           </div>
-          
+
           <div className="mt-4 flex gap-2 justify-between items-center">
             <Button 
               variant="ghost" 
@@ -255,7 +185,7 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
             >
               {isExpanded ? 'Show Less' : 'Show More'}
             </Button>
-            
+
             <div className="flex gap-2">
               {status === 'pending' && remainingTime > 0 && !hasEntered && (
                 <>
@@ -279,7 +209,6 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
                   </Button>
                 </>
               )}
-              
               {(status === 'active' || hasEntered) && !parkingStartTime && (
                 <Button 
                   variant="default"
@@ -291,7 +220,6 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
                   Open Gate
                 </Button>
               )}
-              
               {hasEntered && parkingStartTime && (
                 <Button 
                   variant="default"
