@@ -6,7 +6,7 @@ import ReservationsEmptyState from './ReservationsEmptyState';
 
 interface ReservationTabContentProps {
   reservations: Reservation[];
-  status?: 'active' | 'completed' | 'cancelled';
+  status?: 'active' | 'completed' | 'cancelled' | 'pending';
 }
 
 const ReservationTabContent = ({ reservations, status }: ReservationTabContentProps) => {

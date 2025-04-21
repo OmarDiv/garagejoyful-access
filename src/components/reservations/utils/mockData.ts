@@ -75,6 +75,7 @@ const defaultMockReservations = (userId: string): Reservation[] => {
         licensePlate: 'EV-9012'
       },
       parkingSession: {
+        startTime: '', // Add empty string as default value
         reservationTime: '9:00 AM'
       },
       accessCode: 'PARK-9012'

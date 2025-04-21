@@ -3,7 +3,7 @@ import React from 'react';
 import { Timer } from 'lucide-react';
 
 interface StatusBadgeProps {
-  status: string;
+  status: 'active' | 'completed' | 'cancelled' | 'pending';
   remainingTime?: number;
 }
 

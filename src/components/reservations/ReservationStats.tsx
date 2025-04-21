@@ -4,7 +4,7 @@ import { Reservation } from './types';
 
 interface ReservationStatsProps {
   reservations: Reservation[];
-  getReservationsByStatus: (status: 'active' | 'completed' | 'cancelled') => Reservation[];
+  getReservationsByStatus: (status: 'active' | 'completed' | 'cancelled' | 'pending') => Reservation[];
 }
 
 const ReservationStats = ({ reservations, getReservationsByStatus }: ReservationStatsProps) => {
@@ -20,6 +20,9 @@ const ReservationStats = ({ reservations, getReservationsByStatus }: Reservation
         Reservation history and upcoming bookings
       </p>
       <div className="mt-3 flex flex-wrap gap-2">
+        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+          Pending: {getReservationsByStatus('pending').length}
+        </span>
         <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
           Active: {getReservationsByStatus('active').length}
         </span>
