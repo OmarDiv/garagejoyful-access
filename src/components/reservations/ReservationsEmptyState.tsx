@@ -1,63 +1,45 @@
 
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import { CalendarX, Search, ArrowRight } from 'lucide-react';
+import { CalendarX } from 'lucide-react';
 
 interface ReservationsEmptyStateProps {
-  status?: 'active' | 'completed' | 'cancelled';
+  status?: 'active' | 'completed' | 'cancelled' | 'pending';
 }
-
-const ReservationIcon = ({ status }: { status?: string }) => {
-  if (!status || status === 'active') {
-    return <Search className="w-12 h-12 text-indigo-400 mb-2" />;
-  } else if (status === 'completed') {
-    return <CalendarX className="w-12 h-12 text-blue-400 mb-2" />;
-  } else {
-    return <CalendarX className="w-12 h-12 text-red-400 mb-2" />;
-  }
-};
 
 const ReservationsEmptyState = ({ status }: ReservationsEmptyStateProps) => {
   const getMessage = () => {
-    if (!status) return "You don't have any reservations yet.";
-    if (status === 'active') return "You don't have any active reservations.";
-    if (status === 'completed') return "You don't have any completed reservations.";
-    return "You don't have any cancelled reservations.";
-  };
-
-  const getDescription = () => {
-    if (!status || status === 'active') {
-      return "Book a parking spot to see your reservations here.";
-    } else if (status === 'completed') {
-      return "Once you complete a parking reservation, it will appear here.";
-    } else {
-      return "Any reservations you cancel will be listed here for your records.";
+    switch (status) {
+      case 'active':
+        return 'You have no active parking sessions';
+      case 'completed':
+        return 'You have no completed reservations';
+      case 'cancelled':
+        return 'You have no cancelled reservations';
+      case 'pending':
+        return 'You have no pending reservations';
+      default:
+        return 'You have no parking reservations';
     }
   };
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 10 }}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
-      className="text-center py-12 bg-gray-50 rounded-lg border border-gray-100"
+      transition={{ duration: 0.5 }}
+      className="text-center py-12 bg-slate-50 rounded-lg"
     >
-      <div className="flex justify-center mb-2">
-        <ReservationIcon status={status} />
+      <div className="flex flex-col items-center">
+        <div className="bg-slate-100 p-4 rounded-full mb-4">
+          <CalendarX className="h-10 w-10 text-slate-400" />
+        </div>
+        <h3 className="text-lg font-medium text-slate-700 mb-2">{getMessage()}</h3>
+        <p className="text-sm text-slate-500 max-w-sm mx-auto">
+          {status === 'pending' ? 
+            'Book a parking spot to see your upcoming reservations here.' :
+            'Your reservation history will appear here once you start using our parking service.'}
+        </p>
       </div>
-      <h3 className="text-lg font-medium text-guardian-darkGray mb-1">{getMessage()}</h3>
-      <p className="text-sm text-guardian-gray mb-6">{getDescription()}</p>
-      
-      {(!status || status === 'active') && (
-        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-          <Button className="gap-2" asChild>
-            <Link to="/dashboard">
-              Find Parking <ArrowRight size={16} />
-            </Link>
-          </Button>
-        </motion.div>
-      )}
     </motion.div>
   );
 };
