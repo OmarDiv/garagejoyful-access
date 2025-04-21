@@ -113,6 +113,21 @@ export const api = {
       throw error;
     }
   },
+  
+  // Added this function to update a parking spot status
+  updateParkingSpotStatus: async (spotId: string, status: 'available' | 'occupied' | 'reserved') => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/parking-spots/${spotId}/status`, {
+        method: 'PUT',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ status }),
+      });
+      return handleResponse(response);
+    } catch (error) {
+      console.error('API error in updateParkingSpotStatus:', error);
+      throw error;
+    }
+  },
 };
 
 export default api;

@@ -25,11 +25,11 @@ const ReservationModal = ({ spotId, isOpen, onClose, onConfirm }: ReservationMod
     // Show success message
     setIsSuccess(true);
     
-    // Reset form after 3 seconds and redirect to garage page
+    // Reset form after 3 seconds and redirect to reservations page
     setTimeout(() => {
       setIsSuccess(false);
       onClose();
-      navigate('/garage');
+      navigate('/reservations'); // Changed from '/garage' to '/reservations'
     }, 3000);
   };
   

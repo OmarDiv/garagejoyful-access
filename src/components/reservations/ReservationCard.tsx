@@ -15,8 +15,10 @@ interface ReservationCardProps {
 
 const ReservationCard = ({ reservation }: ReservationCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [hasEntered, setHasEntered] = useState(false);
-  const [parkingStartTime, setParkingStartTime] = useState<string | null>(null);
+  const [hasEntered, setHasEntered] = useState(!!reservation.parkingSession?.startTime);
+  const [parkingStartTime, setParkingStartTime] = useState<string | null>(
+    reservation.parkingSession?.startTime || null
+  );
   const [remainingTime, setRemainingTime] = useState<number>(
     reservation.status === 'pending' ? (reservation.parkingSession?.timeToAccess ?? 15) : 0
   );

@@ -142,7 +142,7 @@ const ReservationCardActions = ({
             </Button>
           </>
         )}
-        {(status === 'active' || hasEntered) && !parkingStartTime && (
+        {status === 'active' && !hasEntered && (
           <Button 
             variant="default"
             size="sm"
