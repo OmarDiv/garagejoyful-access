@@ -33,7 +33,7 @@ const ReservationTabContent = ({ reservations, status }: ReservationTabContentPr
           <ReservationCard key={reservation.id} reservation={reservation} />
         ))
       ) : (
-        <ReservationsEmptyState status={status as 'active' | 'completed' | 'cancelled' | 'pending'} />
+        <ReservationsEmptyState status={status} />
       )}
     </motion.div>
   );
