@@ -11,14 +11,8 @@ import { useAuth } from '@/hooks/auth';
 import { toast } from 'sonner';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import ParkingContainer from '@/components/dashboard/ParkingContainer';
-
-// New types for API integration
-interface ParkingSpot {
-  id: string;
-  status: 'available' | 'occupied' | 'reserved';
-  level: string;
-  section: string;
-}
+import { ParkingSpot } from '@/components/garage/types';
+import api from '@/services/api';
 
 interface ReservationData {
   spotId: string;
@@ -51,8 +45,7 @@ const Dashboard = () => {
         setIsLoading(true);
         
         // In the future, replace with actual API call:
-        // const response = await fetch('https://your-dotnet-api.com/api/parking-spots');
-        // const data = await response.json();
+        // const data = await api.getParkingSpots();
         
         // For now, use mock data from sessionStorage if available
         const storedSpots = sessionStorage.getItem('parkingSpots');
@@ -110,6 +103,7 @@ const Dashboard = () => {
     try {
       // Store reservation data with current time
       const reservationTime = new Date().toLocaleTimeString();
+      const currentDate = new Date().toLocaleDateString();
       
       const reservationData: ReservationData = {
         spotId: selectedSpotId,
@@ -122,23 +116,40 @@ const Dashboard = () => {
       };
       
       // In the future, replace with actual API call:
-      // await fetch('https://your-dotnet-api.com/api/reservations', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'Authorization': `Bearer ${user?.token}` // Add auth token if needed
-      //   },
-      //   body: JSON.stringify(reservationData)
-      // });
+      // await api.createReservation(reservationData);
       
       // For now, store in sessionStorage
       sessionStorage.setItem('reservation', JSON.stringify(reservationData));
-      sessionStorage.setItem('reservationSpot', JSON.stringify({
-        spotId: selectedSpotId,
-        timestamp: new Date().toISOString()
-      }));
       
-      // Update local parking spots state
+      // Create a new reservation entry for the reservations page
+      const reservationId = `res-${Date.now()}`;
+      const newReservation = {
+        id: reservationId,
+        date: currentDate,
+        time: reservationTime,
+        spotId: selectedSpotId,
+        status: 'pending', // Initial status is pending
+        userId: user?.id || 'guest',
+        carDetails: {
+          make: formData.carMake || 'Not specified',
+          model: formData.carModel,
+          licensePlate: formData.carPlate
+        },
+        parkingSession: {
+          reservationTime,
+          timeToAccess: 15,
+          startTime: ''
+        },
+        accessCode: `PARK-${Math.floor(1000 + Math.random() * 9000)}`
+      };
+      
+      // Store the reservation in sessionStorage for the reservations page
+      const storedReservations = sessionStorage.getItem('userReservations');
+      let userReservations = storedReservations ? JSON.parse(storedReservations) : [];
+      userReservations = [newReservation, ...userReservations];
+      sessionStorage.setItem('userReservations', JSON.stringify(userReservations));
+      
+      // Update spot status in sessionStorage
       const updatedSpots = parkingSpots.map(spot => 
         spot.id === selectedSpotId ? { ...spot, status: 'reserved' as const } : spot
       );
@@ -148,6 +159,9 @@ const Dashboard = () => {
       toast.success("Reservation confirmed", {
         description: `Spot #${selectedSpotId} has been reserved successfully.`
       });
+      
+      // Store active reservation ID for easy reference
+      sessionStorage.setItem('activeReservationId', reservationId);
     } catch (error) {
       console.error('Error creating reservation:', error);
       toast.error("Failed to create reservation", {
@@ -202,4 +216,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
