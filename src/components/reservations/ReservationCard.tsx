@@ -1,12 +1,10 @@
 
 import { motion } from 'framer-motion';
-import { Calendar, Clock } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useState, useEffect } from 'react';
-import StatusBadge from './StatusBadge';
-import CarDetailsCard from './CarDetailsCard';
-import ParkingSessionDetails from './ParkingSessionDetails';
-import ReservationCardActions from './ReservationCardActions';
+import { useState } from 'react';
+import { Card } from '@/components/ui/card';
+import { useReservationState } from './hooks/useReservationState';
+import ReservationCardHeader from './ReservationCardHeader';
+import ReservationCardDetails from './ReservationCardDetails';
 import { Reservation } from './types';
 
 interface ReservationCardProps {
@@ -14,104 +12,8 @@ interface ReservationCardProps {
 }
 
 const ReservationCard = ({ reservation }: ReservationCardProps) => {
-  // Initialize state from reservation or sessionStorage to persist across refreshes
-  const getInitialState = () => {
-    // Try to get data from sessionStorage first
-    const storedReservations = sessionStorage.getItem('userReservations');
-    if (storedReservations) {
-      const reservations = JSON.parse(storedReservations);
-      const currentReservation = reservations.find((res: Reservation) => res.id === reservation.id);
-      if (currentReservation) {
-        return {
-          status: currentReservation.status,
-          // If status is completed, always set hasEntered to false to prevent button reappearing
-          hasEntered: currentReservation.status === 'completed' ? false : !!currentReservation.parkingSession?.startTime,
-          parkingStartTime: currentReservation.parkingSession?.startTime || null,
-          remainingTime: currentReservation.status === 'pending' 
-            ? (currentReservation.parkingSession?.timeToAccess ?? 15) 
-            : 0
-        };
-      }
-    }
-    
-    // Fall back to props if no sessionStorage data
-    return {
-      status: reservation.status,
-      // If status is completed, ensure hasEntered is false
-      hasEntered: reservation.status === 'completed' ? false : !!reservation.parkingSession?.startTime,
-      parkingStartTime: reservation.parkingSession?.startTime || null,
-      remainingTime: reservation.status === 'pending' 
-        ? (reservation.parkingSession?.timeToAccess ?? 15) 
-        : 0
-    };
-  };
-
-  const initialState = getInitialState();
-  
   const [isExpanded, setIsExpanded] = useState(false);
-  const [hasEntered, setHasEntered] = useState(initialState.hasEntered);
-  const [parkingStartTime, setParkingStartTime] = useState<string | null>(initialState.parkingStartTime);
-  const [remainingTime, setRemainingTime] = useState<number>(initialState.remainingTime);
-  const [status, setStatus] = useState(initialState.status);
-
-  // Timer for pending reservations
-  useEffect(() => {
-    let timer: number | undefined;
-    if (status === 'pending' && !hasEntered && remainingTime > 0) {
-      timer = window.setInterval(() => {
-        setRemainingTime(prev => {
-          if (prev <= 1) {
-            setStatus('cancelled');
-            // Update in storage when timer expires
-            updateReservationStatusInStorage('cancelled');
-            clearInterval(timer);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 60000); // Decrease every minute
-    }
-    return () => {
-      if (timer) clearInterval(timer);
-    };
-  }, [status, hasEntered, remainingTime, reservation.id]);
-
-  // Helper function to update reservation in storage
-  const updateReservationStatusInStorage = (newStatus: string, startTime?: string, endTime?: string) => {
-    const storedReservations = sessionStorage.getItem('userReservations');
-    if (storedReservations) {
-      const reservations = JSON.parse(storedReservations);
-      const updatedReservations = reservations.map((res: any) => {
-        if (res.id === reservation.id) {
-          const updatedRes = { 
-            ...res, 
-            status: newStatus,
-            // If status is completed, ensure we store that info to prevent button showing again
-            completed: newStatus === 'completed' ? true : res.completed 
-          };
-          
-          if (startTime) {
-            updatedRes.parkingSession = {
-              ...updatedRes.parkingSession,
-              startTime
-            };
-          }
-          if (endTime) {
-            updatedRes.parkingSession = {
-              ...updatedRes.parkingSession,
-              endTime
-            };
-          }
-          return updatedRes;
-        }
-        return res;
-      });
-      sessionStorage.setItem('userReservations', JSON.stringify(updatedReservations));
-      
-      // Trigger a storage event so other tabs can update
-      window.dispatchEvent(new Event('storage'));
-    }
-  };
+  const { status, hasEntered, parkingStartTime, remainingTime, setState, updateReservationStatusInStorage } = useReservationState(reservation);
 
   return (
     <motion.div
@@ -127,83 +29,22 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
         status === 'completed' ? 'border-blue-200 bg-blue-50/30' : 
         status === 'cancelled' ? 'border-red-200 bg-red-50/30' : ''
       }`}>
-        <CardHeader className="pb-3">
-          <div className="flex justify-between items-center">
-            <CardTitle className="text-lg font-medium flex items-center">
-              <motion.span
-                initial={{ scale: 0.9 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.3 }}
-                className="mr-2 bg-indigo-100 text-indigo-600 p-1 rounded-full flex items-center justify-center w-7 h-7 text-sm"
-              >
-                {reservation.spotId}
-              </motion.span>
-              Parking Spot #{reservation.spotId}
-            </CardTitle>
-            <StatusBadge status={status} remainingTime={remainingTime} />
-          </div>
-        </CardHeader>
-        <CardContent>
-          <motion.div className="grid grid-cols-1 gap-4">
-            <div className="space-y-3">
-              <motion.div 
-                initial={{ x: -10, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: 0.1 }}
-                className="flex items-center gap-2 text-guardian-gray"
-              >
-                <Calendar size={16} className="text-indigo-600" />
-                <span>{reservation.date}</span>
-              </motion.div>
-              <motion.div 
-                initial={{ x: -10, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: 0.2 }}
-                className="flex items-center gap-2 text-guardian-gray"
-              >
-                <Clock size={16} className="text-indigo-600" />
-                <span>{reservation.time}</span>
-              </motion.div>
-              <motion.div
-                initial={{ y: 10, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.3 }}
-              >
-                <CarDetailsCard carDetails={reservation.carDetails} />
-              </motion.div>
-
-              {(status === 'active' || hasEntered || isExpanded) && (
-                <motion.div 
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <ParkingSessionDetails
-                    reservationTime={reservation.parkingSession?.reservationTime || reservation.time}
-                    startTime={parkingStartTime}
-                    hasEntered={hasEntered}
-                  />
-                </motion.div>
-              )}
-            </div>
-          </motion.div>
-
-          <ReservationCardActions
-            reservation={reservation}
-            status={status}
-            hasEntered={hasEntered}
-            parkingStartTime={parkingStartTime}
-            remainingTime={remainingTime}
-            setStatus={setStatus}
-            setHasEntered={setHasEntered}
-            setParkingStartTime={setParkingStartTime}
-            setRemainingTime={setRemainingTime}
-            setIsExpanded={setIsExpanded}
-            isExpanded={isExpanded}
-            updateReservationStatus={updateReservationStatusInStorage}
-          />
-        </CardContent>
+        <ReservationCardHeader 
+          spotId={reservation.spotId}
+          status={status}
+          remainingTime={remainingTime}
+        />
+        <ReservationCardDetails
+          reservation={reservation}
+          status={status}
+          hasEntered={hasEntered}
+          parkingStartTime={parkingStartTime}
+          remainingTime={remainingTime}
+          isExpanded={isExpanded}
+          setIsExpanded={setIsExpanded}
+          setState={setState}
+          updateReservationStatusInStorage={updateReservationStatusInStorage}
+        />
       </Card>
     </motion.div>
   );
