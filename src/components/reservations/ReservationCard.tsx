@@ -14,15 +14,43 @@ interface ReservationCardProps {
 }
 
 const ReservationCard = ({ reservation }: ReservationCardProps) => {
+  // Initialize state from reservation or sessionStorage to persist across refreshes
+  const getInitialState = () => {
+    // Try to get data from sessionStorage first
+    const storedReservations = sessionStorage.getItem('userReservations');
+    if (storedReservations) {
+      const reservations = JSON.parse(storedReservations);
+      const currentReservation = reservations.find((res: Reservation) => res.id === reservation.id);
+      if (currentReservation) {
+        return {
+          status: currentReservation.status,
+          hasEntered: !!currentReservation.parkingSession?.startTime,
+          parkingStartTime: currentReservation.parkingSession?.startTime || null,
+          remainingTime: currentReservation.status === 'pending' 
+            ? (currentReservation.parkingSession?.timeToAccess ?? 15) 
+            : 0
+        };
+      }
+    }
+    
+    // Fall back to props if no sessionStorage data
+    return {
+      status: reservation.status,
+      hasEntered: !!reservation.parkingSession?.startTime,
+      parkingStartTime: reservation.parkingSession?.startTime || null,
+      remainingTime: reservation.status === 'pending' 
+        ? (reservation.parkingSession?.timeToAccess ?? 15) 
+        : 0
+    };
+  };
+
+  const initialState = getInitialState();
+  
   const [isExpanded, setIsExpanded] = useState(false);
-  const [hasEntered, setHasEntered] = useState(!!reservation.parkingSession?.startTime);
-  const [parkingStartTime, setParkingStartTime] = useState<string | null>(
-    reservation.parkingSession?.startTime || null
-  );
-  const [remainingTime, setRemainingTime] = useState<number>(
-    reservation.status === 'pending' ? (reservation.parkingSession?.timeToAccess ?? 15) : 0
-  );
-  const [status, setStatus] = useState(reservation.status);
+  const [hasEntered, setHasEntered] = useState(initialState.hasEntered);
+  const [parkingStartTime, setParkingStartTime] = useState<string | null>(initialState.parkingStartTime);
+  const [remainingTime, setRemainingTime] = useState<number>(initialState.remainingTime);
+  const [status, setStatus] = useState(initialState.status);
 
   // Timer for pending reservations
   useEffect(() => {
@@ -32,6 +60,8 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
         setRemainingTime(prev => {
           if (prev <= 1) {
             setStatus('cancelled');
+            // Update in storage when timer expires
+            updateReservationStatusInStorage('cancelled');
             clearInterval(timer);
             return 0;
           }
@@ -42,7 +72,38 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [status, hasEntered, remainingTime]);
+  }, [status, hasEntered, remainingTime, reservation.id]);
+
+  // Helper function to update reservation in storage
+  const updateReservationStatusInStorage = (newStatus: string, startTime?: string, endTime?: string) => {
+    const storedReservations = sessionStorage.getItem('userReservations');
+    if (storedReservations) {
+      const reservations = JSON.parse(storedReservations);
+      const updatedReservations = reservations.map((res: any) => {
+        if (res.id === reservation.id) {
+          const updatedRes = { ...res, status: newStatus };
+          if (startTime) {
+            updatedRes.parkingSession = {
+              ...updatedRes.parkingSession,
+              startTime
+            };
+          }
+          if (endTime) {
+            updatedRes.parkingSession = {
+              ...updatedRes.parkingSession,
+              endTime
+            };
+          }
+          return updatedRes;
+        }
+        return res;
+      });
+      sessionStorage.setItem('userReservations', JSON.stringify(updatedReservations));
+      
+      // Trigger a storage event so other tabs can update
+      window.dispatchEvent(new Event('storage'));
+    }
+  };
 
   return (
     <motion.div
@@ -132,6 +193,7 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
             setRemainingTime={setRemainingTime}
             setIsExpanded={setIsExpanded}
             isExpanded={isExpanded}
+            updateReservationStatus={updateReservationStatusInStorage}
           />
         </CardContent>
       </Card>

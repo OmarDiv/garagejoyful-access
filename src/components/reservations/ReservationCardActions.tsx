@@ -18,6 +18,7 @@ interface ReservationCardActionsProps {
   setRemainingTime: (t: number) => void;
   setIsExpanded: (v: boolean) => void;
   isExpanded: boolean;
+  updateReservationStatus: (newStatus: string, startTime?: string, endTime?: string) => void;
 }
 
 const ReservationCardActions = ({
@@ -32,35 +33,8 @@ const ReservationCardActions = ({
   setRemainingTime,
   setIsExpanded,
   isExpanded,
+  updateReservationStatus,
 }: ReservationCardActionsProps) => {
-  // Helper: update in storage
-  const updateReservationStatus = (newStatus: string, startTime?: string, endTime?: string) => {
-    const storedReservations = sessionStorage.getItem('userReservations');
-    if (storedReservations) {
-      const reservations = JSON.parse(storedReservations);
-      const updatedReservations = reservations.map((res: any) => {
-        if (res.id === reservation.id) {
-          const updatedRes = { ...res, status: newStatus };
-          if (startTime) {
-            updatedRes.parkingSession = {
-              ...updatedRes.parkingSession,
-              startTime
-            };
-          }
-          if (endTime) {
-            updatedRes.parkingSession = {
-              ...updatedRes.parkingSession,
-              endTime
-            };
-          }
-          return updatedRes;
-        }
-        return res;
-      });
-      sessionStorage.setItem('userReservations', JSON.stringify(updatedReservations));
-    }
-  };
-
   const updateParkingSpotStatus = (newStatus: 'available' | 'occupied' | 'reserved') => {
     const storedSpots = sessionStorage.getItem('parkingSpots');
     if (storedSpots) {
@@ -83,12 +57,13 @@ const ReservationCardActions = ({
   };
 
   const handleOpenGarage = () => {
-    setStatus('active');
     const currentTime = new Date().toLocaleTimeString();
+    setStatus('active');
     setParkingStartTime(currentTime);
     setHasEntered(true);
     updateReservationStatus('active', currentTime);
     updateParkingSpotStatus('occupied');
+    
     toast.success('Opening garage door...', {
       description: `Access code: ${reservation.accessCode || 'XXXX-XXXX'}`,
     });
@@ -98,6 +73,7 @@ const ReservationCardActions = ({
     setStatus('cancelled');
     updateReservationStatus('cancelled');
     updateParkingSpotStatus('available');
+    
     toast.info('Reservation cancelled', {
       description: 'Your reservation has been cancelled successfully',
     });
@@ -106,12 +82,77 @@ const ReservationCardActions = ({
   const handleEndParking = () => {
     const endTime = new Date().toLocaleTimeString();
     const duration = parkingStartTime ? calculateDuration(parkingStartTime, endTime) : 'N/A';
+    
     setStatus('completed');
     updateReservationStatus('completed', parkingStartTime || undefined, endTime);
     updateParkingSpotStatus('available');
+    
     toast.success('Parking session ended', {
       description: `Duration: ${duration}`,
     });
+  };
+
+  // This function determines which buttons to show based on current state
+  const renderActionButtons = () => {
+    if (status === 'completed' || status === 'cancelled') {
+      // No action buttons for completed or cancelled reservations
+      return null;
+    }
+    
+    if (status === 'pending' && remainingTime > 0 && !hasEntered) {
+      return (
+        <>
+          <Button 
+            variant="outline"
+            size="sm"
+            className="text-red-600 border-red-200 hover:bg-red-50 transition-all duration-300"
+            onClick={handleCancelReservation}
+          >
+            <XIcon className="mr-1 h-4 w-4" />
+            Cancel
+          </Button>
+          <Button 
+            variant="default"
+            size="sm"
+            className="bg-green-600 hover:bg-green-700 transition-all duration-300"
+            onClick={handleOpenGarage}
+          >
+            <DoorOpen className="mr-1 h-4 w-4" />
+            Open Gate
+          </Button>
+        </>
+      );
+    }
+    
+    if (status === 'active' && !hasEntered) {
+      return (
+        <Button 
+          variant="default"
+          size="sm"
+          className="bg-green-600 hover:bg-green-700 transition-all duration-300"
+          onClick={handleOpenGarage}
+        >
+          <DoorOpen className="mr-1 h-4 w-4" />
+          Open Gate
+        </Button>
+      );
+    }
+    
+    if (status === 'active' && hasEntered && parkingStartTime) {
+      return (
+        <Button 
+          variant="default"
+          size="sm"
+          className="bg-red-600 hover:bg-red-700 transition-all duration-300"
+          onClick={handleEndParking}
+        >
+          <LogOut className="mr-1 h-4 w-4" />
+          End Parking
+        </Button>
+      );
+    }
+    
+    return null;
   };
 
   return (
@@ -126,50 +167,7 @@ const ReservationCardActions = ({
       </Button>
 
       <div className="flex gap-2">
-        {status === 'pending' && remainingTime > 0 && !hasEntered && (
-          <>
-            <Button 
-              variant="outline"
-              size="sm"
-              className="text-red-600 border-red-200 hover:bg-red-50 transition-all duration-300"
-              onClick={handleCancelReservation}
-            >
-              <XIcon className="mr-1 h-4 w-4" />
-              Cancel
-            </Button>
-            <Button 
-              variant="default"
-              size="sm"
-              className="bg-green-600 hover:bg-green-700 transition-all duration-300"
-              onClick={handleOpenGarage}
-            >
-              <DoorOpen className="mr-1 h-4 w-4" />
-              Open Gate
-            </Button>
-          </>
-        )}
-        {status === 'active' && !hasEntered && (
-          <Button 
-            variant="default"
-            size="sm"
-            className="bg-green-600 hover:bg-green-700 transition-all duration-300"
-            onClick={handleOpenGarage}
-          >
-            <DoorOpen className="mr-1 h-4 w-4" />
-            Open Gate
-          </Button>
-        )}
-        {hasEntered && parkingStartTime && (
-          <Button 
-            variant="default"
-            size="sm"
-            className="bg-red-600 hover:bg-red-700 transition-all duration-300"
-            onClick={handleEndParking}
-          >
-            <LogOut className="mr-1 h-4 w-4" />
-            End Parking
-          </Button>
-        )}
+        {renderActionButtons()}
       </div>
     </div>
   );

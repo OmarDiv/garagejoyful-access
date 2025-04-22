@@ -24,6 +24,30 @@ const ReservationsContainer = () => {
     // Function to load reservations
     const loadReservations = () => {
       setIsLoading(true);
+      
+      // Try to get from sessionStorage first
+      const storedReservations = sessionStorage.getItem('userReservations');
+      if (storedReservations) {
+        try {
+          const parsed = JSON.parse(storedReservations);
+          const userReservations = parsed.filter((res: Reservation) => res.userId === user.id)
+            .sort((a: Reservation, b: Reservation) => {
+              if (a.status === 'active') return -1;
+              if (b.status === 'active') return 1;
+              if (a.status === 'pending') return -1;
+              if (b.status === 'pending') return 1;
+              return new Date(b.date).getTime() - new Date(a.date).getTime();
+            });
+          
+          setReservations(userReservations);
+          setIsLoading(false);
+          return;
+        } catch (error) {
+          console.error('Error parsing stored reservations', error);
+        }
+      }
+      
+      // Fall back to mock data if nothing in storage
       const userReservations = getMockReservations(user.id)
         .sort((a, b) => {
           if (a.status === 'active') return -1;
@@ -32,6 +56,10 @@ const ReservationsContainer = () => {
           if (b.status === 'pending') return 1;
           return new Date(b.date).getTime() - new Date(a.date).getTime();
         });
+      
+      // Save to sessionStorage for persistence
+      sessionStorage.setItem('userReservations', JSON.stringify(userReservations));
+      
       setReservations(userReservations);
       setIsLoading(false);
     };
@@ -46,8 +74,14 @@ const ReservationsContainer = () => {
       }
     };
     
+    // Custom event handler for internal updates
+    const handleInternalStorageChange = () => {
+      loadReservations();
+    };
+    
     // Monitor for storage changes
     window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('storage', handleInternalStorageChange);
     
     // Create an interval to check for sessionStorage updates (since storage event doesn't fire in same tab)
     const interval = setInterval(() => {
@@ -69,6 +103,7 @@ const ReservationsContainer = () => {
     
     return () => {
       window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('storage', handleInternalStorageChange);
       clearInterval(interval);
     };
   }, [user]);
