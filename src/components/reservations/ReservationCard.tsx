@@ -37,7 +37,7 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
           }
           return prev - 1;
         });
-      }, 60000);
+      }, 60000); // Decrease every minute
     }
     return () => {
       if (timer) clearInterval(timer);
@@ -50,34 +50,65 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
       layout
+      className="mb-4"
     >
-      <Card className={`mb-4 overflow-hidden hover:shadow-md transition-shadow ${
+      <Card className={`overflow-hidden hover:shadow-md transition-all duration-300 ${
         status === 'active' ? 'border-green-200 bg-green-50/30' : 
-        status === 'pending' ? 'border-yellow-200 bg-yellow-50/30' : ''
+        status === 'pending' ? 'border-yellow-200 bg-yellow-50/30' : 
+        status === 'completed' ? 'border-blue-200 bg-blue-50/30' : 
+        status === 'cancelled' ? 'border-red-200 bg-red-50/30' : ''
       }`}>
         <CardHeader className="pb-3">
           <div className="flex justify-between items-center">
-            <CardTitle className="text-lg font-medium">Parking Spot #{reservation.spotId}</CardTitle>
+            <CardTitle className="text-lg font-medium flex items-center">
+              <motion.span
+                initial={{ scale: 0.9 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.3 }}
+                className="mr-2 bg-indigo-100 text-indigo-600 p-1 rounded-full flex items-center justify-center w-7 h-7 text-sm"
+              >
+                {reservation.spotId}
+              </motion.span>
+              Parking Spot #{reservation.spotId}
+            </CardTitle>
             <StatusBadge status={status} remainingTime={remainingTime} />
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 gap-4">
+          <motion.div className="grid grid-cols-1 gap-4">
             <div className="space-y-3">
-              <div className="flex items-center gap-2 text-guardian-gray">
+              <motion.div 
+                initial={{ x: -10, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.1 }}
+                className="flex items-center gap-2 text-guardian-gray"
+              >
                 <Calendar size={16} className="text-indigo-600" />
                 <span>{reservation.date}</span>
-              </div>
-              <div className="flex items-center gap-2 text-guardian-gray">
+              </motion.div>
+              <motion.div 
+                initial={{ x: -10, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="flex items-center gap-2 text-guardian-gray"
+              >
                 <Clock size={16} className="text-indigo-600" />
                 <span>{reservation.time}</span>
-              </div>
-              <CarDetailsCard carDetails={reservation.carDetails} />
+              </motion.div>
+              <motion.div
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.3 }}
+              >
+                <CarDetailsCard carDetails={reservation.carDetails} />
+              </motion.div>
 
               {(status === 'active' || hasEntered || isExpanded) && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
                 >
                   <ParkingSessionDetails
                     reservationTime={reservation.parkingSession?.reservationTime || reservation.time}
@@ -87,7 +118,7 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
                 </motion.div>
               )}
             </div>
-          </div>
+          </motion.div>
 
           <ReservationCardActions
             reservation={reservation}

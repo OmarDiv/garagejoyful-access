@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { Reservation } from './types';
 import { calculateDuration } from './reservationUtils';
-import { useState } from 'react';
+import api from '@/services/api';
 
 interface ReservationCardActionsProps {
   reservation: Reservation;
@@ -73,6 +73,13 @@ const ReservationCardActions = ({
       });
       sessionStorage.setItem('parkingSpots', JSON.stringify(updatedSpots));
     }
+    
+    // Also call API to update spot status
+    try {
+      api.updateParkingSpotStatus(reservation.spotId, newStatus);
+    } catch (error) {
+      console.error('Failed to update parking spot status', error);
+    }
   };
 
   const handleOpenGarage = () => {
@@ -105,8 +112,6 @@ const ReservationCardActions = ({
     toast.success('Parking session ended', {
       description: `Duration: ${duration}`,
     });
-    setHasEntered(false);
-    setParkingStartTime(null);
   };
 
   return (
@@ -115,6 +120,7 @@ const ReservationCardActions = ({
         variant="ghost" 
         size="sm"
         onClick={() => setIsExpanded(!isExpanded)}
+        className="transition-all duration-300 hover:text-indigo-600"
       >
         {isExpanded ? 'Show Less' : 'Show More'}
       </Button>
@@ -125,7 +131,7 @@ const ReservationCardActions = ({
             <Button 
               variant="outline"
               size="sm"
-              className="text-red-600 border-red-200 hover:bg-red-50"
+              className="text-red-600 border-red-200 hover:bg-red-50 transition-all duration-300"
               onClick={handleCancelReservation}
             >
               <XIcon className="mr-1 h-4 w-4" />
@@ -134,7 +140,7 @@ const ReservationCardActions = ({
             <Button 
               variant="default"
               size="sm"
-              className="bg-green-600 hover:bg-green-700"
+              className="bg-green-600 hover:bg-green-700 transition-all duration-300"
               onClick={handleOpenGarage}
             >
               <DoorOpen className="mr-1 h-4 w-4" />
@@ -146,7 +152,7 @@ const ReservationCardActions = ({
           <Button 
             variant="default"
             size="sm"
-            className="bg-green-600 hover:bg-green-700"
+            className="bg-green-600 hover:bg-green-700 transition-all duration-300"
             onClick={handleOpenGarage}
           >
             <DoorOpen className="mr-1 h-4 w-4" />
@@ -157,7 +163,7 @@ const ReservationCardActions = ({
           <Button 
             variant="default"
             size="sm"
-            className="bg-red-600 hover:bg-red-700"
+            className="bg-red-600 hover:bg-red-700 transition-all duration-300"
             onClick={handleEndParking}
           >
             <LogOut className="mr-1 h-4 w-4" />

@@ -2,12 +2,15 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/hooks/useAuth';
 
 interface HeroContentProps {
   isInView: boolean;
 }
 
 const HeroContent = ({ isInView }: HeroContentProps) => {
+  const { isAuthenticated, user } = useAuth();
+  
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -52,32 +55,56 @@ const HeroContent = ({ isInView }: HeroContentProps) => {
         variants={itemVariants}
         className="text-4xl md:text-5xl lg:text-6xl font-bold text-guardian-darkGray leading-tight"
       >
-        Smart Parking <span className="text-indigo-600">Made Simple</span>
+        {isAuthenticated ? (
+          <>Welcome <span className="text-indigo-600">{user?.name}</span></>
+        ) : (
+          <>Smart Parking <span className="text-indigo-600">Made Simple</span></>
+        )}
       </motion.h1>
       
       <motion.p 
         variants={itemVariants}
         className="mt-6 text-lg text-guardian-gray max-w-lg"
       >
-        Find and reserve the perfect parking spot in seconds. 
-        No more circling the block or stressing about where to park.
+        {isAuthenticated 
+          ? "Continue where you left off and manage your parking reservations with ease."
+          : "Find and reserve the perfect parking spot in seconds. No more circling the block or stressing about where to park."
+        }
       </motion.p>
       
       <motion.div 
         variants={itemVariants}
         className="mt-8 flex flex-col sm:flex-row gap-4"
       >
-        <Link to="/dashboard">
-          <Button className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg shadow-lg btn-hover-effect min-w-[160px]">
-            Find Parking
-          </Button>
-        </Link>
-        
-        <Link to="/auth">
-          <Button variant="outline" className="border-indigo-600 text-indigo-600 hover:bg-indigo-50 px-6 py-3 rounded-lg btn-hover-effect min-w-[160px]">
-            Sign In
-          </Button>
-        </Link>
+        {isAuthenticated ? (
+          <>
+            <Link to="/dashboard">
+              <Button className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 btn-hover-effect min-w-[160px]">
+                Find Parking
+              </Button>
+            </Link>
+            
+            <Link to="/reservations">
+              <Button variant="outline" className="border-indigo-600 text-indigo-600 hover:bg-indigo-50 px-6 py-3 rounded-lg hover:shadow-md transition-all duration-300 btn-hover-effect min-w-[160px]">
+                My Reservations
+              </Button>
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link to="/dashboard">
+              <Button className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 btn-hover-effect min-w-[160px]">
+                Find Parking
+              </Button>
+            </Link>
+            
+            <Link to="/auth">
+              <Button variant="outline" className="border-indigo-600 text-indigo-600 hover:bg-indigo-50 px-6 py-3 rounded-lg hover:shadow-md transition-all duration-300 btn-hover-effect min-w-[160px]">
+                Sign In
+              </Button>
+            </Link>
+          </>
+        )}
       </motion.div>
       
       <motion.div 

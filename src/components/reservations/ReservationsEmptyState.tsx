@@ -1,45 +1,51 @@
 
 import { motion } from 'framer-motion';
-import { CalendarX } from 'lucide-react';
+import { Calendar, AlertTriangle, ThumbsUp, Clock } from 'lucide-react';
 
 interface ReservationsEmptyStateProps {
   status?: 'active' | 'completed' | 'cancelled' | 'pending';
 }
 
 const ReservationsEmptyState = ({ status }: ReservationsEmptyStateProps) => {
-  const getMessage = () => {
-    switch (status) {
-      case 'active':
-        return 'You have no active parking sessions';
-      case 'completed':
-        return 'You have no completed reservations';
-      case 'cancelled':
-        return 'You have no cancelled reservations';
-      case 'pending':
-        return 'You have no pending reservations';
-      default:
-        return 'You have no parking reservations';
-    }
-  };
+  let icon = <Calendar className="w-12 h-12 text-guardian-gray/50" />;
+  let title = "No Reservations";
+  let description = "You don't have any parking reservations yet.";
+
+  if (status === 'active') {
+    icon = <Clock className="w-12 h-12 text-blue-400" />;
+    title = "No Active Reservations";
+    description = "You don't have any active parking sessions at the moment.";
+  } else if (status === 'completed') {
+    icon = <ThumbsUp className="w-12 h-12 text-green-400" />;
+    title = "No Completed Reservations";
+    description = "You don't have any completed parking reservations yet.";
+  } else if (status === 'cancelled') {
+    icon = <AlertTriangle className="w-12 h-12 text-red-400" />;
+    title = "No Cancelled Reservations";
+    description = "You don't have any cancelled reservations.";
+  } else if (status === 'pending') {
+    icon = <Clock className="w-12 h-12 text-yellow-400" />;
+    title = "No Pending Reservations";
+    description = "You don't have any upcoming reservations waiting to be used.";
+  }
 
   return (
-    <motion.div
+    <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="text-center py-12 bg-slate-50 rounded-lg"
+      exit={{ opacity: 0, y: 20 }}
+      transition={{ duration: 0.4 }}
+      className="flex flex-col items-center justify-center text-center p-10 rounded-lg bg-white shadow-sm border border-gray-100"
     >
-      <div className="flex flex-col items-center">
-        <div className="bg-slate-100 p-4 rounded-full mb-4">
-          <CalendarX className="h-10 w-10 text-slate-400" />
-        </div>
-        <h3 className="text-lg font-medium text-slate-700 mb-2">{getMessage()}</h3>
-        <p className="text-sm text-slate-500 max-w-sm mx-auto">
-          {status === 'pending' ? 
-            'Book a parking spot to see your upcoming reservations here.' :
-            'Your reservation history will appear here once you start using our parking service.'}
-        </p>
-      </div>
+      <motion.div 
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
+      >
+        {icon}
+      </motion.div>
+      <h3 className="mt-4 text-xl font-medium text-guardian-darkGray">{title}</h3>
+      <p className="mt-2 text-guardian-gray">{description}</p>
     </motion.div>
   );
 };
