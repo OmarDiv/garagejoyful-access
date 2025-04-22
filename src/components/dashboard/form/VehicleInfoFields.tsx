@@ -1,5 +1,13 @@
 
 import { Car } from 'lucide-react';
+import { commonCarTypes } from './carTypes';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface VehicleInfoFieldsProps {
   carPlate: string;
@@ -12,7 +20,7 @@ const VehicleInfoFields = ({
   carPlate,
   setCarPlate,
   carModel,
-  setCarModel
+  setCarModel,
 }: VehicleInfoFieldsProps) => {
   return (
     <div className="space-y-4">
@@ -38,16 +46,33 @@ const VehicleInfoFields = ({
       
       <div>
         <label htmlFor="carModel" className="block text-sm font-medium text-guardian-darkGray mb-1">
-          Car Model
+          Car Type
         </label>
-        <input
-          id="carModel"
-          type="text"
+        <Select
           value={carModel}
-          onChange={(e) => setCarModel(e.target.value)}
-          placeholder="e.g. Toyota Camry, Honda Civic"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-guardian-blue focus:border-transparent"
-        />
+          onValueChange={setCarModel}
+        >
+          <SelectTrigger id="carModel" className="w-full bg-white">
+            <SelectValue placeholder="Select car type or enter custom" />
+          </SelectTrigger>
+          <SelectContent>
+            {commonCarTypes.map((type) => (
+              <SelectItem key={type} value={type}>
+                {type}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        {carModel === 'Other' && (
+          <input
+            type="text"
+            value={carModel === 'Other' ? '' : carModel}
+            onChange={(e) => setCarModel(e.target.value)}
+            placeholder="Enter custom car type"
+            className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-guardian-blue focus:border-transparent"
+          />
+        )}
       </div>
     </div>
   );

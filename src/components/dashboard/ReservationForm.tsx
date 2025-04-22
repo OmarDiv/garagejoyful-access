@@ -35,7 +35,7 @@ const ReservationForm = ({ spotId, onSubmit }: ReservationFormProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!fullName.trim() || !email.trim() || !carPlate.trim()) {
+    if (!fullName.trim() || !email.trim() || !carPlate.trim() || !carModel.trim()) {
       toast({
         title: "Required fields missing",
         description: "Please fill in all required fields",
@@ -46,11 +46,11 @@ const ReservationForm = ({ spotId, onSubmit }: ReservationFormProps) => {
     
     // Collect all form data
     const formData = {
-      fullName,
-      email,
-      phone,
-      carPlate,
-      carModel
+      fullName: fullName.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
+      carPlate: carPlate.trim(),
+      carModel: carModel.trim(),
     };
     
     // Call the parent handler with form data
@@ -67,26 +67,24 @@ const ReservationForm = ({ spotId, onSubmit }: ReservationFormProps) => {
           message="Please provide your details to complete the reservation" 
         />
         
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-4 mb-6">
-            {/* Personal Information */}
-            <PersonalInfoFields
-              fullName={fullName}
-              setFullName={setFullName}
-              email={email}
-              setEmail={setEmail}
-              phone={phone}
-              setPhone={setPhone}
-            />
-            
-            {/* Car Information */}
-            <VehicleInfoFields
-              carPlate={carPlate}
-              setCarPlate={setCarPlate}
-              carModel={carModel}
-              setCarModel={setCarModel}
-            />
-          </div>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Personal Information */}
+          <PersonalInfoFields
+            fullName={fullName}
+            setFullName={setFullName}
+            email={email}
+            setEmail={setEmail}
+            phone={phone}
+            setPhone={setPhone}
+          />
+          
+          {/* Car Information */}
+          <VehicleInfoFields
+            carPlate={carPlate}
+            setCarPlate={setCarPlate}
+            carModel={carModel}
+            setCarModel={setCarModel}
+          />
           
           <Button type="submit" className="w-full btn-hover-effect">
             Confirm Reservation
