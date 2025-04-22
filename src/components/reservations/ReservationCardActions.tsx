@@ -84,6 +84,7 @@ const ReservationCardActions = ({
     const duration = parkingStartTime ? calculateDuration(parkingStartTime, endTime) : 'N/A';
     
     setStatus('completed');
+    setHasEntered(false); // Reset hasEntered to ensure button won't show again
     updateReservationStatus('completed', parkingStartTime || undefined, endTime);
     updateParkingSpotStatus('available');
     

@@ -24,7 +24,8 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
       if (currentReservation) {
         return {
           status: currentReservation.status,
-          hasEntered: !!currentReservation.parkingSession?.startTime,
+          // If status is completed, always set hasEntered to false to prevent button reappearing
+          hasEntered: currentReservation.status === 'completed' ? false : !!currentReservation.parkingSession?.startTime,
           parkingStartTime: currentReservation.parkingSession?.startTime || null,
           remainingTime: currentReservation.status === 'pending' 
             ? (currentReservation.parkingSession?.timeToAccess ?? 15) 
@@ -36,7 +37,8 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
     // Fall back to props if no sessionStorage data
     return {
       status: reservation.status,
-      hasEntered: !!reservation.parkingSession?.startTime,
+      // If status is completed, ensure hasEntered is false
+      hasEntered: reservation.status === 'completed' ? false : !!reservation.parkingSession?.startTime,
       parkingStartTime: reservation.parkingSession?.startTime || null,
       remainingTime: reservation.status === 'pending' 
         ? (reservation.parkingSession?.timeToAccess ?? 15) 
@@ -81,7 +83,13 @@ const ReservationCard = ({ reservation }: ReservationCardProps) => {
       const reservations = JSON.parse(storedReservations);
       const updatedReservations = reservations.map((res: any) => {
         if (res.id === reservation.id) {
-          const updatedRes = { ...res, status: newStatus };
+          const updatedRes = { 
+            ...res, 
+            status: newStatus,
+            // If status is completed, ensure we store that info to prevent button showing again
+            completed: newStatus === 'completed' ? true : res.completed 
+          };
+          
           if (startTime) {
             updatedRes.parkingSession = {
               ...updatedRes.parkingSession,
