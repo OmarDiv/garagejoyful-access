@@ -1,13 +1,23 @@
 
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, CheckSquare, History, LogIn, LogOut, User } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Menu, X, CheckSquare, History, LogIn, User, Settings } from 'lucide-react';
 import { useAuth } from '@/hooks/auth';
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuLabel, 
+  DropdownMenuSeparator, 
+  DropdownMenuTrigger 
+} from "@/components/ui/dropdown-menu";
+import { toast } from 'sonner';
 
 const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { isAuthenticated, user, logout } = useAuth();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -27,6 +37,8 @@ const NavBar = () => {
 
   const handleLogout = () => {
     logout();
+    toast.success("Successfully signed out");
+    navigate('/');
   };
 
   const navLinks = [
@@ -73,17 +85,26 @@ const NavBar = () => {
             
             {isAuthenticated ? (
               <div className="flex items-center gap-3">
-                <span className="text-guardian-darkGray">
-                  <User size={18} className="inline-block mr-1" />
-                  <span className="hidden lg:inline">{user?.name}</span>
-                </span>
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center gap-1.5 text-white bg-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all-300"
-                >
-                  <LogOut size={18} />
-                  <span>Sign Out</span>
-                </button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="flex items-center gap-2 text-guardian-darkGray hover:text-indigo-600 transition-all-300">
+                    <Settings size={18} />
+                    <span className="hidden lg:inline">Settings</span>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel className="flex items-center gap-2">
+                      <User size={16} />
+                      <span>{user?.name}</span>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => navigate('/settings')}>
+                      Profile Settings
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout}>
+                      Sign Out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             ) : (
               <Link
@@ -132,11 +153,18 @@ const NavBar = () => {
                 <User size={18} className="inline-block mr-2" />
                 <span>{user?.name}</span>
               </div>
+              <Link
+                to="/settings"
+                className="block py-2 px-4 rounded-lg text-guardian-darkGray hover:bg-gray-50"
+              >
+                <Settings size={18} className="inline-block mr-2" />
+                Profile Settings
+              </Link>
               <button
                 onClick={handleLogout}
                 className="w-full flex items-center gap-1.5 text-white bg-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all-300 mt-2"
               >
-                <LogOut size={18} />
+                <LogIn size={18} />
                 <span>Sign Out</span>
               </button>
             </>
