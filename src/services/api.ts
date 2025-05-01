@@ -2,7 +2,7 @@
 // This file will handle all API calls to the .NET backend
 
 // Base URL for the .NET API - replace with your actual API URL when deployed
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 // Helper function to handle fetch responses
 const handleResponse = async (response: Response) => {
