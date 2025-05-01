@@ -1,6 +1,6 @@
 
 import { Car } from 'lucide-react';
-import { commonCarTypes } from './carTypes';
+import { commonCarModels } from './carTypes';
 import {
   Select,
   SelectContent,
@@ -46,19 +46,19 @@ const VehicleInfoFields = ({
       
       <div>
         <label htmlFor="carModel" className="block text-sm font-medium text-guardian-darkGray mb-1">
-          Car Type
+          Car Model <span className="text-guardian-red">*</span>
         </label>
         <Select
           value={carModel}
           onValueChange={setCarModel}
         >
           <SelectTrigger id="carModel" className="w-full bg-white">
-            <SelectValue placeholder="Select car type or enter custom" />
+            <SelectValue placeholder="Select car model" />
           </SelectTrigger>
           <SelectContent>
-            {commonCarTypes.map((type) => (
-              <SelectItem key={type} value={type}>
-                {type}
+            {commonCarModels.map((model) => (
+              <SelectItem key={model} value={model}>
+                {model}
               </SelectItem>
             ))}
           </SelectContent>
@@ -69,7 +69,7 @@ const VehicleInfoFields = ({
             type="text"
             value={carModel === 'Other' ? '' : carModel}
             onChange={(e) => setCarModel(e.target.value)}
-            placeholder="Enter custom car type"
+            placeholder="Enter custom car model"
             className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-guardian-blue focus:border-transparent"
           />
         )}

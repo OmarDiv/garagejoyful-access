@@ -14,7 +14,7 @@ const CarDetailsCard: React.FC<CarDetailsCardProps> = ({ carDetails }) => (
       Vehicle Details
     </h4>
     <div className="text-sm space-y-1 text-guardian-gray">
-      <p>{carDetails.make} {carDetails.model}</p>
+      <p>Model: {carDetails.model}</p>
       <p>License: {carDetails.licensePlate}</p>
     </div>
   </div>

@@ -2,7 +2,7 @@
 // This file will handle all API calls to the .NET backend
 
 // Base URL for the .NET API - replace with your actual API URL when deployed
-const API_BASE_URL = 'https://your-dotnet-api.com/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 // Helper function to handle fetch responses
 const handleResponse = async (response: Response) => {
@@ -10,7 +10,7 @@ const handleResponse = async (response: Response) => {
     // Try to parse error message from response
     try {
       const errorData = await response.json();
-      throw new Error(errorData.message || `Error: ${response.status}`);
+      throw new Error(errorData.message || errorData.title || `Error: ${response.status}`);
     } catch (e) {
       throw new Error(`Network error: ${response.status}`);
     }
@@ -33,101 +33,178 @@ const getAuthHeaders = () => {
   return headers;
 };
 
-// API functions
-export const api = {
-  // Parking spots
+// Mock implementation for frontend-only development
+const mockApi = {
+  login: async (email: string, password: string) => {
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    // For demo purposes, accept any login
+    const user = {
+      id: '1',
+      email,
+      name: email.split('@')[0],
+      phone: '123-456-7890'
+    };
+    
+    // Store auth token in session storage
+    sessionStorage.setItem('authToken', 'mock-token-12345');
+    sessionStorage.setItem('currentUser', JSON.stringify(user));
+    
+    return { user, token: 'mock-token-12345' };
+  },
+  
+  updateProfile: async (userData: { phone?: string }) => {
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+    const updatedUser = { ...currentUser, ...userData };
+    
+    sessionStorage.setItem('currentUser', JSON.stringify(updatedUser));
+    
+    return updatedUser;
+  },
+  
+  changePassword: async (oldPassword: string, newPassword: string) => {
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    // In a real app, this would validate the old password and update to the new one
+    return { success: true, message: 'Password updated successfully' };
+  },
+  
   getParkingSpots: async () => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/parking-spots`, {
-        headers: getAuthHeaders(),
-      });
-      return handleResponse(response);
-    } catch (error) {
-      console.error('API error in getParkingSpots:', error);
-      throw error;
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    // Get from session storage or use default
+    const storedSpots = sessionStorage.getItem('parkingSpots');
+    if (storedSpots) {
+      return JSON.parse(storedSpots);
     }
+    
+    // Mock data
+    const mockSpots = [
+      { id: '1', status: 'available', level: '1', section: 'A' },
+      { id: '2', status: 'reserved', level: '1', section: 'A' },
+      { id: '3', status: 'occupied', level: '1', section: 'A' },
+      { id: '4', status: 'available', level: '1', section: 'A' },
+    ];
+    
+    sessionStorage.setItem('parkingSpots', JSON.stringify(mockSpots));
+    return mockSpots;
   },
   
-  // Reservations
   createReservation: async (reservationData: any) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/reservations`, {
-        method: 'POST',
-        headers: getAuthHeaders(),
-        body: JSON.stringify(reservationData),
-      });
-      return handleResponse(response);
-    } catch (error) {
-      console.error('API error in createReservation:', error);
-      throw error;
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    const reservationId = `res-${Date.now()}`;
+    const newReservation = {
+      id: reservationId,
+      ...reservationData,
+      status: 'pending',
+      timestamp: new Date().toISOString(),
+      accessCode: `PARK-${Math.floor(1000 + Math.random() * 9000)}`
+    };
+    
+    // Store in session storage for frontend-only operation
+    const storedReservations = sessionStorage.getItem('userReservations');
+    let userReservations = storedReservations ? JSON.parse(storedReservations) : [];
+    userReservations = [newReservation, ...userReservations];
+    sessionStorage.setItem('userReservations', JSON.stringify(userReservations));
+    
+    // Update spot status
+    const storedSpots = sessionStorage.getItem('parkingSpots');
+    if (storedSpots) {
+      const spots = JSON.parse(storedSpots);
+      const updatedSpots = spots.map((spot: any) => 
+        spot.id === reservationData.spotId ? { ...spot, status: 'reserved' } : spot
+      );
+      sessionStorage.setItem('parkingSpots', JSON.stringify(updatedSpots));
     }
+    
+    return newReservation;
   },
   
-  getUserReservations: async (userId: string) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/users/${userId}/reservations`, {
-        headers: getAuthHeaders(),
-      });
-      return handleResponse(response);
-    } catch (error) {
-      console.error('API error in getUserReservations:', error);
-      throw error;
-    }
+  getUserReservations: async () => {
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    const storedReservations = sessionStorage.getItem('userReservations');
+    return storedReservations ? JSON.parse(storedReservations) : [];
   },
   
   cancelReservation: async (reservationId: string) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/reservations/${reservationId}/cancel`, {
-        method: 'POST',
-        headers: getAuthHeaders(),
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    // Update reservation status
+    const storedReservations = sessionStorage.getItem('userReservations');
+    if (storedReservations) {
+      const reservations = JSON.parse(storedReservations);
+      const updatedReservations = reservations.map((reservation: any) => {
+        if (reservation.id === reservationId) {
+          // Find the spot ID to update
+          const spotId = reservation.spotId;
+          
+          // Update spot status
+          const storedSpots = sessionStorage.getItem('parkingSpots');
+          if (storedSpots) {
+            const spots = JSON.parse(storedSpots);
+            const updatedSpots = spots.map((spot: any) => 
+              spot.id === spotId ? { ...spot, status: 'available' } : spot
+            );
+            sessionStorage.setItem('parkingSpots', JSON.stringify(updatedSpots));
+          }
+          
+          return { ...reservation, status: 'cancelled' };
+        }
+        return reservation;
       });
-      return handleResponse(response);
-    } catch (error) {
-      console.error('API error in cancelReservation:', error);
-      throw error;
+      
+      sessionStorage.setItem('userReservations', JSON.stringify(updatedReservations));
     }
+    
+    return { success: true, message: 'Reservation cancelled successfully' };
+  },
+
+  updateReservationStatus: async (reservationId: string, status: string, startTime?: string, endTime?: string) => {
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    const storedReservations = sessionStorage.getItem('userReservations');
+    if (storedReservations) {
+      const reservations = JSON.parse(storedReservations);
+      const updatedReservations = reservations.map((reservation: any) => {
+        if (reservation.id === reservationId) {
+          return { 
+            ...reservation, 
+            status,
+            ...(startTime && { parkingSession: { ...reservation.parkingSession, startTime } }),
+            ...(endTime && { parkingSession: { ...reservation.parkingSession, endTime } })
+          };
+        }
+        return reservation;
+      });
+      
+      sessionStorage.setItem('userReservations', JSON.stringify(updatedReservations));
+    }
+    
+    return { success: true };
   },
   
-  startParking: async (reservationId: string) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/reservations/${reservationId}/start`, {
-        method: 'POST',
-        headers: getAuthHeaders(),
-      });
-      return handleResponse(response);
-    } catch (error) {
-      console.error('API error in startParking:', error);
-      throw error;
-    }
-  },
-  
-  endParking: async (reservationId: string) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/reservations/${reservationId}/end`, {
-        method: 'POST',
-        headers: getAuthHeaders(),
-      });
-      return handleResponse(response);
-    } catch (error) {
-      console.error('API error in endParking:', error);
-      throw error;
-    }
-  },
-  
-  // Added this function to update a parking spot status
   updateParkingSpotStatus: async (spotId: string, status: 'available' | 'occupied' | 'reserved') => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/parking-spots/${spotId}/status`, {
-        method: 'PUT',
-        headers: getAuthHeaders(),
-        body: JSON.stringify({ status }),
-      });
-      return handleResponse(response);
-    } catch (error) {
-      console.error('API error in updateParkingSpotStatus:', error);
-      throw error;
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    const storedSpots = sessionStorage.getItem('parkingSpots');
+    if (storedSpots) {
+      const spots = JSON.parse(storedSpots);
+      const updatedSpots = spots.map((spot: any) => 
+        spot.id === spotId ? { ...spot, status } : spot
+      );
+      sessionStorage.setItem('parkingSpots', JSON.stringify(updatedSpots));
     }
-  },
+    
+    return { success: true };
+  }
 };
+
+// API functions (returns mock in development mode, would connect to real API in production)
+export const api = mockApi;
 
 export default api;

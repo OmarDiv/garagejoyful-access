@@ -4,8 +4,9 @@ import { motion } from 'framer-motion';
 import { Eye, EyeOff, UserPlus, LogIn, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/auth';
 import { toast } from 'sonner';
+import api from '@/services/api';
 
 type AuthMode = 'login' | 'register';
 
@@ -39,7 +40,7 @@ const AuthForm = () => {
     navigate(`/auth?mode=${newMode}`, { replace: true });
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
@@ -56,27 +57,30 @@ const AuthForm = () => {
       }
     }
     
-    // Simulate API call
-    setTimeout(() => {
+    try {
       if (mode === 'login') {
-        auth.login({
-          id: '1',
-          email,
-          name: email.split('@')[0]
-        });
+        const result = await api.login(email, password);
+        auth.login(result.user);
         toast.success("Logged in successfully");
       } else {
-        auth.login({
-          id: '1',
-          email,
-          name
-        });
+        // In a real app, this would have a register API call
+        // For now, we'll just use the login mock
+        const result = await api.login(email, password);
+        auth.login(result.user);
         toast.success("Account created successfully");
       }
       
-      setIsSubmitting(false);
       navigate(from);
-    }, 1000);
+    } catch (error) {
+      console.error('Auth error:', error);
+      uiToast({
+        title: mode === 'login' ? "Login failed" : "Registration failed",
+        description: "Please check your credentials and try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   
   const formVariants = {

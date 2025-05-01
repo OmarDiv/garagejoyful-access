@@ -1,12 +1,15 @@
 
-export const commonCarTypes = [
-  'Sedan',
-  'SUV',
-  'Hatchback',
-  'Pickup Truck',
-  'Van',
-  'Coupe',
+export const commonCarModels = [
+  'Toyota',
+  'Honda',
+  'Ford',
+  'Chevrolet',
+  'Nissan',
+  'BMW',
+  'Mercedes',
+  'Audi',
+  'Volkswagen',
   'Other'
 ] as const;
 
-export type CarType = (typeof commonCarTypes)[number] | string;
+export type CarModel = (typeof commonCarModels)[number] | string;

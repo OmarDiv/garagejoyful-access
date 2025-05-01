@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import About from "./pages/About";
 import AuthPage from "./pages/AuthPage";
 import ReservationsHistory from "./pages/ReservationsHistory";
+import UserSettings from "./pages/UserSettings";
 import { useState } from "react";
 import RequireAuth from "./components/auth/RequireAuth";
 
@@ -30,6 +31,14 @@ const App = () => {
             element={
               <RequireAuth>
                 <ReservationsHistory />
+              </RequireAuth>
+            } 
+          />
+          <Route 
+            path="/settings" 
+            element={
+              <RequireAuth>
+                <UserSettings />
               </RequireAuth>
             } 
           />
