@@ -51,8 +51,8 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         guardian: {
-          blue: "#3B82F6",
-          green: "#10B981",
+          blue: "#4B56D2", // Changed from #3B82F6 to a deeper blue
+          green: "#14b8a6", // Changed from #10B981 to a teal shade
           red: "#EF4444",
           yellow: "#F59E0B",
           gray: "#6B7280",

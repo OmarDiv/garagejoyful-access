@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Car } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import PersonalInfoFields from './form/PersonalInfoFields';
+import { useAuth } from '@/hooks/auth';
 import VehicleInfoFields from './form/VehicleInfoFields';
 import FormHeader from './form/FormHeader';
 import FormAlert from './form/FormAlert';
@@ -15,27 +15,25 @@ interface ReservationFormProps {
 }
 
 export interface FormData {
-  fullName: string;
-  email: string;
-  phone: string;
   carPlate: string;
   carModel: string;
+  fullName?: string;
+  email?: string;
+  phone?: string;
 }
 
 const ReservationForm = ({ spotId, onSubmit }: ReservationFormProps) => {
   const { toast } = useToast();
+  const { user } = useAuth();
   
-  // Form states
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  // Form states - simplified to just car info
   const [carPlate, setCarPlate] = useState('');
   const [carModel, setCarModel] = useState('');
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!fullName.trim() || !email.trim() || !carPlate.trim() || !carModel.trim()) {
+    if (!carPlate.trim() || !carModel.trim()) {
       toast({
         title: "Required fields missing",
         description: "Please fill in all required fields",
@@ -44,13 +42,13 @@ const ReservationForm = ({ spotId, onSubmit }: ReservationFormProps) => {
       return;
     }
     
-    // Collect all form data
+    // Collect form data and add user info from auth
     const formData = {
-      fullName: fullName.trim(),
-      email: email.trim(),
-      phone: phone.trim(),
       carPlate: carPlate.trim(),
       carModel: carModel.trim(),
+      fullName: user?.name || '',
+      email: user?.email || '',
+      phone: user?.phone || '',
     };
     
     // Call the parent handler with form data
@@ -64,21 +62,11 @@ const ReservationForm = ({ spotId, onSubmit }: ReservationFormProps) => {
       <div className="p-6">
         <FormAlert 
           icon={<Car size={20} />} 
-          message="Please provide your details to complete the reservation" 
+          message="Please provide your vehicle details to complete the reservation" 
         />
         
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Personal Information */}
-          <PersonalInfoFields
-            fullName={fullName}
-            setFullName={setFullName}
-            email={email}
-            setEmail={setEmail}
-            phone={phone}
-            setPhone={setPhone}
-          />
-          
-          {/* Car Information */}
+          {/* Only Car Information */}
           <VehicleInfoFields
             carPlate={carPlate}
             setCarPlate={setCarPlate}

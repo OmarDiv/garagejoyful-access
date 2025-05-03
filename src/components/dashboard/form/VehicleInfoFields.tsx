@@ -63,16 +63,6 @@ const VehicleInfoFields = ({
             ))}
           </SelectContent>
         </Select>
-
-        {carModel === 'Other' && (
-          <input
-            type="text"
-            value={carModel === 'Other' ? '' : carModel}
-            onChange={(e) => setCarModel(e.target.value)}
-            placeholder="Enter custom car model"
-            className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-guardian-blue focus:border-transparent"
-          />
-        )}
       </div>
     </div>
   );
