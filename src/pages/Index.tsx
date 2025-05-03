@@ -49,7 +49,7 @@ const Index = () => {
                   behavior: 'smooth' 
                 });
               }}
-              className="flex flex-col items-center text-guardian-gray hover:text-guardian-blue transition-colors"
+              className="flex flex-col items-center text-guardian-gray hover:text-guardian-purple transition-colors"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -57,8 +57,9 @@ const Index = () => {
               <motion.div
                 animate={{ y: [0, 5, 0] }}
                 transition={{ repeat: Infinity, duration: 1.5 }}
+                className="bg-guardian-purple/10 rounded-full p-2"
               >
-                <ArrowDownIcon />
+                <ArrowDownIcon className="text-guardian-purple" />
               </motion.div>
             </motion.button>
           </motion.div>

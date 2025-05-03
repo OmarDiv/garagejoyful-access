@@ -51,14 +51,20 @@ const HeroContent = ({ isInView }: HeroContentProps) => {
       animate={isInView ? "visible" : "hidden"}
       className="order-2 md:order-1"
     >
+      <motion.div variants={itemVariants} className="mb-6">
+        <div className="inline-block px-3 py-1 rounded-full bg-guardian-purple/10 text-guardian-purple text-sm font-medium mb-3">
+          Smart Parking Solutions
+        </div>
+      </motion.div>
+      
       <motion.h1 
         variants={itemVariants}
         className="text-4xl md:text-5xl lg:text-6xl font-bold text-guardian-darkGray leading-tight"
       >
         {isAuthenticated ? (
-          <>Welcome <span className="text-indigo-600">{user?.name}</span></>
+          <>Welcome <span className="gradient-text">{user?.name}</span></>
         ) : (
-          <>Smart Parking <span className="text-indigo-600">Made Simple</span></>
+          <>Smart Parking <span className="gradient-text">Made Simple</span></>
         )}
       </motion.h1>
       
@@ -79,13 +85,13 @@ const HeroContent = ({ isInView }: HeroContentProps) => {
         {isAuthenticated ? (
           <>
             <Link to="/dashboard">
-              <Button className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 btn-hover-effect min-w-[160px]">
+              <Button className="bg-guardian-purple hover:bg-guardian-deepPurple text-white px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 btn-hover-effect min-w-[160px]">
                 Find Parking
               </Button>
             </Link>
             
             <Link to="/reservations">
-              <Button variant="outline" className="border-indigo-600 text-indigo-600 hover:bg-indigo-50 px-6 py-3 rounded-lg hover:shadow-md transition-all duration-300 btn-hover-effect min-w-[160px]">
+              <Button variant="outline" className="border-guardian-purple text-guardian-purple hover:bg-guardian-lightPurple/20 px-6 py-3 rounded-lg hover:shadow-md transition-all duration-300 btn-hover-effect min-w-[160px]">
                 My Reservations
               </Button>
             </Link>
@@ -93,13 +99,13 @@ const HeroContent = ({ isInView }: HeroContentProps) => {
         ) : (
           <>
             <Link to="/dashboard">
-              <Button className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 btn-hover-effect min-w-[160px]">
+              <Button className="bg-guardian-purple hover:bg-guardian-deepPurple text-white px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 btn-hover-effect min-w-[160px]">
                 Find Parking
               </Button>
             </Link>
             
             <Link to="/auth">
-              <Button variant="outline" className="border-indigo-600 text-indigo-600 hover:bg-indigo-50 px-6 py-3 rounded-lg hover:shadow-md transition-all duration-300 btn-hover-effect min-w-[160px]">
+              <Button variant="outline" className="border-guardian-purple text-guardian-purple hover:bg-guardian-lightPurple/20 px-6 py-3 rounded-lg hover:shadow-md transition-all duration-300 btn-hover-effect min-w-[160px]">
                 Sign In
               </Button>
             </Link>
@@ -123,9 +129,9 @@ const HeroContent = ({ isInView }: HeroContentProps) => {
             className="flex flex-col items-center sm:items-start"
           >
             <motion.div 
-              whileHover={{ scale: 1.1, color: "#4f46e5" }}
+              whileHover={{ scale: 1.1 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              className="text-3xl font-bold text-indigo-600"
+              className="text-3xl font-bold gradient-text"
             >
               {item.value}
             </motion.div>

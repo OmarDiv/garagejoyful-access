@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, CheckSquare, History, LogIn, User, Settings } from 'lucide-react';
+import { Menu, X, CircleParking, History, LogIn, User, Settings } from 'lucide-react';
 import { useAuth } from '@/hooks/auth';
 import { 
   DropdownMenu, 
@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
 import { toast } from 'sonner';
+import { motion } from 'framer-motion';
 
 const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -64,8 +65,13 @@ const NavBar = () => {
             to="/" 
             className="flex items-center space-x-2 text-guardian-darkGray"
           >
-            <CheckSquare className="h-8 w-8 text-indigo-600" />
-            <span className="font-semibold text-xl tracking-tight">Rakna</span>
+            <motion.div
+              whileHover={{ rotate: [0, -10, 0], scale: 1.1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <CircleParking className="h-8 w-8 text-guardian-purple" />
+            </motion.div>
+            <span className="font-display text-xl tracking-tight">Rakna</span>
           </Link>
 
           <nav className="hidden md:flex items-center space-x-8">
@@ -73,9 +79,9 @@ const NavBar = () => {
               <Link
                 key={link.name}
                 to={link.path}
-                className={`transition-all-300 hover:text-indigo-600 ${
+                className={`transition-all-300 hover:text-guardian-purple ${
                   isActive(link.path)
-                    ? 'text-indigo-600 font-medium'
+                    ? 'text-guardian-purple font-medium'
                     : 'text-guardian-darkGray'
                 }`}
               >
@@ -86,7 +92,7 @@ const NavBar = () => {
             {isAuthenticated ? (
               <div className="flex items-center gap-3">
                 <DropdownMenu>
-                  <DropdownMenuTrigger className="flex items-center gap-2 text-guardian-darkGray hover:text-indigo-600 transition-all-300">
+                  <DropdownMenuTrigger className="flex items-center gap-2 text-guardian-darkGray hover:text-guardian-purple transition-all-300">
                     <Settings size={18} />
                     <span className="hidden lg:inline">Settings</span>
                   </DropdownMenuTrigger>
@@ -109,7 +115,7 @@ const NavBar = () => {
             ) : (
               <Link
                 to="/auth"
-                className="flex items-center gap-1.5 text-white bg-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all-300"
+                className="flex items-center gap-1.5 text-white bg-guardian-purple px-4 py-2 rounded-lg hover:bg-guardian-deepPurple transition-all-300"
               >
                 <LogIn size={18} />
                 <span>Sign In</span>
@@ -139,7 +145,7 @@ const NavBar = () => {
               to={link.path}
               className={`block py-2 px-4 rounded-lg transition-all-300 ${
                 isActive(link.path)
-                  ? 'bg-indigo-100 text-indigo-600 font-medium'
+                  ? 'bg-guardian-lightPurple/50 text-guardian-purple font-medium'
                   : 'text-guardian-darkGray hover:bg-gray-50'
               }`}
             >
@@ -162,7 +168,7 @@ const NavBar = () => {
               </Link>
               <button
                 onClick={handleLogout}
-                className="w-full flex items-center gap-1.5 text-white bg-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all-300 mt-2"
+                className="w-full flex items-center gap-1.5 text-white bg-guardian-purple px-4 py-2 rounded-lg hover:bg-guardian-deepPurple transition-all-300 mt-2"
               >
                 <LogIn size={18} />
                 <span>Sign Out</span>
@@ -171,7 +177,7 @@ const NavBar = () => {
           ) : (
             <Link
               to="/auth"
-              className="flex items-center gap-1.5 text-white bg-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-700 transition-all-300 mt-2"
+              className="flex items-center gap-1.5 text-white bg-guardian-purple px-4 py-2 rounded-lg hover:bg-guardian-deepPurple transition-all-300 mt-2"
             >
               <LogIn size={18} />
               <span>Sign In</span>

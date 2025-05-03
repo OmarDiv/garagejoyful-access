@@ -27,12 +27,18 @@ const HeroImage = ({ isInView, imagesLoaded }: HeroImageProps) => {
             ease: "easeInOut"
           }}
           className="rounded-2xl overflow-hidden shadow-2xl max-w-md relative z-10"
+          whileHover={{ scale: 1.03, rotate: -1 }}
         >
           <img 
             src="https://images.unsplash.com/photo-1589634749000-1de0a4bdaf95?q=80&w=2073&auto=format&fit=crop" 
             alt="Parking garage" 
-            className="w-full h-auto"
+            className="w-full h-auto rounded-2xl"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent rounded-2xl"></div>
+          <div className="absolute bottom-4 left-4 right-4 text-white">
+            <div className="text-lg font-semibold">Smart Parking System</div>
+            <div className="text-sm opacity-90">Advanced technology for a seamless experience</div>
+          </div>
         </motion.div>
         
         {!isMobile && (
@@ -51,9 +57,9 @@ const HeroImage = ({ isInView, imagesLoaded }: HeroImageProps) => {
                 duration: 4
               }
             }}
-            className="absolute top-0 -left-12 -rotate-6 bg-white p-4 rounded-lg shadow-lg z-20"
+            className="absolute top-0 -left-12 -rotate-6 glass-morphism p-4 rounded-lg shadow-lg z-20"
           >
-            <div className="text-sm font-medium text-guardian-blue">Available Now</div>
+            <div className="text-sm font-medium text-guardian-purple">Available Now</div>
             <div className="flex items-center gap-1 mt-1">
               <motion.span 
                 animate={{ scale: [1, 1.2, 1] }}
@@ -84,14 +90,27 @@ const HeroImage = ({ isInView, imagesLoaded }: HeroImageProps) => {
                 duration: 4
               }
             }}
-            className="absolute -bottom-8 -right-8 rotate-3 bg-indigo-100 p-4 rounded-lg shadow-lg z-20"
+            className="absolute -bottom-8 -right-8 rotate-3 glass-morphism p-4 rounded-lg shadow-lg z-20"
           >
-            <div className="text-sm font-medium text-indigo-800">Easy Access</div>
+            <div className="text-sm font-medium text-guardian-magenta">Easy Access</div>
             <div className="text-xs text-guardian-gray mt-1">
               Scan QR code to enter
             </div>
           </motion.div>
         )}
+        
+        {/* Add floating decoration elements */}
+        <motion.div
+          className="absolute -top-6 -right-6 w-16 h-16 rounded-full bg-gradient-to-r from-purple-300 to-guardian-magenta/40 blur-md"
+          animate={{ y: [-5, 5, -5], opacity: [0.7, 0.9, 0.7] }}
+          transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
+        />
+        
+        <motion.div
+          className="absolute -bottom-4 -left-4 w-12 h-12 rounded-full bg-gradient-to-r from-guardian-purple/30 to-blue-300/30 blur-md"
+          animate={{ y: [5, -5, 5], opacity: [0.5, 0.8, 0.5] }}
+          transition={{ repeat: Infinity, duration: 4, ease: "easeInOut", delay: 1 }}
+        />
       </div>
     </motion.div>
   );
