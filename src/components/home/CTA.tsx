@@ -3,13 +3,13 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
-import { Car, Clock, CheckSquare } from 'lucide-react';
+import { Car, Clock, CircleParking } from 'lucide-react';
 
 const CTA = () => {
   const { isAuthenticated } = useAuth();
   
   return (
-    <section className="py-16 bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
+    <section className="py-16 bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -28,7 +28,7 @@ const CTA = () => {
                   <Button
                     className="px-6 py-3 bg-white text-purple-600 rounded-full font-medium hover:bg-purple-50 transition-colors gap-2 shadow-lg hover:shadow-xl transition-shadow duration-300"
                   >
-                    <CheckSquare className="w-5 h-5" />
+                    <CircleParking className="w-5 h-5" />
                     Find Parking
                   </Button>
                 </Link>
@@ -55,7 +55,7 @@ const CTA = () => {
                   <Button
                     className="px-6 py-3 bg-white/20 backdrop-blur-sm text-white rounded-full font-medium hover:bg-white/30 transition-colors gap-2 shadow-lg hover:shadow-xl transition-shadow duration-300"
                   >
-                    <CheckSquare className="w-5 h-5" />
+                    <CircleParking className="w-5 h-5" />
                     Explore Spaces
                   </Button>
                 </Link>

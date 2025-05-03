@@ -29,7 +29,7 @@ const VehicleInfoFields = ({
           License Plate Number <span className="text-guardian-red">*</span>
         </label>
         <div className="relative">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-guardian-gray">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-guardian-purple">
             <Car size={16} />
           </span>
           <input
@@ -38,7 +38,7 @@ const VehicleInfoFields = ({
             value={carPlate}
             onChange={(e) => setCarPlate(e.target.value)}
             placeholder="Enter your license plate"
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-guardian-blue focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-guardian-purple focus:border-transparent"
             required
           />
         </div>

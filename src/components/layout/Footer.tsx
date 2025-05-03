@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom';
-import { CheckSquare, Github, Twitter, Instagram, Mail } from 'lucide-react';
+import { CircleParking, Github, Twitter, Instagram, Mail } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -12,7 +12,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="col-span-1 md:col-span-1">
             <Link to="/" className="flex items-center space-x-2 text-guardian-darkGray mb-4">
-              <CheckSquare className="h-6 w-6 text-indigo-600" />
+              <CircleParking className="h-6 w-6 text-purple-600" />
               <span className="font-semibold text-lg">Rakna</span>
             </Link>
             <p className="text-guardian-gray text-sm mt-4 max-w-xs">
@@ -33,7 +33,7 @@ const Footer = () => {
                 <li key={link.name}>
                   <Link 
                     to={link.path}
-                    className="text-guardian-gray hover:text-indigo-600 transition-colors duration-200 text-sm"
+                    className="text-guardian-gray hover:text-purple-600 transition-colors duration-200 text-sm"
                   >
                     {link.name}
                   </Link>
@@ -54,7 +54,7 @@ const Footer = () => {
                 <li key={link.name}>
                   <Link 
                     to={link.path}
-                    className="text-guardian-gray hover:text-indigo-600 transition-colors duration-200 text-sm"
+                    className="text-guardian-gray hover:text-purple-600 transition-colors duration-200 text-sm"
                   >
                     {link.name}
                   </Link>
@@ -77,7 +77,7 @@ const Footer = () => {
                   key={social.label}
                   href="#"
                   aria-label={social.label}
-                  className="text-guardian-gray hover:text-indigo-600 transition-colors duration-200"
+                  className="text-guardian-gray hover:text-purple-600 transition-colors duration-200"
                 >
                   <social.icon size={20} />
                 </a>
@@ -85,7 +85,7 @@ const Footer = () => {
             </div>
             <p className="text-guardian-gray text-sm">
               Have questions? <br />
-              <a href="mailto:support@rakna.com" className="text-indigo-600 hover:underline">
+              <a href="mailto:support@rakna.com" className="text-purple-600 hover:underline">
                 support@rakna.com
               </a>
             </p>
