@@ -51,17 +51,13 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         guardian: {
-          blue: "#9b87f5", // Changed to purple
-          green: "#D946EF", // Changed to magenta
+          blue: "#4B56D2", // Changed from #3B82F6 to a deeper blue
+          green: "#14b8a6", // Changed from #10B981 to a teal shade
           red: "#EF4444",
           yellow: "#F59E0B",
           gray: "#6B7280",
           darkGray: "#374151",
           lightGray: "#F3F4F6",
-          purple: "#8B5CF6", // New purple
-          magenta: "#D946EF", // New magenta
-          deepPurple: "#7E69AB", // New deep purple
-          lightPurple: "#D6BCFA", // New light purple
         },
       },
       borderRadius: {
@@ -71,7 +67,6 @@ export default {
       },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
-        display: ["Playfair Display", "serif"],
       },
       keyframes: {
         "accordion-down": {
@@ -82,26 +77,10 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "float": {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-10px)" },
-        },
-        "pulse-soft": {
-          "0%, 100%": { opacity: "1" },
-          "50%": { opacity: "0.8" },
-        },
-        "gradient-shift": {
-          "0%": { backgroundPosition: "0% 50%" },
-          "50%": { backgroundPosition: "100% 50%" },
-          "100%": { backgroundPosition: "0% 50%" },
-        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "float": "float 6s ease-in-out infinite",
-        "pulse-soft": "pulse-soft 3s ease-in-out infinite",
-        "gradient-shift": "gradient-shift 15s ease infinite",
       },
     },
   },
@@ -111,12 +90,6 @@ export default {
       addUtilities({
         ".btn-hover-effect": {
           "@apply transition-all duration-300 hover:shadow-md hover:scale-[1.02] active:scale-[0.98]": {},
-        },
-        ".glass-morphism": {
-          "@apply bg-white/70 backdrop-blur-md border border-white/20 shadow-xl": {},
-        },
-        ".gradient-text": {
-          "@apply bg-clip-text text-transparent bg-gradient-to-r from-guardian-purple to-guardian-magenta": {},
         },
       });
     }),

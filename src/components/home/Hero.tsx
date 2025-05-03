@@ -24,51 +24,8 @@ const Hero = () => {
   }, []);
 
   return (
-    <section ref={ref} className="relative overflow-hidden pt-28 md:pt-32 lg:pt-0">
-      <div className="absolute inset-0 bg-gradient-to-b from-purple-50 via-guardian-lightPurple/20 to-white opacity-90 z-0"></div>
-      
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-        className="absolute inset-0 z-0 overflow-hidden"
-      >
-        <svg className="h-full w-full opacity-10" viewBox="0 0 100 100" preserveAspectRatio="none">
-          <defs>
-            <pattern id="hero-pattern" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(5)">
-              <circle cx="1" cy="1" r="1" fill="currentColor" className="text-guardian-purple"></circle>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#hero-pattern)"></rect>
-        </svg>
-      </motion.div>
-      
-      <motion.div 
-        className="absolute top-20 left-10 w-20 h-20 rounded-full bg-guardian-purple/10 blur-2xl"
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.5, 0.8, 0.5]
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          repeatType: "reverse"
-        }}
-      />
-      
-      <motion.div 
-        className="absolute bottom-40 right-20 w-32 h-32 rounded-full bg-guardian-magenta/10 blur-3xl"
-        animate={{
-          scale: [1, 1.3, 1],
-          opacity: [0.3, 0.6, 0.3]
-        }}
-        transition={{
-          duration: 10,
-          delay: 1,
-          repeat: Infinity,
-          repeatType: "reverse"
-        }}
-      />
+    <section ref={ref} className="relative overflow-hidden bg-guardian-lightGray pt-16 md:pt-0">
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-50 to-white opacity-70 z-0"></div>
       
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 md:py-32 lg:py-40">
         <HeroAnalytics analytics={analytics} isInView={isInView} />
