@@ -32,9 +32,9 @@ const ParkingSpot = ({ id, status, onClick, className }: ParkingSpotProps) => {
       label: 'Occupied'
     },
     reserved: {
-      bgColor: 'bg-purple-500/10',
-      borderColor: 'border-purple-500',
-      textColor: 'text-purple-500',
+      bgColor: 'bg-blue-500/10',
+      borderColor: 'border-blue-500',
+      textColor: 'text-blue-500',
       icon: AlertTriangle,
       label: 'Reserved'
     }
@@ -80,7 +80,7 @@ const ParkingSpot = ({ id, status, onClick, className }: ParkingSpotProps) => {
       
       {/* Reserved indicator */}
       {status === 'reserved' && (
-        <div className="absolute bottom-3 right-3 text-xs px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-600">
+        <div className="absolute bottom-3 right-3 text-xs px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-600">
           Reserved
         </div>
       )}
@@ -93,9 +93,9 @@ const ParkingSpot = ({ id, status, onClick, className }: ParkingSpotProps) => {
             opacity: isHovered ? 1 : 0,
             scale: isHovered ? 1 : 0.8
           }}
-          className="absolute inset-0 rounded-xl flex items-center justify-center bg-guardian-purple/10 transition-all duration-200"
+          className="absolute inset-0 rounded-xl flex items-center justify-center bg-guardian-blue/10 transition-all duration-200"
         >
-          <span className="text-guardian-purple font-medium text-sm">Click to Reserve</span>
+          <span className="text-guardian-blue font-medium text-sm">Click to Reserve</span>
         </motion.div>
       )}
     </motion.div>

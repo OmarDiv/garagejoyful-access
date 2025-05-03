@@ -51,17 +51,13 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         guardian: {
-          blue: "#8B5CF6", // Changed to vibrant purple
-          green: "#D946EF", // Changed to bright magenta
+          blue: "#4B56D2", // Changed from #3B82F6 to a deeper blue
+          green: "#14b8a6", // Changed from #10B981 to a teal shade
           red: "#EF4444",
           yellow: "#F59E0B",
           gray: "#6B7280",
           darkGray: "#374151",
           lightGray: "#F3F4F6",
-          purple: "#9b87f5", // Added primary purple
-          magenta: "#D946EF", // Added magenta
-          deepPurple: "#7E69AB", // Added deeper purple
-          lightPurple: "#D6BCFA", // Added light purple
         },
       },
       borderRadius: {

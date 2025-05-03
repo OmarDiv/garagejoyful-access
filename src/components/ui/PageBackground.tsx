@@ -12,13 +12,13 @@ const PageBackground = ({ children, variant }: PageBackgroundProps) => {
   // Different background styling based on page variant
   switch (variant) {
     case 'home':
-      backgroundClasses = 'bg-gradient-to-b from-purple-100 via-fuchsia-50 to-white';
+      backgroundClasses = 'bg-gradient-to-b from-indigo-50 via-purple-50 to-white';
       break;
     case 'dashboard':
-      backgroundClasses = 'bg-gradient-to-br from-purple-50 via-fuchsia-50/30 to-white';
+      backgroundClasses = 'bg-gradient-to-br from-blue-50 via-indigo-50/30 to-white';
       break;
     case 'garage':
-      backgroundClasses = 'bg-gradient-to-tr from-fuchsia-50 via-purple-50/20 to-white';
+      backgroundClasses = 'bg-gradient-to-tr from-purple-50 via-indigo-50/20 to-white';
       break;
     default:
       backgroundClasses = 'bg-white';
@@ -40,7 +40,7 @@ const PageBackground = ({ children, variant }: PageBackgroundProps) => {
               patternUnits="userSpaceOnUse"
               patternTransform="rotate(5)"
             >
-              <circle cx="1" cy="1" r="1" fill="currentColor" className="text-purple-400" />
+              <circle cx="1" cy="1" r="1" fill="currentColor" className="text-indigo-400" />
             </pattern>
           )}
           {variant === 'dashboard' && (
@@ -51,7 +51,7 @@ const PageBackground = ({ children, variant }: PageBackgroundProps) => {
               patternUnits="userSpaceOnUse"
               patternTransform="rotate(15)"
             >
-              <path d="M2 2 L4 4" strokeWidth="0.5" stroke="currentColor" className="text-fuchsia-400" />
+              <path d="M2 2 L4 4" strokeWidth="0.5" stroke="currentColor" className="text-blue-400" />
             </pattern>
           )}
           {variant === 'garage' && (
